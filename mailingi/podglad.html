@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mailingi Moris — podgląd</title>
+<style>
+  :root{
+    --navy:#156082; --navy-d:#0E4258; --graphite:#12202B;
+    --blue-l:#F2F6F8; --blue:#D9E5EC; --orange:#F35E07; --grey:#5A6B76;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--blue-l);color:var(--graphite);
+       font:16px/1.6 Arial,Helvetica,sans-serif}
+  header{background:var(--navy-d);color:#fff;padding:28px 24px}
+  header div{max-width:1240px;margin:0 auto}
+  header h1{margin:0 0 6px;font-size:24px;letter-spacing:-.2px}
+  header p{margin:0;color:var(--blue);font-size:14px}
+  main{max-width:1240px;margin:0 auto;padding:24px}
+  .grid{display:grid;gap:20px;grid-template-columns:repeat(auto-fit,minmax(340px,1fr))}
+  .card{background:#fff;border:1px solid var(--blue);display:flex;flex-direction:column}
+  .card h2{margin:0;padding:16px 18px 4px;font-size:17px;color:var(--navy-d)}
+  .card p{margin:0;padding:0 18px 14px;font-size:13px;color:var(--grey)}
+  .card .bar{padding:0 18px 16px;display:flex;gap:14px;font-size:13px}
+  .card a{color:var(--orange);font-weight:700;text-decoration:none}
+  .card a:hover{text-decoration:underline}
+  iframe{width:100%;height:760px;border:0;border-top:1px solid var(--blue);
+         background:#ececec}
+  .note{background:#fff;border-left:4px solid var(--orange);padding:16px 20px;
+        margin-bottom:24px;font-size:14px}
+  .note strong{color:var(--navy-d)}
+  .note ul{margin:8px 0 0;padding-left:20px}
+  .note li{margin-bottom:4px}
+  @media (max-width:800px){iframe{height:560px}}
+</style>
+</head>
+<body>
+<header><div>
+  <h1>Mailingi Moris — trzy nowe kompilacje</h1>
+  <p>Obsługa platformy &nbsp;·&nbsp; Budowanie zaufania &nbsp;·&nbsp; Baza produktowa</p>
+</div></header>
+<main>
+  <div class="note">
+    <strong>Zanim wyślesz:</strong>
+    <ul>
+      <li>Podmień <code>{{LINK_WYPISU_Z_EXPERTSENDER}}</code> i <code>{{ID_KAMPANII}}</code> — ExpertSender generuje je per kampania.</li>
+      <li>Mailing 02 zawiera znacznik <code>[MIEJSCE NA OPINIĘ KLIENTA]</code> — uzupełnij albo usuń cały blok <code>moris-opinia</code>.</li>
+      <li>Zweryfikuj adresy podstron oznaczone w <code>ANALIZA-MAILINGI.md</code> jako „do potwierdzenia”.</li>
+    </ul>
+  </div>
+  <div class="grid">
+    <div class="card">
+      <h2>01 — Obsługa platformy</h2>
+      <p>Instruktaż: cztery kroki zamówienia, panel klienta, ciągłość warunków handlowych. Cel: pierwsze samodzielne zamówienie online.</p>
+      <div class="bar"><a href="01-obsluga-platformy.html" target="_blank">Otwórz w nowej karcie ↗</a></div>
+      <iframe src="01-obsluga-platformy.html" title="Mailing 01"></iframe>
+    </div>
+    <div class="card">
+      <h2>02 — Budowanie zaufania</h2>
+      <p>Dowody: rok 1994, ISO 9001:2015, licencjonowany spedytor, magazyn automatyczny, twarde parametry zobowiązań. Cel: zdjęcie ryzyka przed pierwszym zakupem.</p>
+      <div class="bar"><a href="02-zaufanie.html" target="_blank">Otwórz w nowej karcie ↗</a></div>
+      <iframe src="02-zaufanie.html" title="Mailing 02"></iframe>
+    </div>
+    <div class="card">
+      <h2>03 — Baza produktowa</h2>
+      <p>Zasięg oferty: dwa światy produktowe, gatunki na stanie, przykładowe indeksy, cięcie na wymiar. Cel: wejście do katalogu.</p>
+      <div class="bar"><a href="03-baza-produktowa.html" target="_blank">Otwórz w nowej karcie ↗</a></div>
+      <iframe src="03-baza-produktowa.html" title="Mailing 03"></iframe>
+    </div>
+  </div>
+</main>
+</body>
+</html>
