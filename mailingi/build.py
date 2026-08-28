@@ -47,6 +47,7 @@ URL_ABOUT   = "https://moris.eu/pl/about-us"
 URL_WHY     = "https://moris.eu/pl/why-we"
 URL_CUT     = "https://moris.eu/pl/cutting-service"
 URL_DELIV   = "https://moris.eu/pl/delivery"
+URL_HDS     = "https://moris.eu/pl/blog/HDS"
 
 MAIL   = "info@moris.eu"
 PHONE  = "+48 32 416 36 99"
@@ -263,28 +264,39 @@ def cards_rows(items):
     return "".join(out)
 
 
-def table_rows(headers, rows):
+def table_rows(headers, rows, dark=False):
     """Tabela danych technicznych — cyfry krojem o stalej szerokosci."""
+    head_col = BLUE if dark else GREY
+    line_str = WHITE if dark else NAVY      # linia pod naglowkiem
+    line_row = NAVY_D if dark else BLUE     # linie miedzy wierszami
+    col_a    = BLUE if dark else GRAPHITE   # kolumna opisowa
+    col_b    = WHITE if dark else NAVY_D    # kolumna z wartoscia
+
     th = "".join(
         '<td style="font-family:%s;font-size:11px;line-height:16px;font-weight:700;'
         'letter-spacing:.8px;text-transform:uppercase;color:%s;padding:0 10px 8px 0;'
-        'border-bottom:2px solid %s;">%s</td>' % (FONT, GREY, NAVY, h)
+        'border-bottom:2px solid %s;">%s</td>' % (FONT, head_col, line_str, h)
         for h in headers)
     body = []
     for r in rows:
         tds = []
         for k, cell in enumerate(r):
             fam = FONT if k == 0 else MONO
-            col = GRAPHITE if k == 0 else NAVY_D
+            col = col_a if k == 0 else col_b
             wgt = "400" if k == 0 else "700"
             tds.append('<td style="font-family:%s;font-size:14px;line-height:21px;'
                        'font-weight:%s;color:%s;padding:9px 10px 9px 0;'
                        'border-bottom:1px solid %s;">%s</td>'
-                       % (fam, wgt, col, BLUE, cell))
+                       % (fam, wgt, col, line_row, cell))
         body.append("<tr>%s</tr>" % "".join(tds))
     return ('<tr><td><table role="presentation" width="100%%" border="0" cellpadding="0" '
             'cellspacing="0" class="container"><tr>%s</tr>%s</table></td></tr>'
             % (th, "".join(body)))
+
+
+def table_rows_dark(headers, rows):
+    """Ta sama tabela na granatowym tle."""
+    return table_rows(headers, rows, dark=True)
 
 
 def cta_rows(label, href, width=280, align="left"):
@@ -623,11 +635,136 @@ def mailing_baza_produktowa():
 
 
 # ===========================================================================
+#  MAILING 4 — USŁUGI DODATKOWE I TRANSPORT
+# ===========================================================================
+
+def mailing_uslugi_i_transport():
+    blocks = [header_block()]
+
+    blocks.append(hero(
+        "Usługi dodatkowe",
+        "Utniemy, dowieziemy,<br>rozładujemy",
+        "Stal to połowa zamówienia. Druga połowa to doprowadzenie jej na miejsce "
+        "w takiej postaci, w jakiej ma trafić na produkcję. Obie zamawiasz razem — "
+        "w tym samym koszyku, z kosztem wyliczonym od razu."))
+
+    # --- cięcie ------------------------------------------------------------
+    blocks.append(wrap(
+        h2_row("Cięcie na wymiar") +
+        '<tr><td e-editable="ciecie_lead" style="font-family:%s;font-size:16px;'
+        'line-height:25px;color:%s;padding-bottom:20px;">Nie musisz zamawiać '
+        'długości katalogowej i dopasowywać jej u siebie. Cięcie zaznaczasz przy '
+        'pozycji w koszyku — bez osobnego zapytania i bez czekania na wycenę.'
+        '</td></tr>' % (FONT, GRAPHITE) +
+        cards_rows([
+            ("Cięcie na wymiar 90°",
+             "Dokładnie ta długość, której potrzebujesz. Rozliczamy rzeczywistą "
+             "masę pozycji po cięciu, nie masę pręta katalogowego.",
+             None, None),
+            ("Cięcie transportowe",
+             "Podział pozycji na 2–6 części, żeby zmieściła się w Twoim transporcie "
+             "albo przeszła przez bramę na miejscu rozładunku.",
+             None, None),
+        ]) +
+        '<tr><td style="padding-top:16px;font-family:%s;font-size:14px;line-height:21px;'
+        'color:%s;"><a href="%s" target="_blank" style="color:%s;'
+        'text-decoration:none!important;font-weight:700;">Szczegóły usługi cięcia '
+        '&rarr;</a></td></tr>' % (FONT, GREY, URL_CUT, ORANGE),
+        BLUE_L, 40, 40, "moris-ciecie"))
+
+    # --- transport: trzy drogi --------------------------------------------
+    blocks.append(wrap(
+        h2_row("Trzy sposoby odbioru") +
+        '<tr><td e-editable="transport_lead" style="font-family:%s;font-size:16px;'
+        'line-height:25px;color:%s;padding-bottom:20px;">Sposób dostawy wybierasz '
+        'na etapie koszyka. Przy każdym widzisz koszt policzony dla Twojego adresu '
+        'i termin — zanim potwierdzisz zamówienie.</td></tr>' % (FONT, GRAPHITE) +
+        cards_rows([
+            ("Odbiór własny",
+             "Zamówienie czeka przygotowane w Chorzowie. Bez kosztu transportu, "
+             "rozładunek po Twojej stronie.",
+             None, None),
+            ("Dostawa standardowa",
+             "Dowozimy na wskazany adres w całej Polsce. Rozładunek zapewnia "
+             "odbiorca — potrzebny dźwig, wózek widłowy albo ekipa.",
+             None, None),
+            ("Ciężarówka HDS z rozładunkiem",
+             "Nie masz czym rozładować? Kierowca zdejmuje towar żurawiem "
+             "samochodowym i stawia go tam, gdzie wskażesz.",
+             URL_HDS, "Poznaj usługę HDS"),
+        ]),
+        WHITE, 40, 0, "moris-transport"))
+
+    # --- parametry HDS (granat) -------------------------------------------
+    blocks.append(wrap(
+        h2_row("Dostawa HDS — parametry", WHITE) +
+        '<tr><td e-editable="hds_lead" style="font-family:%s;font-size:16px;'
+        'line-height:25px;color:%s;padding-bottom:20px;">Zanim wybierzesz HDS, '
+        'sprawdź, czy Twoje zamówienie mieści się w granicach usługi:'
+        '</td></tr>' % (FONT, BLUE) +
+        table_rows_dark(["Parametr", "Wartość"], [
+            ("Zasięg ramienia żurawia", "11 m"),
+            ("Maksymalna długość wyrobu", "7 m"),
+            ("Maksymalna masa zamówienia", "14 t"),
+            ("Zasięg dostawy", "cała Polska"),
+            ("Minimum zamówienia", "1 sztuka"),
+        ]) +
+        '<tr><td e-editable="hds_uwaga" style="font-family:%s;font-size:14px;'
+        'line-height:21px;color:%s;padding-top:16px;">Zamówienie przekracza któryś '
+        'z parametrów? Napisz do opiekuna handlowego — transport ponadgabarytowy '
+        'organizujemy indywidualnie, również koleją.</td></tr>' % (FONT, BLUE),
+        NAVY, 40, 40, "moris-hds"))
+
+    # --- jak zamówić -------------------------------------------------------
+    blocks.append(wrap(
+        h2_row("Jak to zamówić") + steps_rows([
+            ("Skompletuj koszyk",
+             "Dodaj pozycje z katalogu. Przy każdej widzisz stan magazynowy "
+             "i cenę w Twoich warunkach."),
+            ("Zaznacz cięcie przy pozycji",
+             "Podaj długość albo liczbę części. System przeliczy masę i cenę "
+             "pozycji od razu."),
+            ("Wybierz sposób dostawy",
+             "Wpisz adres i wskaż odbiór własny, dostawę standardową albo "
+             "ciężarówkę HDS. Koszt transportu wyliczy się automatycznie."),
+        ]),
+        BLUE_L, 40, 40, "moris-jak-zamowic"))
+
+    # --- terminy -----------------------------------------------------------
+    blocks.append(wrap(
+        h2_row("Terminy realizacji") +
+        table_rows(["Rodzaj zamówienia", "Termin"], [
+            ("Wyroby standardowe z magazynu", "3 dni robocze"),
+            ("Wyroby cięte na wymiar", "5 dni roboczych"),
+        ]) +
+        '<tr><td e-editable="terminy_uwaga" style="font-family:%s;font-size:14px;'
+        'line-height:21px;color:%s;padding-top:14px;">Termin widoczny w koszyku '
+        'dotyczy Twojego zamówienia i Twojego adresu — nie jest wartością '
+        'orientacyjną.</td></tr>' % (FONT, GREY) +
+        cta_rows("Policz dostawę w koszyku", URL_LOGIN, 270) +
+        '<tr><td style="padding-top:14px;font-family:%s;font-size:14px;line-height:21px;'
+        'color:%s;"><a href="%s" target="_blank" style="color:%s;'
+        'text-decoration:none!important;font-weight:700;">Zasady dostawy &rarr;</a>'
+        '</td></tr>' % (FONT, GREY, URL_DELIV, NAVY),
+        WHITE, 40, 36, "moris-terminy"))
+
+    blocks.append(contact_block("Nietypowy gabaryt albo pilny termin?"))
+    blocks.append(footer_block())
+
+    return document(
+        "Cięcie na wymiar i dostawa z rozładunkiem — usługi dodatkowe Moris",
+        "Cięcie 90°, cięcie transportowe, ciężarówka HDS z rozładunkiem żurawiem. "
+        "Koszt wyliczany w koszyku.",
+        blocks)
+
+
+# ===========================================================================
 
 TARGETS = [
     ("01-obsluga-platformy.html", mailing_obsluga_platformy),
     ("02-zaufanie.html",          mailing_zaufanie),
     ("03-baza-produktowa.html",   mailing_baza_produktowa),
+    ("04-uslugi-i-transport.html", mailing_uslugi_i_transport),
 ]
 
 

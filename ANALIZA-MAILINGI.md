@@ -2,7 +2,7 @@
 
 Dokument roboczy Działu Sprzedaży E-Commerce. Zawiera: (1) co realnie jest
 w przekazanych plikach, (2) listę usterek kodu z odwołaniem do numerów linii,
-(3) rozbieżność z księgą znaku, (4) opis trzech nowych kompilacji,
+(3) rozbieżność z księgą znaku, (4) opis czterech nowych kompilacji,
 (5) listę rzeczy do potwierdzenia przed wysyłką.
 
 ---
@@ -127,7 +127,7 @@ Dwie decyzje wymagają akceptacji:
 
 ---
 
-## 4. Trzy nowe kompilacje
+## 4. Cztery nowe kompilacje
 
 Pliki w katalogu [`mailingi/`](mailingi/). Każdy plik `.html` jest samodzielny —
 do wklejenia w ExpertSender bez budowania. Skrypt `build.py` istnieje tylko po to,
@@ -184,9 +184,40 @@ jeszcze nie zna albo zna ją wyłącznie z kontaktu telefonicznego.
 4. sekcja cięcia na wymiar na granatowym tle, na końcu — odpowiedź na
    najczęstszy powód rezygnacji: „nie ma mojego wymiaru”.
 
-### 4.4 Wspólna warstwa techniczna
+### 4.4 `04-uslugi-i-transport.html` — usługi dodatkowe i transport
 
-Wszystkie trzy pliki:
+**Cel:** zdjąć dwie najczęstsze obiekcje przed zamówieniem — „nie ma mojego
+wymiaru” i „nie mam czym rozładować”.
+
+**Konstrukcja:**
+
+1. **Cięcie** — dwie usługi rozdzielone, bo to dwie różne potrzeby: cięcie
+   na wymiar 90° (długość pod produkcję) i cięcie transportowe (podział na
+   2–6 części, żeby wjechało). W opisie cięcia na wymiar wprost powiedziane,
+   że rozliczamy **rzeczywistą masę po cięciu**, nie masę pręta katalogowego —
+   to pytanie, które i tak padnie w telefonie;
+2. **Trzy sposoby odbioru** jako równorzędne karty — odbiór własny, dostawa
+   standardowa, ciężarówka HDS. Przy dostawie standardowej powiedziane wprost,
+   że rozładunek jest po stronie odbiorcy. Ukrycie tego kosztuje reklamację,
+   nie zamówienie;
+3. **Parametry HDS w tabeli na granacie** — 11 m zasięgu ramienia, 7 m
+   długości, 14 t masy, cała Polska, 1 sztuka. Pod tabelą wyjście awaryjne:
+   co zrobić, gdy zamówienie nie mieści się w granicach usługi (transport
+   ponadgabarytowy, również koleją);
+4. **Trzy kroki zamówienia** — koszyk → cięcie przy pozycji → wybór dostawy,
+   z zaznaczeniem, że koszt transportu wylicza się automatycznie;
+5. **Terminy** — 3 dni robocze / 5 dni roboczych, z adnotacją, że termin
+   w koszyku dotyczy konkretnego zamówienia i adresu, a nie jest wartością
+   orientacyjną.
+
+**Czego świadomie nie ma:** ogłoszenia o obniżce ceny transportu HDS.
+W `campaign_source_1.html` było ono osią całego mailingu, ale to komunikat
+z konkretnego momentu (2024 r.). Szablon ma być wysyłalny wielokrotnie, więc
+informacja o obniżce należy do osobnej wysyłki, nie do wzoru stałego.
+
+### 4.5 Wspólna warstwa techniczna
+
+Wszystkie cztery pliki:
 
 - 600 px, tabele z `role="presentation"`, komórki z `bgcolor` obok CSS;
 - `lang="pl"`, `viewport`, `x-apple-disable-message-reformatting`,
@@ -221,10 +252,14 @@ Wszystkie trzy pliki:
 
 | Element | Gdzie | Status |
 |---|---|---|
-| `/pl/login`, `/pl/about-us`, `/pl/why-we`, `/pl/cutting-service`, `/pl/delivery` | wszystkie trzy mailingi | adresy odtworzone z indeksu wyszukiwarki (patrz `ANALIZA.md`, rozdz. 1) — **sprawdzić, czy odpowiadają na 200** |
+| `/pl/login`, `/pl/about-us`, `/pl/why-we`, `/pl/cutting-service`, `/pl/delivery`, `/pl/blog/HDS` | wszystkie cztery mailingi | adresy odtworzone z indeksu wyszukiwarki (patrz `ANALIZA.md`, rozdz. 1); `/pl/blog/HDS` pochodzi z `campaign_source_1.html` — **sprawdzić, czy odpowiadają na 200** |
 | „ISO 9001:2015”, „licencjonowany spedytor”, „>50% obrotu z klientami stałymi”, „magazyn 20 m”, „~4 000 indeksów” | `02-zaufanie.html` | dane z publikacji branżowych i profili firmowych, nie z dokumentów spółki — **potwierdzić przed użyciem jako obietnica handlowa** |
 | „dokumenty jakościowe wyrobu do każdej dostawy” | `02-zaufanie.html`, karta ISO | sformułowanie ogólne — **doprecyzować, jaki dokument faktycznie towarzyszy dostawie** |
-| Terminy 3 / 5 dni roboczych, HDS 11 m / 7 m / 14 t | `02` i `03` | pochodzą z `campaign_source_1.html` i z `ANALIZA.md` — sprawdzić aktualność |
+| Terminy 3 / 5 dni roboczych, HDS 11 m / 7 m / 14 t | `02`, `03`, `04` | pochodzą z `campaign_source_1.html` i z `ANALIZA.md` — sprawdzić aktualność |
+| „rozliczamy rzeczywistą masę pozycji po cięciu” | `04`, karta cięcia na wymiar | **potwierdzić w regulaminie** — jeśli rozliczenie idzie od masy materiału wsadowego, zdanie trzeba usunąć |
+| „cięcie transportowe: podział na 2–6 części” | `04` | z `campaign_source_1.html`; sprawdzić, czy limit nadal obowiązuje |
+| Odbiór własny jako dostępna opcja w koszyku | `04`, karta odbioru | **potwierdzić, że platforma faktycznie ją oferuje** — nie wynika to z przekazanych mailingów |
+| „transport ponadgabarytowy, również koleją” | `04`, adnotacja pod tabelą HDS | wynika z licencji spedycyjnej opisanej w `ANALIZA.md`; potwierdzić, czy obsługujemy takie zlecenia na wniosek klienta |
 | Rok założenia 1994 → „trzydzieści lat” | `02-zaufanie.html`, lead | przy wysyłce w 2026 r. poprawić na „ponad trzydzieści lat” |
 
 **Testy techniczne przed wysyłką:**
