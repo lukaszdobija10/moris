@@ -1,0 +1,965 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Moris — nowy układ strony</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* =========================================================================
+   Moris — propozycja nowego układu strony głównej
+   Paleta i typografia wg księgi znaku Moris (granat 156082, Arial).
+   Krój techniczny JetBrains Mono wyłącznie do danych liczbowych.
+   Strona świadomie utrzymana w jednym, jasnym świecie wizualnym marki —
+   wszystkie kolory i tła są malowane wprost, więc układ trzyma się
+   niezależnie od motywu przeglądarki.
+   ========================================================================= */
+:root{
+  --navy:#156082;
+  --navy-deep:#0E4258;
+  --navy-ink:#0A2E3E;
+  --ink:#12202B;
+  --muted:#5B7385;
+  --paper:#FFFFFF;
+  --paper-2:#F2F6F8;
+  --paper-3:#D9E5EC;
+  --line:#CBD5E1;
+  --line-soft:#E3EBF0;
+  --ok:#15803D;
+  --warn:#B45309;
+  --stop:#B91C1C;
+  --ok-bg:#E6F4EA;
+  --warn-bg:#FDF2E3;
+  --wrap:1240px;
+  --mono:"JetBrains Mono", ui-monospace, "Courier New", monospace;
+  --sans:Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font:16px/1.55 var(--sans);
+}
+h1,h2,h3,h4{text-wrap:balance; margin:0}
+p{margin:0}
+a{color:var(--navy)}
+button,input,select,textarea{font:inherit}
+:focus-visible{outline:2px solid var(--navy); outline-offset:2px}
+.wrap{max-width:var(--wrap); margin-inline:auto; padding-inline:24px}
+.num{font-family:var(--mono); font-variant-numeric:tabular-nums}
+
+/* ---------- etykiety i nagłówki sekcji ---------- */
+.kicker{
+  font:700 11.5px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase;
+  color:var(--navy); display:block; margin-bottom:14px;
+}
+.sec-head{display:flex; align-items:flex-end; justify-content:space-between; gap:32px; margin-bottom:34px; flex-wrap:wrap}
+.sec-head h2{font-size:30px; line-height:1.15; color:var(--navy-deep); letter-spacing:-.015em}
+.sec-head p{color:var(--muted); max-width:58ch; margin-top:10px; font-size:15.5px}
+section{padding-block:72px}
+section.tint{background:var(--paper-2)}
+
+/* linia wymiarowa jako separator — język rysunku technicznego */
+.rule{height:1px; background:var(--line); position:relative; margin:0}
+.rule::before,.rule::after{
+  content:""; position:absolute; top:-4px; width:1px; height:9px; background:var(--line);
+}
+.rule::before{left:0}
+.rule::after{right:0}
+
+/* ---------- przyciski ---------- */
+.btn{
+  display:inline-flex; align-items:center; gap:9px; cursor:pointer; text-decoration:none;
+  padding:13px 24px; border-radius:2px; border:1px solid var(--navy);
+  background:var(--navy); color:#fff; font-weight:700; font-size:15px;
+}
+.btn:hover{background:var(--navy-deep); border-color:var(--navy-deep)}
+.btn.ghost{background:transparent; color:var(--navy)}
+.btn.ghost:hover{background:var(--paper-3); color:var(--navy-deep)}
+.btn.sm{padding:9px 16px; font-size:14px}
+
+/* ---------- pasek użytkowy ---------- */
+.utility{background:var(--navy-ink); color:#BBD1DC; font-size:13px}
+.utility .wrap{display:flex; gap:22px; align-items:center; min-height:40px; flex-wrap:wrap}
+.utility a{color:#BBD1DC; text-decoration:none}
+.utility a:hover{color:#fff}
+.utility .right{margin-left:auto; display:flex; gap:22px; align-items:center}
+.utility strong{color:#fff; font-family:var(--mono)}
+
+/* ---------- nagłówek ---------- */
+header.site{position:sticky; top:0; z-index:50; background:var(--paper); border-bottom:1px solid var(--line)}
+header.site .wrap{display:flex; align-items:center; gap:28px; min-height:74px}
+.logo{font:700 27px/1 var(--sans); color:var(--navy); letter-spacing:-.03em; text-decoration:none}
+.logo span{color:var(--ink)}
+.nav{display:flex; gap:26px; align-items:center; font-size:15px}
+.nav a{color:var(--ink); text-decoration:none; padding-block:6px}
+.nav a:hover{color:var(--navy)}
+.nav a.strong{font-weight:700}
+.hdr-right{margin-left:auto; display:flex; align-items:center; gap:18px; font-size:14.5px}
+.hdr-right a{text-decoration:none; color:var(--ink)}
+.cart{
+  display:inline-flex; align-items:center; gap:8px; border:1px solid var(--line);
+  padding:9px 14px; border-radius:2px;
+}
+.cart b{font-family:var(--mono)}
+@media (max-width:1080px){ .nav{display:none} }
+
+/* ---------- HERO: wyszukiwarka parametryczna ---------- */
+.hero{
+  border-bottom:1px solid var(--line);
+  background:
+    linear-gradient(180deg, rgba(242,246,248,.92) 0%, rgba(242,246,248,.98) 100%),
+    repeating-linear-gradient(to right, var(--paper-3) 0 1px, transparent 1px 40px),
+    repeating-linear-gradient(to bottom, var(--paper-3) 0 1px, transparent 1px 40px),
+    var(--paper);
+}
+.hero .wrap{padding-block:60px 56px; display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:56px; align-items:start}
+.hero h1{font-size:46px; line-height:1.08; letter-spacing:-.025em; color:var(--navy-deep)}
+.hero h1 em{font-style:normal; color:var(--navy)}
+.hero .sub{margin-top:18px; font-size:17.5px; color:var(--muted); max-width:52ch}
+
+.finder{margin-top:34px; background:var(--paper); border:1px solid var(--line); border-top:3px solid var(--navy); padding:26px}
+.finder legend{padding:0; font:700 12px/1 var(--mono); letter-spacing:.16em; text-transform:uppercase; color:var(--navy)}
+.finder fieldset{border:0; padding:0; margin:0}
+.finder .row{display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:16px; margin-top:20px}
+.field{display:flex; flex-direction:column; gap:7px; min-width:0}
+.field label{font-size:12.5px; font-weight:700; color:var(--muted); letter-spacing:.04em; text-transform:uppercase}
+.field select, .field input{
+  padding:12px; border:1px solid var(--line); border-radius:2px; background:var(--paper); color:var(--ink);
+  font-family:var(--mono); font-size:14.5px;
+}
+.finder .actions{display:flex; gap:14px; align-items:center; margin-top:22px; flex-wrap:wrap}
+.finder .hint{color:var(--muted); font-size:13.5px}
+
+/* wyniki wyszukiwarki */
+.results{margin-top:22px; border-top:1px solid var(--line-soft); padding-top:18px}
+.results[hidden]{display:none}
+.res-row{
+  display:grid; grid-template-columns:44px minmax(0,1fr) auto auto auto; gap:18px; align-items:center;
+  padding:13px 0; border-bottom:1px solid var(--line-soft);
+}
+.res-row:last-child{border-bottom:0}
+.res-name{font-weight:700; font-size:15px}
+.res-meta{color:var(--muted); font-size:13px; font-family:var(--mono)}
+.res-price{text-align:right; font-family:var(--mono); font-weight:700; white-space:nowrap}
+.res-price small{display:block; font-weight:400; color:var(--muted); font-size:11.5px; letter-spacing:.03em}
+.chip{
+  display:inline-flex; align-items:center; gap:6px; padding:4px 10px; border-radius:2px;
+  font:700 12px/1.4 var(--mono); white-space:nowrap;
+}
+.chip.ok{background:var(--ok-bg); color:var(--ok)}
+.chip.warn{background:var(--warn-bg); color:var(--warn)}
+.empty{color:var(--muted); font-size:14.5px; padding:14px 0}
+
+/* boczna karta zaufania */
+.aside-card{background:var(--navy-deep); color:#fff; padding:28px}
+.aside-card h3{font-size:17px; margin-bottom:18px; color:#fff}
+.aside-card dl{margin:0; display:grid; gap:0}
+.aside-card div{display:flex; justify-content:space-between; gap:16px; padding:12px 0; border-bottom:1px solid rgba(255,255,255,.16)}
+.aside-card div:last-child{border-bottom:0}
+.aside-card dt{color:#B7D0DC; font-size:13.5px}
+.aside-card dd{margin:0; font-family:var(--mono); font-weight:700; font-size:15px}
+.aside-card .foot{margin-top:20px; font-size:13px; color:#B7D0DC; line-height:1.5}
+
+/* ---------- pas dowodów ---------- */
+.proof{border-bottom:1px solid var(--line); background:var(--paper)}
+.proof .wrap{display:grid; grid-template-columns:repeat(5,1fr); gap:0}
+.proof div{padding:26px 22px 26px 0; border-right:1px solid var(--line-soft)}
+.proof div:last-child{border-right:0; padding-right:0}
+.proof b{display:block; font:700 26px/1 var(--mono); color:var(--navy); letter-spacing:-.02em}
+.proof span{display:block; margin-top:8px; font-size:13.5px; color:var(--muted)}
+
+/* ---------- katalog: dwa światy + kategorie ---------- */
+.worlds{display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:40px}
+.world{
+  display:flex; gap:22px; align-items:center; padding:28px; text-decoration:none; color:inherit;
+  border:1px solid var(--line); background:var(--paper);
+}
+.world:hover{border-color:var(--navy); background:var(--paper-2)}
+.world h3{font-size:21px; color:var(--navy-deep)}
+.world p{color:var(--muted); font-size:14.5px; margin-top:7px}
+.world .arrow{margin-left:auto; color:var(--navy); font-size:22px}
+
+.cats{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
+.cat{
+  display:flex; align-items:center; gap:16px; padding:18px; border:1px solid var(--line);
+  background:var(--paper); text-decoration:none; color:inherit;
+}
+.cat:hover{border-color:var(--navy); background:var(--paper-2)}
+.cat b{display:block; font-size:15px}
+.cat span{display:block; font-size:12.5px; color:var(--muted); font-family:var(--mono); margin-top:3px}
+.xsec{flex:0 0 46px; width:46px; height:46px; background:var(--paper-2); border:1px solid var(--line-soft)}
+
+/* ---------- narzędzia: cięcie + kalkulator ---------- */
+.tools{display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:start}
+.panel{background:var(--paper); border:1px solid var(--line); padding:28px}
+.panel h3{font-size:19px; color:var(--navy-deep); margin-bottom:8px}
+.panel .desc{color:var(--muted); font-size:14.5px; margin-bottom:22px}
+.ctrl{display:grid; grid-template-columns:repeat(2,1fr); gap:16px}
+.ctrl.one{grid-template-columns:1fr}
+
+/* wizualizacja cięcia */
+.bar-vis{margin-top:24px}
+.bar{display:flex; height:44px; border:1px solid var(--navy-deep); background:var(--paper-2); overflow:hidden}
+.piece{
+  flex:0 0 auto; border-right:2px dashed var(--paper); background:var(--navy);
+  color:#fff; font:700 11.5px/44px var(--mono); text-align:center; overflow:hidden; white-space:nowrap;
+}
+.piece:last-child{border-right:0}
+.piece.waste{background:repeating-linear-gradient(45deg,#B45309 0 6px,#C9721F 6px 12px); color:#fff}
+.dimline{
+  display:flex; justify-content:space-between; margin-top:8px; color:var(--muted);
+  font:400 12px/1 var(--mono); border-top:1px solid var(--line); padding-top:7px;
+}
+.readout{display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:22px}
+.readout div{background:var(--paper-2); border-left:3px solid var(--navy); padding:14px 16px}
+.readout dt{font-size:12px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em}
+.readout dd{margin:6px 0 0; font:700 20px/1 var(--mono); color:var(--navy-deep)}
+.readout div.alert{border-left-color:var(--warn)}
+.readout div.alert dd{color:var(--warn)}
+
+/* ---------- szybkie zamówienie ---------- */
+.quick{display:grid; grid-template-columns:1.05fr .95fr; gap:40px; align-items:start}
+textarea.paste{
+  width:100%; min-height:150px; padding:14px; border:1px solid var(--line); border-radius:2px;
+  font-family:var(--mono); font-size:14px; background:var(--paper); color:var(--ink); resize:vertical;
+}
+.qlist{margin-top:18px; border:1px solid var(--line-soft)}
+.qlist .qrow{display:flex; justify-content:space-between; gap:14px; padding:11px 14px; border-bottom:1px solid var(--line-soft); font-size:14px}
+.qlist .qrow:last-child{border-bottom:0}
+.qlist .qrow.head{background:var(--paper-2); font-weight:700; font-size:12.5px; text-transform:uppercase; letter-spacing:.05em; color:var(--muted)}
+.qlist .qrow.total{background:var(--navy-deep); color:#fff; font-weight:700}
+.qval{font-family:var(--mono); white-space:nowrap}
+
+/* ---------- tabele ---------- */
+.tblwrap{overflow-x:auto; border:1px solid var(--line); background:var(--paper)}
+table{border-collapse:collapse; width:100%; min-width:520px; font-size:14.5px}
+th,td{padding:13px 16px; text-align:left; border-bottom:1px solid var(--line-soft)}
+thead th{background:var(--navy); color:#fff; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase}
+tbody tr:nth-child(even){background:var(--paper-2)}
+tbody tr:last-child td{border-bottom:0}
+td.n{font-family:var(--mono); font-variant-numeric:tabular-nums; text-align:right}
+th.n{text-align:right}
+
+/* ---------- dostawa / płatność / stali klienci ---------- */
+.cards3{display:grid; grid-template-columns:repeat(3,1fr); gap:24px}
+.card{border:1px solid var(--line); background:var(--paper); padding:26px}
+.card h3{font-size:17.5px; color:var(--navy-deep); margin-bottom:10px}
+.card p{color:var(--muted); font-size:14.5px}
+.card ul{margin:14px 0 0; padding-left:18px; color:var(--muted); font-size:14.5px}
+.card li{margin-bottom:7px}
+.card li b{color:var(--ink); font-family:var(--mono)}
+.pay{display:flex; flex-wrap:wrap; gap:8px; margin-top:16px}
+.pay span{border:1px solid var(--line); padding:6px 11px; font:700 12.5px/1.3 var(--mono); color:var(--navy-deep); background:var(--paper-2)}
+
+.loyal{background:var(--navy-deep); color:#fff}
+.loyal .sec-head h2{color:#fff}
+.loyal .sec-head p{color:#B7D0DC}
+.loyal .kicker{color:#8FBACB}
+.loyal .card{background:rgba(255,255,255,.05); border-color:rgba(255,255,255,.2)}
+.loyal .card h3{color:#fff}
+.loyal .card p,.loyal .card ul{color:#C3D7E1}
+.loyal .card li b{color:#fff}
+
+/* ---------- blog ---------- */
+.posts{display:grid; grid-template-columns:repeat(3,1fr); gap:24px}
+.post{border:1px solid var(--line); background:var(--paper); padding:24px; display:flex; flex-direction:column; gap:10px; text-decoration:none; color:inherit}
+.post:hover{border-color:var(--navy)}
+.post .tag{font:700 11.5px/1 var(--mono); letter-spacing:.12em; text-transform:uppercase; color:var(--navy)}
+.post h3{font-size:17px; color:var(--navy-deep)}
+.post p{color:var(--muted); font-size:14.5px}
+
+/* ---------- stopka ---------- */
+footer.site{background:var(--ink); color:#C3D0D8; padding-block:56px 26px; font-size:14px}
+footer.site .cols{display:grid; grid-template-columns:1.3fr 1fr 1fr 1fr 1.2fr; gap:32px}
+footer.site h4{font:700 12px/1 var(--mono); letter-spacing:.14em; text-transform:uppercase; color:#fff; margin-bottom:16px}
+footer.site ul{list-style:none; margin:0; padding:0; display:grid; gap:9px}
+footer.site a{color:#C3D0D8; text-decoration:none}
+footer.site a:hover{color:#fff; text-decoration:underline}
+footer.site .brand{font:700 24px/1 var(--sans); color:#fff; letter-spacing:-.03em; margin-bottom:14px}
+footer.site .addr{color:#94A7B3; line-height:1.75}
+.legal{border-top:1px solid rgba(255,255,255,.14); margin-top:42px; padding-top:22px; display:flex; flex-wrap:wrap; gap:20px; color:#8496A2; font-size:13px}
+
+@media (max-width:1080px){
+  .hero .wrap{grid-template-columns:1fr}
+  .proof .wrap{grid-template-columns:repeat(3,1fr)}
+  .proof div{border-right:0; padding-right:22px}
+  .cats{grid-template-columns:repeat(2,1fr)}
+  footer.site .cols{grid-template-columns:repeat(2,1fr)}
+}
+@media (max-width:820px){
+  .hero h1{font-size:34px}
+  .finder .row{grid-template-columns:1fr 1fr}
+  .worlds,.tools,.quick,.cards3,.posts{grid-template-columns:1fr}
+  .proof .wrap{grid-template-columns:repeat(2,1fr)}
+  .readout{grid-template-columns:1fr}
+  .res-row{grid-template-columns:36px 1fr; row-gap:8px}
+  .res-price{text-align:left}
+  section{padding-block:52px}
+}
+@media (prefers-reduced-motion:reduce){ html{scroll-behavior:auto} *{transition:none!important; animation:none!important} }
+</style>
+</head>
+<body>
+
+<!-- ============ pasek użytkowy ============ -->
+<div class="utility">
+  <div class="wrap">
+    <span>Biuro Obsługi Klienta <strong>32 416 36 99</strong></span>
+    <span>pn–pt 8:00–16:00</span>
+    <div class="right">
+      <a href="#">Status zamówienia</a>
+      <a href="#">Faktury i WZ</a>
+      <a href="#">PL</a><a href="#">EN</a><a href="#">CZ</a><a href="#">SK</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ nagłówek ============ -->
+<header class="site">
+  <div class="wrap">
+    <a class="logo" href="#top">moris<span>.eu</span></a>
+    <nav class="nav" aria-label="Menu główne">
+      <a class="strong" href="#katalog">Katalog</a>
+      <a href="#narzedzia">Cięcie na wymiar</a>
+      <a href="#szybkie">Szybkie zamówienie</a>
+      <a href="#dostawa">Dostawa i płatność</a>
+      <a href="#wiedza">Baza wiedzy</a>
+    </nav>
+    <div class="hdr-right">
+      <a href="#">Zaloguj się</a>
+      <a class="cart" href="#">Koszyk <b>0</b></a>
+    </div>
+  </div>
+</header>
+
+<!-- ============ HERO — wyszukiwarka parametryczna ============ -->
+<div class="hero" id="top">
+  <div class="wrap">
+    <div>
+      <span class="kicker">Hurtownia stali online · magazyn automatyczny Chorzów</span>
+      <h1>Znajdź wyrób tak, jak go <em>nazywasz na produkcji</em>.</h1>
+      <p class="sub">Typ, gatunek, wymiar, długość — cztery pola zamiast czterech kliknięć w menu.
+        Cena, dostępność i termin dostawy widoczne od razu, także przed zalogowaniem.</p>
+
+      <form class="finder" id="finder" novalidate>
+        <fieldset>
+          <legend>Dobór wyrobu</legend>
+          <div class="row">
+            <div class="field">
+              <label for="f-kind">Rodzaj wyrobu</label>
+              <select id="f-kind"><option value="">wszystkie</option></select>
+            </div>
+            <div class="field">
+              <label for="f-grade">Gatunek stali</label>
+              <select id="f-grade"><option value="">wszystkie</option></select>
+            </div>
+            <div class="field">
+              <label for="f-dim">Wymiar</label>
+              <select id="f-dim"><option value="">wszystkie</option></select>
+            </div>
+            <div class="field">
+              <label for="f-len">Długość</label>
+              <select id="f-len">
+                <option value="">dowolna</option>
+                <option value="handlowa">handlowa (6 / 12 m)</option>
+                <option value="ciete">cięta na wymiar</option>
+              </select>
+            </div>
+          </div>
+          <div class="actions">
+            <button class="btn" type="submit">Pokaż dostępne wyroby</button>
+            <span class="hint" id="f-count">Wyszukiwarka działa na przykładowej próbce katalogu.</span>
+          </div>
+        </fieldset>
+        <div class="results" id="results" hidden></div>
+      </form>
+    </div>
+
+    <aside class="aside-card">
+      <h3>Moris w liczbach</h3>
+      <dl>
+        <div><dt>Na rynku od</dt><dd>1994</dd></div>
+        <div><dt>Indeksów z magazynu</dt><dd>~4 000</dd></div>
+        <div><dt>Wysokość składowania</dt><dd>20 m</dd></div>
+        <div><dt>Wyroby standardowe</dt><dd>3 dni rob.</dd></div>
+        <div><dt>Cięte na wymiar</dt><dd>5 dni rob.</dd></div>
+        <div><dt>Sprzedaż już od</dt><dd>1 szt.</dd></div>
+      </dl>
+      <p class="foot">System zarządzania jakością wg ISO 9001:2015. Licencjonowany spedytor — dostawa samochodem i koleją na terenie Europy.</p>
+    </aside>
+  </div>
+</div>
+
+<!-- ============ pas dowodów ============ -->
+<div class="proof">
+  <div class="wrap">
+    <div><b>1994</b><span>Rok rozpoczęcia działalności na rynku stali</span></div>
+    <div><b>&gt;50%</b><span>Klientów współpracuje z nami długoterminowo</span></div>
+    <div><b>4 000</b><span>Indeksów wyrobów hutniczych i kolejowych</span></div>
+    <div><b>20 m</b><span>Magazyn automatyczny wysokiego składowania</span></div>
+    <div><b>ISO 9001</b><span>Certyfikat systemu zarządzania jakością, wyd. 2015</span></div>
+  </div>
+</div>
+
+<!-- ============ katalog ============ -->
+<section id="katalog">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="kicker">Katalog</span>
+        <h2>Dwa światy produktowe, jedno miejsce zamówienia</h2>
+        <p>Wejście do katalogu w jednym kliknięciu. Przekrój wyrobu rozpoznajesz szybciej niż jego nazwę — dlatego to on prowadzi po kategoriach.</p>
+      </div>
+      <a class="btn ghost" href="#">Wszystkie produkty</a>
+    </div>
+
+    <div class="worlds">
+      <a class="world" href="#">
+        <svg class="xsec" viewBox="0 0 46 46" aria-hidden="true"><rect x="1" y="1" width="44" height="44" fill="#F2F6F8"/><path d="M9 9h10v28h18v-6H15V9z" fill="#156082"/></svg>
+        <div>
+          <h3>Wyroby hutnicze</h3>
+          <p>Pręty, płaskowniki, kątowniki, ceowniki, dwuteowniki, teowniki, profile zamknięte, sześciokąty, rury i blachy. Gatunki S235JR – S355J2+N.</p>
+        </div>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+      <a class="world" href="#">
+        <svg class="xsec" viewBox="0 0 46 46" aria-hidden="true"><rect x="1" y="1" width="44" height="44" fill="#F2F6F8"/><path d="M12 8h22v5H27v20h7v5H12v-5h7V13h-7z" fill="#156082"/></svg>
+        <div>
+          <h3>Kolej</h3>
+          <p>Szyny transportowe, dźwignicowe, tramwajowe i lekkie oraz akcesoria kolejowe. Zamówienie online, dostawa samochodem lub koleją.</p>
+        </div>
+        <span class="arrow" aria-hidden="true">→</span>
+      </a>
+    </div>
+
+    <div class="cats" id="cats"></div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rule"></div></div>
+
+<!-- ============ narzędzia: cięcie + kalkulator ============ -->
+<section id="narzedzia" class="tint">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="kicker">Narzędzia w ścieżce zakupu</span>
+        <h2>Cięcie i wycena — na stronie, nie w Excelu</h2>
+        <p>Cięcie na wymiar to najmocniejszy wyróżnik Moris. W nowym układzie przestaje być podstroną informacyjną, a staje się narzędziem, którego klient używa przed dodaniem do koszyka.</p>
+      </div>
+    </div>
+
+    <div class="tools">
+      <!-- konfigurator cięcia -->
+      <div class="panel">
+        <h3>Konfigurator cięcia</h3>
+        <p class="desc">Wyrób handlowy dzielimy na odcinki o zadanej długości. Widzisz od razu liczbę sztuk, odpad i koszt usługi.</p>
+        <div class="ctrl">
+          <div class="field">
+            <label for="c-stock">Długość handlowa</label>
+            <select id="c-stock">
+              <option value="6000">6 000 mm</option>
+              <option value="12000">12 000 mm</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="c-target">Długość odcinka (mm)</label>
+            <input id="c-target" type="number" min="100" max="12000" step="10" value="1450">
+          </div>
+        </div>
+        <div class="bar-vis">
+          <div class="bar" id="c-bar" role="img" aria-label="Podział wyrobu handlowego na odcinki"></div>
+          <div class="dimline"><span id="c-dim-l">0</span><span id="c-dim-r">wyrób handlowy</span></div>
+        </div>
+        <dl class="readout" id="c-readout"></dl>
+      </div>
+
+      <!-- kalkulator masy i ceny -->
+      <div class="panel">
+        <h3>Kalkulator masy i ceny</h3>
+        <p class="desc">Przeliczenie metry ↔ kilogramy ↔ sztuki wraz z rabatem progowym. Wycena orientacyjna, bez logowania.</p>
+        <div class="ctrl">
+          <div class="field">
+            <label for="k-prod">Wyrób</label>
+            <select id="k-prod"></select>
+          </div>
+          <div class="field">
+            <label for="k-qty">Liczba sztuk</label>
+            <input id="k-qty" type="number" min="1" max="9999" step="1" value="24">
+          </div>
+        </div>
+        <dl class="readout" id="k-readout"></dl>
+        <p class="desc" style="margin:20px 0 0; font-size:13px">Ceny przykładowe, dla ilustracji układu. Rabat naliczany automatycznie wg progów masowych poniżej.</p>
+      </div>
+    </div>
+
+    <div style="margin-top:40px">
+      <div class="sec-head" style="margin-bottom:20px">
+        <div>
+          <span class="kicker">Rabaty</span>
+          <h2 style="font-size:22px">Progi rabatowe zamiast obietnicy rabatu</h2>
+          <p>„Rabat rośnie wraz z wielkością zamówienia" nie skłania do powiększenia koszyka. Tabela progów — tak.</p>
+        </div>
+      </div>
+      <div class="tblwrap">
+        <table>
+          <caption class="num" style="caption-side:bottom; text-align:left; padding:12px 16px; color:var(--muted); font-size:12.5px">Progi przykładowe — do ustalenia z polityką handlową.</caption>
+          <thead><tr><th>Próg masowy zamówienia</th><th class="n">Rabat</th><th>Warunki dodatkowe</th></tr></thead>
+          <tbody>
+            <tr><td>do 500 kg</td><td class="n">cena bazowa</td><td>dostawa wg cennika</td></tr>
+            <tr><td>500 – 2 000 kg</td><td class="n">−3%</td><td>dostawa wg cennika</td></tr>
+            <tr><td>2 – 5 t</td><td class="n">−5%</td><td>dostawa gratis w promieniu 150 km</td></tr>
+            <tr><td>5 – 10 t</td><td class="n">−7%</td><td>dostawa gratis, priorytet slotu transportowego</td></tr>
+            <tr><td>powyżej 10 t</td><td class="n">indywidualnie</td><td>wycena opiekuna handlowego</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ szybkie zamówienie ============ -->
+<section id="szybkie">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="kicker">Klient powracający</span>
+        <h2>Szybkie zamówienie — wklej listę i przejdź do koszyka</h2>
+        <p>Zakupy w B2B są powtarzalne. Bez ścieżki „na skróty" stały klient wraca do maila i telefonu do handlowca — i to jest koszt, nie relacja.</p>
+      </div>
+    </div>
+    <div class="quick">
+      <div>
+        <label class="field" style="gap:9px">
+          <span style="font-size:12.5px; font-weight:700; color:var(--muted); letter-spacing:.04em; text-transform:uppercase">Lista pozycji — indeks lub nazwa, średnik, liczba sztuk</span>
+          <textarea class="paste" id="q-input" spellcheck="false">2006757; 24
+FLAT-60x10-S235JR; 60
+ANG-50x50x5-S235JR; 40
+IPE160-S355J2; 12</textarea>
+        </label>
+        <div style="display:flex; gap:12px; margin-top:16px; flex-wrap:wrap">
+          <button class="btn" id="q-run" type="button">Przelicz listę</button>
+          <button class="btn ghost sm" type="button">Wczytaj plik CSV</button>
+          <button class="btn ghost sm" type="button">Powtórz ostatnie zamówienie</button>
+        </div>
+      </div>
+      <div>
+        <div class="qlist" id="q-out" aria-live="polite"></div>
+        <p class="desc" style="color:var(--muted); font-size:13.5px; margin-top:14px">
+          Ta sama składnia działa przy imporcie CSV z systemu ERP klienta. Pozycje nierozpoznane trafiają na listę do wyjaśnienia z opiekunem, zamiast blokować całe zamówienie.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap"><div class="rule"></div></div>
+
+<!-- ============ dostawa i płatność ============ -->
+<section id="dostawa" class="tint">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="kicker">Realizacja</span>
+        <h2>Dwie obiekcje, które trzeba zdjąć przed koszykiem</h2>
+        <p>Kiedy dojedzie i jak zapłacę — to dwa najczęstsze pytania do Biura Obsługi Klienta. Odpowiedź należy do strony, nie do rozmowy telefonicznej.</p>
+      </div>
+    </div>
+    <div class="cards3">
+      <div class="card">
+        <h3>Terminy</h3>
+        <p>Liczone od potwierdzenia płatności, widoczne przy każdej pozycji koszyka.</p>
+        <ul>
+          <li>Wyroby standardowe — <b>3 dni robocze</b></li>
+          <li>Wyroby cięte na wymiar — <b>5 dni roboczych</b></li>
+          <li>Wybór dnia dostawy i slotu transportowego</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Transport i rozładunek</h3>
+        <p>Własna flota oraz status licencjonowanego spedytora — samochód i kolej, cała Europa.</p>
+        <ul>
+          <li>Rozładunek <b>HDS</b>, zasięg żurawia do <b>11 m</b></li>
+          <li>Wyroby o długości do <b>7 m</b></li>
+          <li>Odbiór własny w Chorzowie</li>
+        </ul>
+      </div>
+      <div class="card">
+        <h3>Płatność</h3>
+        <p>Pełny stos płatności online — rzadkość w hurcie stali — oraz klasyczny przelew.</p>
+        <div class="pay"><span>Autopay</span><span>BLIK</span><span>Apple&nbsp;Pay</span><span>Google&nbsp;Pay</span><span>Karta</span><span>Przelew / proforma</span></div>
+        <ul><li>Limit kredytowy dla stałych klientów — <b>opt-in</b></li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ stali klienci ============ -->
+<section class="loyal">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="kicker">Segment o najwyższej marży</span>
+        <h2>Dla klientów, którzy zamawiają regularnie</h2>
+        <p>Ponad połowa klientów Moris współpracuje długoterminowo. Nowy układ daje im osobne wejście zamiast tej samej ścieżki co dla klienta pierwszorazowego.</p>
+      </div>
+    </div>
+    <div class="cards3">
+      <div class="card">
+        <h3>Kokpit zamówień</h3>
+        <p>Historia, status realizacji, faktury i dokumenty WZ do pobrania w jednym miejscu.</p>
+        <ul><li>Powtórzenie zamówienia jednym kliknięciem</li><li>Listy zakupowe i koszyki zespołowe</li></ul>
+      </div>
+      <div class="card">
+        <h3>Limit kredytowy</h3>
+        <p>Przywilej przyznawany na wniosek, po weryfikacji, nie standardowy element oferty.</p>
+        <ul><li>Wniosek i status limitu w koncie</li><li>Bieżące wykorzystanie limitu w koszyku</li></ul>
+      </div>
+      <div class="card">
+        <h3>Opiekun handlowy</h3>
+        <p>Platforma nie zastępuje handlowca — przejmuje od niego pracę powtarzalną.</p>
+        <ul><li>Bezpośredni kontakt widoczny w koncie</li><li>Wycena indywidualna powyżej <b>10 t</b></li></ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ baza wiedzy ============ -->
+<section id="wiedza">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="kicker">Baza wiedzy</span>
+        <h2>Treści, które przyprowadzają klienta z wyszukiwarki</h2>
+        <p>Strony gatunków i zastosowań to osobne punkty wejścia dla długiego ogona fraz — dziś nieobsługiwanego.</p>
+      </div>
+      <a class="btn ghost" href="#">Wszystkie wpisy</a>
+    </div>
+    <div class="posts">
+      <a class="post" href="#"><span class="tag">Dobór materiału</span><h3>S235JR czy S355J2 — kiedy dopłata za wytrzymałość się zwraca</h3><p>Porównanie granicy plastyczności, spawalności i ceny za kilogram w typowych konstrukcjach.</p></a>
+      <a class="post" href="#"><span class="tag">Logistyka</span><h3>Cięcie transportowe: kiedy podział sztuki 12 m obniża koszt dostawy</h3><p>Rachunek na przykładzie zamówienia dwutownika na plac budowy w mieście.</p></a>
+      <a class="post" href="#"><span class="tag">Kolej</span><h3>Szyny 49E1, S49, dźwignicowe i tramwajowe — mapa typów</h3><p>Czym różnią się profile, do czego są przeznaczone i co zamawia się razem z nimi.</p></a>
+    </div>
+  </div>
+</section>
+
+<!-- ============ stopka ============ -->
+<footer class="site">
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="brand">moris.eu</div>
+        <p class="addr">
+          Moris sp. z o.o.<br>
+          ul. Wiejska 27<br>
+          41-503 Chorzów<br>
+          <a href="tel:+48324163699">32 416 36 99</a><br>
+          <a href="mailto:info@moris.eu">info@moris.eu</a><br>
+          pn–pt 8:00–16:00
+        </p>
+      </div>
+      <div>
+        <h4>Wyroby hutnicze</h4>
+        <ul>
+          <li><a href="#">Pręty okrągłe</a></li>
+          <li><a href="#">Płaskowniki</a></li>
+          <li><a href="#">Kątowniki</a></li>
+          <li><a href="#">Ceowniki U / UPE / UPN</a></li>
+          <li><a href="#">Dwuteowniki</a></li>
+          <li><a href="#">Teowniki</a></li>
+          <li><a href="#">Profile zamknięte</a></li>
+          <li><a href="#">Sześciokąty ciągnione</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Gatunki</h4>
+        <ul>
+          <li><a href="#">S235JR</a></li>
+          <li><a href="#">S235JRH</a></li>
+          <li><a href="#">S355J2</a></li>
+          <li><a href="#">S355J2+N</a></li>
+          <li><a href="#">S355J2H</a></li>
+          <li><a href="#">R260 (szyny)</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Kolej</h4>
+        <ul>
+          <li><a href="#">Szyny transportowe</a></li>
+          <li><a href="#">Szyny dźwignicowe</a></li>
+          <li><a href="#">Szyny tramwajowe</a></li>
+          <li><a href="#">Szyny lekkie</a></li>
+          <li><a href="#">Akcesoria kolejowe</a></li>
+        </ul>
+      </div>
+      <div>
+        <h4>Obsługa i firma</h4>
+        <ul>
+          <li><a href="#">Cięcie na wymiar</a></li>
+          <li><a href="#">Dostawa i rozładunek HDS</a></li>
+          <li><a href="#">Płatności i limit kredytowy</a></li>
+          <li><a href="#">Status zamówienia</a></li>
+          <li><a href="#">Baza wiedzy</a></li>
+          <li><a href="#">O firmie i kariera</a></li>
+          <li><a href="#">Kontakt</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="legal">
+      <span>© Moris sp. z o.o. — dystrybucja stali od 1994 r.</span>
+      <a href="#">Regulamin</a>
+      <a href="#">Polityka prywatności</a>
+      <a href="#">ISO 9001:2015</a>
+      <span>Prototyp układu — dane produktowe przykładowe.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+
+  /* ---------- przykładowa próbka katalogu ---------- */
+  var PRODUCTS = [
+    {id:"2006757",             kind:"Pręt okrągły",      grade:"S355J2+N", dim:"fi 90",     len:6000,  kgm:49.94, pln:4.35, stock:128, cut:true},
+    {id:"ROUND-20-S235JR",     kind:"Pręt okrągły",      grade:"S235JR",   dim:"fi 20",     len:6000,  kgm:2.47,  pln:4.05, stock:940, cut:true},
+    {id:"FLAT-60x10-S235JR",   kind:"Płaskownik",        grade:"S235JR",   dim:"60 x 10",   len:6000,  kgm:4.71,  pln:4.15, stock:412, cut:true},
+    {id:"FLAT-100x12-S355J2",  kind:"Płaskownik",        grade:"S355J2",   dim:"100 x 12",  len:6000,  kgm:9.42,  pln:4.60, stock:76,  cut:true},
+    {id:"ANG-50x50x5-S235JR",  kind:"Kątownik",          grade:"S235JR",   dim:"50 x 50 x 5",len:6000, kgm:3.77,  pln:4.20, stock:308, cut:true},
+    {id:"ANG-80x80x8-S355J2",  kind:"Kątownik",          grade:"S355J2",   dim:"80 x 80 x 8",len:6000, kgm:9.63,  pln:4.55, stock:54,  cut:true},
+    {id:"UPN100-S235JR",       kind:"Ceownik",           grade:"S235JR",   dim:"UPN 100",   len:6000,  kgm:10.60, pln:4.30, stock:96,  cut:true},
+    {id:"UPE160-S355J2",       kind:"Ceownik",           grade:"S355J2",   dim:"UPE 160",   len:6000,  kgm:17.00, pln:4.70, stock:22,  cut:true},
+    {id:"IPE160-S355J2",       kind:"Dwuteownik",        grade:"S355J2",   dim:"IPE 160",   len:6000,  kgm:15.80, pln:4.65, stock:41,  cut:true},
+    {id:"IPE240-S235JR",       kind:"Dwuteownik",        grade:"S235JR",   dim:"IPE 240",   len:12000, kgm:30.70, pln:4.40, stock:18,  cut:true},
+    {id:"RHS-40x40x3-S235JRH", kind:"Profil zamknięty",  grade:"S235JRH",  dim:"40 x 40 x 3",len:6000, kgm:3.41,  pln:4.75, stock:520, cut:true},
+    {id:"RHS-80x40x4-S355J2H", kind:"Profil zamknięty",  grade:"S355J2H",  dim:"80 x 40 x 4",len:6000, kgm:6.90,  pln:5.10, stock:64,  cut:true},
+    {id:"HEX-22-S235JR",       kind:"Sześciokąt ciągniony",grade:"S235JR", dim:"22",        len:6000,  kgm:3.29,  pln:5.30, stock:150, cut:true},
+    {id:"RAIL-49E1-R260",      kind:"Szyna kolejowa",    grade:"R260",     dim:"49E1",      len:12000, kgm:49.39, pln:5.95, stock:9,   cut:false}
+  ];
+
+  var KIND_ICON = {
+    "Pręt okrągły":       '<circle cx="23" cy="23" r="14" fill="#156082"/>',
+    "Płaskownik":         '<rect x="7" y="18" width="32" height="10" fill="#156082"/>',
+    "Kątownik":           '<path d="M11 9h8v28h16v-8H19V9z" fill="#156082" transform="translate(0,0)"/>',
+    "Ceownik":            '<path d="M12 9h8v28h-8zM12 9h20v8H12zM12 29h20v8H12z" fill="#156082"/>',
+    "Dwuteownik":         '<path d="M12 8h22v6H26v18h8v6H12v-6h8V14h-8z" fill="#156082"/>',
+    "Profil zamknięty":   '<path d="M8 12h30v22H8z" fill="#156082"/><path d="M13 17h20v12H13z" fill="#F2F6F8"/>',
+    "Sześciokąt ciągniony":'<path d="M23 7l13 8v16l-13 8-13-8V15z" fill="#156082"/>',
+    "Szyna kolejowa":     '<path d="M14 8h18v5l-5 3v14l6 4v4H13v-4l6-4V16l-5-3z" fill="#156082"/>'
+  };
+
+  var byId = function(id){ return document.getElementById(id); };
+  var uniq = function(a){ return a.filter(function(v,i){ return a.indexOf(v)===i; }).sort(); };
+  var plnFmt = new Intl.NumberFormat("pl-PL",{minimumFractionDigits:2, maximumFractionDigits:2});
+  var numFmt = new Intl.NumberFormat("pl-PL",{maximumFractionDigits:1});
+  var pln = function(v){ return plnFmt.format(v) + " zł"; };
+
+  /* ---------- rabaty progowe ---------- */
+  function discount(kg){
+    if(kg >= 10000) return {r:0.10, label:"powyżej 10 t — wycena indywidualna"};
+    if(kg >= 5000)  return {r:0.07, label:"próg 5 – 10 t"};
+    if(kg >= 2000)  return {r:0.05, label:"próg 2 – 5 t"};
+    if(kg >= 500)   return {r:0.03, label:"próg 500 – 2 000 kg"};
+    return {r:0, label:"cena bazowa"};
+  }
+
+  /* ---------- siatka kategorii ---------- */
+  (function buildCats(){
+    var host = byId("cats");
+    if(!host) return;
+    var kinds = uniq(PRODUCTS.map(function(p){ return p.kind; }));
+    host.innerHTML = kinds.map(function(k){
+      var count = PRODUCTS.filter(function(p){ return p.kind===k; }).length;
+      var grades = uniq(PRODUCTS.filter(function(p){ return p.kind===k; }).map(function(p){ return p.grade; }));
+      return '<a class="cat" href="#">' +
+        '<svg class="xsec" viewBox="0 0 46 46" aria-hidden="true"><rect width="46" height="46" fill="#F2F6F8"/>' + (KIND_ICON[k]||"") + '</svg>' +
+        '<div><b>' + k + '</b><span>' + grades.join(" · ") + '</span></div></a>';
+    }).join("");
+  })();
+
+  /* ---------- wyszukiwarka parametryczna ---------- */
+  (function finder(){
+    var form = byId("finder");
+    if(!form) return;
+    var kindSel = byId("f-kind"), gradeSel = byId("f-grade"), dimSel = byId("f-dim"), lenSel = byId("f-len");
+    var out = byId("results"), count = byId("f-count");
+
+    function fill(sel, values, allLabel){
+      var cur = sel.value;
+      sel.innerHTML = '<option value="">' + allLabel + '</option>' +
+        values.map(function(v){ return '<option value="' + v + '">' + v + '</option>'; }).join("");
+      if(values.indexOf(cur) > -1) sel.value = cur;
+    }
+
+    function pool(ignore){
+      return PRODUCTS.filter(function(p){
+        if(ignore !== "kind" && kindSel.value && p.kind !== kindSel.value) return false;
+        if(ignore !== "grade" && gradeSel.value && p.grade !== gradeSel.value) return false;
+        if(ignore !== "dim" && dimSel.value && p.dim !== dimSel.value) return false;
+        if(lenSel.value === "ciete" && !p.cut) return false;
+        return true;
+      });
+    }
+
+    function refresh(){
+      fill(kindSel, uniq(pool("kind").map(function(p){ return p.kind; })), "wszystkie");
+      fill(gradeSel, uniq(pool("grade").map(function(p){ return p.grade; })), "wszystkie");
+      fill(dimSel, uniq(pool("dim").map(function(p){ return p.dim; })), "wszystkie");
+      var n = pool().length;
+      count.textContent = n + (n === 1 ? " wyrób pasuje do wyboru." : (n < 5 ? " wyroby pasują do wyboru." : " wyrobów pasuje do wyboru."));
+      if(!out.hidden) render();
+    }
+
+    function render(){
+      var list = pool();
+      out.hidden = false;
+      if(!list.length){
+        out.innerHTML = '<p class="empty">Brak wyrobów o takim zestawie parametrów. Zmień gatunek lub wymiar — albo zapytaj opiekuna o wyrób na zamówienie.</p>';
+        return;
+      }
+      out.innerHTML = list.slice(0, 6).map(function(p){
+        var avail = p.stock > 40
+          ? '<span class="chip ok">na stanie ' + p.stock + ' szt.</span>'
+          : '<span class="chip warn">ostatnie ' + p.stock + ' szt.</span>';
+        var days = p.cut ? "3 – 5 dni rob." : "3 dni rob.";
+        return '<div class="res-row">' +
+          '<svg class="xsec" viewBox="0 0 46 46" aria-hidden="true" style="width:44px;height:44px"><rect width="46" height="46" fill="#F2F6F8"/>' + (KIND_ICON[p.kind]||"") + '</svg>' +
+          '<div><div class="res-name">' + p.kind + " " + p.dim + '</div>' +
+          '<div class="res-meta">' + p.grade + " · L=" + (p.len/1000) + " m · " + numFmt.format(p.kgm) + " kg/m · indeks " + p.id + '</div></div>' +
+          avail +
+          '<span class="chip ok">' + days + '</span>' +
+          '<div class="res-price">' + pln(p.pln * p.kgm) + '<small>za mb · ' + pln(p.pln) + '/kg</small></div>' +
+          '</div>';
+      }).join("") + (list.length > 6 ? '<p class="empty">…oraz ' + (list.length - 6) + ' dalszych pozycji w katalogu.</p>' : "");
+    }
+
+    [kindSel, gradeSel, dimSel, lenSel].forEach(function(s){ s.addEventListener("change", refresh); });
+    form.addEventListener("submit", function(e){ e.preventDefault(); render(); });
+    refresh();
+  })();
+
+  /* ---------- konfigurator cięcia ---------- */
+  (function cutter(){
+    var stock = byId("c-stock"), target = byId("c-target"), bar = byId("c-bar"), out = byId("c-readout");
+    var dimL = byId("c-dim-l"), dimR = byId("c-dim-r");
+    if(!stock) return;
+    var KERF = 3; // ubytek na rzaz piły, mm
+
+    function draw(){
+      var L = parseInt(stock.value, 10);
+      var t = Math.max(100, Math.min(L, parseInt(target.value, 10) || 100));
+      var n = Math.floor(L / (t + KERF));
+      if(n < 1) n = 1;
+      var used = n * t + (n - 1) * KERF;
+      var waste = Math.max(0, L - used);
+      var yieldPct = (n * t) / L * 100;
+
+      var html = "";
+      for(var i = 0; i < n; i++){
+        html += '<div class="piece" style="width:' + ((t / L) * 100) + '%">' + (t >= 700 ? t + " mm" : "") + '</div>';
+      }
+      if(waste > 0){
+        html += '<div class="piece waste" style="width:' + ((waste / L) * 100) + '%">' + (waste >= 700 ? "odpad " + waste + " mm" : "") + '</div>';
+      }
+      bar.innerHTML = html;
+      dimL.textContent = "0";
+      dimR.textContent = L + " mm — wyrób handlowy";
+
+      out.innerHTML =
+        '<div><dt>Odcinków ze sztuki</dt><dd>' + n + ' szt.</dd></div>' +
+        '<div class="' + (waste > t * 0.5 ? "alert" : "") + '"><dt>Odpad</dt><dd>' + waste + ' mm</dd></div>' +
+        '<div><dt>Wykorzystanie materiału</dt><dd>' + numFmt.format(yieldPct) + ' %</dd></div>';
+    }
+
+    stock.addEventListener("change", draw);
+    target.addEventListener("input", draw);
+    draw();
+  })();
+
+  /* ---------- kalkulator masy i ceny ---------- */
+  (function calc(){
+    var sel = byId("k-prod"), qty = byId("k-qty"), out = byId("k-readout");
+    if(!sel) return;
+    sel.innerHTML = PRODUCTS.map(function(p, i){
+      return '<option value="' + i + '">' + p.kind + " " + p.dim + " " + p.grade + '</option>';
+    }).join("");
+    sel.value = "4";
+
+    function draw(){
+      var p = PRODUCTS[parseInt(sel.value, 10)] || PRODUCTS[0];
+      var n = Math.max(1, parseInt(qty.value, 10) || 1);
+      var meters = n * (p.len / 1000);
+      var kg = meters * p.kgm;
+      var base = kg * p.pln;
+      var d = discount(kg);
+      var net = base * (1 - d.r);
+
+      out.innerHTML =
+        '<div><dt>Masa zamówienia</dt><dd>' + numFmt.format(kg) + ' kg</dd></div>' +
+        '<div><dt>Metry bieżące</dt><dd>' + numFmt.format(meters) + ' mb</dd></div>' +
+        '<div><dt>Wartość netto</dt><dd>' + pln(net) + '</dd></div>' +
+        '<div style="grid-column:1/-1' + (d.r ? "" : "") + '"><dt>Rabat progowy</dt><dd>' +
+          (d.r ? "−" + Math.round(d.r * 100) + "% · " + d.label : d.label) + '</dd></div>';
+    }
+
+    sel.addEventListener("change", draw);
+    qty.addEventListener("input", draw);
+    draw();
+  })();
+
+  /* ---------- szybkie zamówienie ---------- */
+  (function quick(){
+    var input = byId("q-input"), run = byId("q-run"), out = byId("q-out");
+    if(!input) return;
+
+    function find(key){
+      key = key.trim().toLowerCase();
+      for(var i = 0; i < PRODUCTS.length; i++){
+        var p = PRODUCTS[i];
+        if(p.id.toLowerCase() === key) return p;
+        if((p.kind + " " + p.dim).toLowerCase() === key) return p;
+      }
+      return null;
+    }
+
+    function draw(){
+      var lines = input.value.split("\n").map(function(l){ return l.trim(); }).filter(Boolean);
+      var rows = '<div class="qrow head"><span>Pozycja</span><span>Masa / wartość</span></div>';
+      var totalKg = 0, totalPln = 0, unknown = 0;
+
+      lines.forEach(function(line){
+        var parts = line.split(";");
+        var p = find(parts[0] || "");
+        var n = Math.max(1, parseInt(parts[1], 10) || 1);
+        if(!p){
+          unknown++;
+          rows += '<div class="qrow"><span style="color:#B91C1C">' + (parts[0] || "—") + ' — nie rozpoznano</span><span class="qval">do wyjaśnienia</span></div>';
+          return;
+        }
+        var kg = n * (p.len / 1000) * p.kgm;
+        var val = kg * p.pln;
+        totalKg += kg; totalPln += val;
+        rows += '<div class="qrow"><span>' + p.kind + " " + p.dim + " " + p.grade + ' · ' + n + ' szt.</span>' +
+                '<span class="qval">' + numFmt.format(kg) + ' kg · ' + pln(val) + '</span></div>';
+      });
+
+      var d = discount(totalKg);
+      var net = totalPln * (1 - d.r);
+      rows += '<div class="qrow"><span>Rabat progowy — ' + d.label + '</span><span class="qval">' + (d.r ? "−" + pln(totalPln - net) : "—") + '</span></div>';
+      rows += '<div class="qrow total"><span>Razem ' + numFmt.format(totalKg) + ' kg</span><span class="qval">' + pln(net) + ' netto</span></div>';
+      if(unknown){
+        rows += '<div class="qrow"><span style="color:#B45309">' + unknown + ' pozycji trafia do opiekuna — reszta zamówienia idzie dalej.</span><span></span></div>';
+      }
+      out.innerHTML = rows;
+    }
+
+    run.addEventListener("click", draw);
+    draw();
+  })();
+})();
+</script>
+</body>
+</html>
