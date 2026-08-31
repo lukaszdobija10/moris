@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rejestracja moris.eu — prototyp</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* =========================================================================
+   Moris — prototyp ekranu rejestracji
+   Paleta i typografia wg księgi znaku Moris (granat 156082, Arial).
+   JetBrains Mono wyłącznie do danych technicznych (NIP, kody, liczby).
+   ========================================================================= */
+:root{
+  --navy:#156082; --navy-deep:#0E4258; --navy-ink:#0A2E3E;
+  --ink:#12202B; --muted:#5B7385;
+  --paper:#FFFFFF; --paper-2:#F2F6F8; --paper-3:#D9E5EC;
+  --line:#CBD5E1; --line-soft:#E3EBF0;
+  --ok:#15803D; --ok-bg:#E6F4EA; --warn:#B45309; --warn-bg:#FDF2E3;
+  --stop:#B91C1C; --stop-bg:#FDECEC;
+  --accent:#F35E07;
+  --wrap:1180px;
+  --mono:"JetBrains Mono", ui-monospace, "Courier New", monospace;
+  --sans:Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper-2);color:var(--ink);font:16px/1.55 var(--sans)}
+h1,h2,h3{margin:0;text-wrap:balance}
+p{margin:0}
+a{color:var(--navy)}
+button,input,select{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--navy);outline-offset:2px}
+.wrap{max-width:var(--wrap);margin-inline:auto;padding-inline:24px}
+.num{font-family:var(--mono);font-variant-numeric:tabular-nums}
+
+/* ---------- pasek prototypu ---------- */
+.proto{background:var(--navy-ink);color:#fff;padding:10px 0;font-size:13px}
+.proto .wrap{display:flex;gap:16px;align-items:center;flex-wrap:wrap}
+.proto strong{font-weight:700}
+.proto span{color:var(--paper-3)}
+.proto button{margin-left:auto;background:var(--accent);color:#fff;border:0;
+  padding:7px 14px;border-radius:3px;font-weight:700;font-size:13px;cursor:pointer}
+.proto button[aria-pressed="true"]{background:#fff;color:var(--navy-ink)}
+
+/* ---------- nagłówek serwisu ---------- */
+.site{background:#fff;border-bottom:1px solid var(--line-soft)}
+.site .wrap{display:flex;align-items:center;gap:28px;height:68px}
+.logo{font:700 24px/1 var(--sans);letter-spacing:-.02em;color:var(--navy-ink);
+  text-decoration:none;display:flex;align-items:center;gap:8px}
+.logo i{width:26px;height:16px;background:var(--navy-ink);
+  clip-path:polygon(0 100%,42% 0,58% 42%,100% 0,100% 26%,58% 100%,42% 58%);font-style:normal}
+.site nav{display:flex;gap:22px;font-size:14.5px}
+.site nav a{color:var(--ink);text-decoration:none}
+.site nav a:hover{color:var(--navy)}
+.site .right{margin-left:auto;display:flex;align-items:center;gap:14px;font-size:14px}
+.btn-ghost{color:var(--navy);text-decoration:none;font-weight:700}
+@media(max-width:780px){
+  .site .wrap{gap:14px;height:60px}
+  .site nav{display:none}          /* na wąskim ekranie nawigacja chowa się pod menu */
+  .logo{font-size:21px}
+}
+
+/* ---------- układ strony ---------- */
+main{padding:34px 0 64px}
+.crumbs{font-size:13px;color:var(--muted);margin-bottom:10px}
+.crumbs a{color:var(--muted);text-decoration:none}
+.page-h{font-size:32px;line-height:1.14;color:var(--navy-deep);letter-spacing:-.02em;margin-bottom:6px}
+.page-sub{color:var(--muted);font-size:15.5px;max-width:62ch;margin-bottom:26px}
+.cols{display:grid;grid-template-columns:minmax(0,1fr) 328px;gap:28px;align-items:start}
+@media(max-width:980px){.cols{grid-template-columns:1fr}}
+
+/* ---------- karta formularza ---------- */
+.card{background:#fff;border:1px solid var(--line-soft);border-radius:4px;
+  padding:0;position:relative}
+.card-pad{padding:26px 30px}
+@media(max-width:560px){.card-pad{padding:20px 18px}}
+
+/* ---------- kroki ---------- */
+.steps{display:flex;border-bottom:1px solid var(--line-soft);background:var(--paper-2);
+  border-radius:4px 4px 0 0;overflow:hidden}
+.steps li{list-style:none;flex:1;display:flex;align-items:center;gap:10px;
+  padding:14px 16px;font-size:13.5px;color:var(--muted);position:relative}
+.steps li+li::before{content:"";position:absolute;left:0;top:12px;bottom:12px;width:1px;background:var(--line-soft)}
+.steps b{width:24px;height:24px;border-radius:50%;background:var(--paper-3);color:var(--navy-deep);
+  display:grid;place-items:center;font:700 12px/1 var(--mono);flex:none}
+.steps li[data-state="on"]{color:var(--navy-deep);font-weight:700;background:#fff}
+.steps li[data-state="on"] b{background:var(--navy);color:#fff}
+.steps li[data-state="done"] b{background:var(--ok);color:#fff}
+.steps li[data-state="done"]{color:var(--ink)}
+@media(max-width:640px){.steps li span{display:none}.steps li{justify-content:center;padding:12px 8px}}
+
+/* ---------- pola ---------- */
+.field{margin-bottom:18px}
+.field:last-child{margin-bottom:0}
+label.lab{display:block;font-size:13.5px;font-weight:700;color:var(--navy-deep);margin-bottom:6px}
+label.lab em{font-style:normal;color:var(--muted);font-weight:400}
+.hint{font-size:13px;color:var(--muted);margin-top:6px}
+.inp{width:100%;padding:12px 13px;border:1px solid var(--line);border-radius:3px;
+  background:#fff;transition:border-color .12s,box-shadow .12s}
+.inp::placeholder{color:#8FA3B0}
+.inp:focus{border-color:var(--navy);box-shadow:0 0 0 3px rgba(21,96,130,.12);outline:none}
+.inp[data-ok="1"]{border-color:var(--ok)}
+.inp[data-err="1"]{border-color:var(--stop);background:var(--stop-bg)}
+.err{display:none;font-size:13px;color:var(--stop);margin-top:6px;font-weight:700}
+.err[data-on="1"]{display:block}
+.row{display:grid;grid-template-columns:190px minmax(0,1fr) auto;gap:10px;align-items:start}
+@media(max-width:640px){.row{grid-template-columns:1fr}}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:560px){.two{grid-template-columns:1fr}}
+
+/* ---------- przyciski ---------- */
+.btn{border:0;border-radius:3px;padding:12px 22px;font-weight:700;cursor:pointer;
+  background:var(--navy);color:#fff;transition:background .12s}
+.btn:hover{background:var(--navy-deep)}
+.btn[disabled]{background:var(--paper-3);color:#8FA3B0;cursor:not-allowed}
+.btn-lg{padding:14px 28px;font-size:16px}
+.btn-line{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.btn-line:hover{background:var(--paper-2)}
+.linkish{background:none;border:0;color:var(--muted);text-decoration:underline;
+  cursor:pointer;font-size:14px;padding:0}
+.actions{display:flex;align-items:center;gap:18px;margin-top:26px;flex-wrap:wrap}
+.actions .grow{margin-left:auto}
+
+/* ---------- combobox kraju ---------- */
+.combo{position:relative}
+.combo-list{position:absolute;z-index:30;left:0;right:0;top:calc(100% + 4px);
+  background:#fff;border:1px solid var(--line);border-radius:3px;max-height:236px;
+  overflow:auto;box-shadow:0 12px 28px rgba(10,46,62,.14);display:none}
+.combo-list[data-open="1"]{display:block}
+.combo-list li{list-style:none;padding:9px 13px;font-size:14.5px;cursor:pointer;
+  display:flex;justify-content:space-between;gap:12px}
+.combo-list li:hover,.combo-list li[data-hi="1"]{background:var(--paper-2)}
+.combo-list li b{font:700 12px/1.4 var(--mono);color:var(--muted)}
+.combo-list li[data-top="1"]{border-bottom:1px solid var(--line-soft);font-weight:700}
+.combo-empty{padding:12px 13px;font-size:14px;color:var(--muted)}
+
+/* ---------- wynik weryfikacji ---------- */
+.found{border:1px solid var(--ok);background:var(--ok-bg);border-radius:3px;padding:16px 18px;margin-bottom:18px}
+.found h3{font-size:15px;color:var(--ok);display:flex;align-items:center;gap:8px;margin-bottom:10px}
+.found h3 i{width:18px;height:18px;border-radius:50%;background:var(--ok);color:#fff;
+  display:grid;place-items:center;font:700 11px/1 var(--sans);font-style:normal;flex:none}
+.found dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:4px 14px;font-size:14.5px}
+.found dt{color:var(--muted)}
+.found dd{margin:0;font-weight:700;color:var(--ink)}
+.found .foot{margin-top:12px;display:flex;gap:16px;flex-wrap:wrap;font-size:13.5px}
+
+/* ---------- hasło ---------- */
+.pw{position:relative}
+.pw .peek{position:absolute;right:6px;top:6px;background:none;border:0;cursor:pointer;
+  padding:6px 10px;font-size:13px;font-weight:700;color:var(--navy)}
+.rules{margin:10px 0 0;padding:0;display:grid;gap:5px}
+.rules li{list-style:none;font-size:13px;color:var(--muted);display:flex;align-items:center;gap:8px}
+.rules li i{width:15px;height:15px;border-radius:50%;border:1.5px solid var(--line);
+  display:grid;place-items:center;font-style:normal;font-size:10px;flex:none}
+.rules li[data-ok="1"]{color:var(--ok)}
+.rules li[data-ok="1"] i{background:var(--ok);border-color:var(--ok);color:#fff}
+.meter{height:4px;border-radius:2px;background:var(--paper-3);margin-top:10px;overflow:hidden}
+.meter i{display:block;height:100%;width:0;background:var(--stop);transition:width .2s,background .2s}
+
+/* ---------- zgody ---------- */
+.consents{border-top:1px solid var(--line-soft);margin-top:24px;padding-top:22px}
+.consents h3{font-size:15px;color:var(--navy-deep);margin-bottom:4px}
+.cgroup{margin-top:16px}
+.cgroup>p{font-size:12.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);margin-bottom:9px}
+.chk{display:flex;gap:11px;align-items:flex-start;padding:11px 12px;border:1px solid var(--line-soft);
+  border-radius:3px;margin-bottom:8px;background:#fff;cursor:pointer}
+.chk:hover{background:var(--paper-2)}
+.chk input{margin:2px 0 0;width:17px;height:17px;flex:none;accent-color:var(--navy)}
+.chk .txt{font-size:14px;line-height:1.5}
+.chk .txt b{display:block;margin-bottom:2px}
+.chk .more{display:none;margin-top:6px;color:var(--muted);font-size:13.5px}
+.chk[data-open="1"] .more{display:block}
+.chk .toggle{background:none;border:0;color:var(--navy);font-size:13px;font-weight:700;
+  cursor:pointer;padding:4px 0 0;text-decoration:underline}
+.req{color:var(--stop);font-weight:700}
+
+/* ---------- panel boczny ---------- */
+.aside{position:sticky;top:20px;display:grid;gap:16px}
+@media(max-width:980px){.aside{position:static}}
+.box{background:#fff;border:1px solid var(--line-soft);border-radius:4px;padding:20px}
+.box h3{font-size:15px;color:var(--navy-deep);margin-bottom:12px}
+.box ul{margin:0;padding:0;display:grid;gap:10px}
+.box li{list-style:none;display:flex;gap:10px;font-size:14px;line-height:1.5}
+.box li i{color:var(--ok);font-style:normal;font-weight:700;flex:none}
+.box.dark{background:var(--navy-deep);border-color:var(--navy-deep);color:#fff}
+.box.dark h3{color:#fff}
+.box.dark li{color:var(--paper-3)}
+.box.dark li i{color:var(--accent)}
+.box.dark a{color:#fff}
+.timeline{margin:0;padding:0;display:grid;gap:0}
+.timeline li{list-style:none;display:grid;grid-template-columns:26px 1fr;gap:12px;
+  padding-bottom:14px;position:relative}
+.timeline li:last-child{padding-bottom:0}
+.timeline li::before{content:"";position:absolute;left:12px;top:24px;bottom:0;width:1px;background:var(--line-soft)}
+.timeline li:last-child::before{display:none}
+.timeline b{width:25px;height:25px;border-radius:50%;background:var(--paper-2);
+  border:1px solid var(--line-soft);color:var(--navy-deep);display:grid;place-items:center;
+  font:700 11px/1 var(--mono)}
+.timeline .t{font-size:14px;line-height:1.45}
+.timeline .t em{display:block;font-style:normal;color:var(--muted);font-size:13px;margin-top:2px}
+
+/* ---------- ekran końcowy ---------- */
+.done{text-align:center;padding:44px 30px}
+.done .tick{width:56px;height:56px;border-radius:50%;background:var(--ok);color:#fff;
+  display:grid;place-items:center;font-size:26px;margin:0 auto 18px}
+.done h2{font-size:24px;color:var(--navy-deep);margin-bottom:10px}
+.done p{color:var(--muted);max-width:52ch;margin:0 auto 8px}
+
+/* ---------- uwagi UX ---------- */
+.note{position:absolute;z-index:20;width:24px;height:24px;border-radius:50%;
+  background:var(--accent);color:#fff;font:700 12px/24px var(--sans);text-align:center;
+  cursor:help;display:none;box-shadow:0 2px 8px rgba(0,0,0,.2)}
+body.notes-on .note{display:block}
+.note-anchor{position:relative}
+.notes-panel{display:none;margin-top:28px;background:#fff;border:1px solid var(--line-soft);
+  border-left:4px solid var(--accent);border-radius:4px;padding:24px 28px}
+body.notes-on .notes-panel{display:block}
+.notes-panel h2{font-size:19px;color:var(--navy-deep);margin-bottom:6px}
+.notes-panel>p{color:var(--muted);font-size:14.5px;margin-bottom:18px}
+.notes-panel ol{margin:0;padding-left:0;counter-reset:n;display:grid;gap:14px}
+.notes-panel li{list-style:none;display:grid;grid-template-columns:26px 1fr;gap:12px;font-size:14.5px;line-height:1.55}
+.notes-panel li b{width:24px;height:24px;border-radius:50%;background:var(--accent);color:#fff;
+  display:grid;place-items:center;font:700 12px/1 var(--sans)}
+.notes-panel li strong{color:var(--navy-deep)}
+.hide{display:none!important}
+</style>
+</head>
+<body>
+
+<div class="proto"><div class="wrap">
+  <strong>Prototyp</strong>
+  <span>Przebudowany ekran rejestracji moris.eu — działający, bez backendu. Weryfikacja NIP sprawdza sumę kontrolną lokalnie.</span>
+  <button id="notesBtn" aria-pressed="false">Pokaż uwagi UX</button>
+</div></div>
+
+<header class="site"><div class="wrap">
+  <a class="logo" href="#"><span>Moris</span><i></i></a>
+  <nav><a href="#">eCommerce</a><a href="#">Stal</a><a href="#">Kolej</a><a href="#">Moris</a><a href="#">Kontakt</a></nav>
+  <div class="right"><a class="btn-ghost" href="#">Zaloguj się</a></div>
+</div></header>
+
+<main><div class="wrap">
+  <p class="crumbs"><a href="#">Strona główna</a> › Rejestracja</p>
+  <h1 class="page-h">Załóż konto firmowe</h1>
+  <p class="page-sub">Trzy kroki, około dwóch minut. Po rejestracji zobaczysz ceny w swoich
+    warunkach, stany magazynowe i koszt dostawy policzony dla Twojego adresu.</p>
+
+  <div class="cols">
+    <!-- ================= FORMULARZ ================= -->
+    <div>
+    <section class="card note-anchor">
+      <span class="note" style="top:-10px;left:-10px" title="Wskaźnik postępu">1</span>
+      <ol class="steps" id="steps">
+        <li data-state="on"><b>1</b> <span>Firma</span></li>
+        <li><b>2</b> <span>Dane kontaktowe</span></li>
+        <li><b>3</b> <span>Zgody formalne</span></li>
+      </ol>
+
+      <!-- ---------- KROK 1 ---------- -->
+      <div class="card-pad" id="s1">
+        <div class="field note-anchor">
+          <span class="note" style="top:-6px;right:-16px" title="Kraj domyślnie ustawiony, lista sortowana po polsku, z wyszukiwaniem">2</span>
+          <label class="lab" for="nip">Numer NIP <em>— znajdziemy dane Twojej firmy</em></label>
+          <div class="row">
+            <div class="combo">
+              <input class="inp" id="country" value="Polska" autocomplete="off"
+                     aria-expanded="false" aria-controls="clist" role="combobox">
+              <ul class="combo-list" id="clist" role="listbox"></ul>
+            </div>
+            <div>
+              <input class="inp num" id="nip" inputmode="numeric" autocomplete="organization-tax-id"
+                     placeholder="1234567890" maxlength="13" aria-describedby="nipHint">
+            </div>
+            <button class="btn" id="checkBtn" type="button">Sprawdź</button>
+          </div>
+          <p class="hint" id="nipHint">Dziesięć cyfr, bez prefiksu <span class="num">PL</span>,
+             spacji i myślników. Sprawdzamy w rejestrze — nie musisz przepisywać adresu.</p>
+          <p class="err" id="nipErr"></p>
+        </div>
+        <div class="actions">
+          <button class="linkish" type="button" id="noNipBtn">Nie mam numeru NIP</button>
+        </div>
+        <div id="noNipBox" class="hide" style="margin-top:14px">
+          <div class="box" style="border-color:var(--line)">
+            <h3>Kupujesz jako osoba prywatna?</h3>
+            <p style="font-size:14px;color:var(--muted);margin-bottom:12px">
+              Konta dla klientów indywidualnych uruchamiamy w <b>[TERMIN — do uzupełnienia]</b>.
+              Zostaw adres, powiadomimy Cię w dniu startu. Nie wyślemy nic innego.</p>
+            <div class="two">
+              <input class="inp" type="email" placeholder="jan.kowalski@example.com" aria-label="Adres e-mail">
+              <button class="btn btn-line" type="button">Powiadom mnie</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ---------- KROK 2 ---------- -->
+      <div class="card-pad hide" id="s2">
+        <div class="found note-anchor" id="found">
+          <span class="note" style="top:-10px;right:-10px" title="Jawne potwierdzenie sukcesu + możliwość poprawki">3</span>
+          <h3><i>✓</i> Znaleźliśmy Twoją firmę w rejestrze</h3>
+          <dl>
+            <dt>Nazwa</dt><dd id="fName">—</dd>
+            <dt>Adres</dt><dd id="fAddr">—</dd>
+            <dt>NIP</dt><dd class="num" id="fNip">—</dd>
+          </dl>
+          <div class="foot">
+            <button class="linkish" type="button" id="editAddr">Adres dostawy jest inny — popraw</button>
+            <button class="linkish" type="button" id="notMine">To nie moja firma</button>
+          </div>
+        </div>
+
+        <div id="addrEdit" class="hide" style="margin-bottom:18px">
+          <div class="field"><label class="lab" for="aStreet">Ulica i numer</label>
+            <input class="inp" id="aStreet" autocomplete="address-line1"></div>
+          <div class="two">
+            <div class="field"><label class="lab" for="aZip">Kod pocztowy</label>
+              <input class="inp num" id="aZip" autocomplete="postal-code" placeholder="00-000"></div>
+            <div class="field"><label class="lab" for="aCity">Miejscowość</label>
+              <input class="inp" id="aCity" autocomplete="address-level2"></div>
+          </div>
+        </div>
+
+        <div class="two">
+          <div class="field"><label class="lab" for="fn">Imię</label>
+            <input class="inp" id="fn" autocomplete="given-name"></div>
+          <div class="field"><label class="lab" for="ln">Nazwisko</label>
+            <input class="inp" id="ln" autocomplete="family-name"></div>
+        </div>
+        <div class="two">
+          <div class="field"><label class="lab" for="tel">Telefon</label>
+            <input class="inp num" id="tel" type="tel" autocomplete="tel" placeholder="+48 600 000 000">
+            <p class="hint">Dzwonimy tylko w sprawie konkretnego zamówienia.</p></div>
+          <div class="field"><label class="lab" for="mail">Adres e-mail</label>
+            <input class="inp" id="mail" type="email" autocomplete="email" placeholder="jan.kowalski@firma.pl">
+            <p class="hint">Na ten adres wyślemy potwierdzenia zamówień i faktury.</p></div>
+        </div>
+
+        <div class="field note-anchor">
+          <span class="note" style="top:-6px;right:-16px" title="Hasło: żywa lista reguł, podgląd, bez powtarzania">4</span>
+          <label class="lab" for="pw">Hasło</label>
+          <div class="pw">
+            <input class="inp" id="pw" type="password" autocomplete="new-password" style="padding-right:78px">
+            <button class="peek" type="button" id="peek" aria-pressed="false">Pokaż</button>
+          </div>
+          <div class="meter"><i id="meterBar"></i></div>
+          <ul class="rules" id="rules">
+            <li data-r="len"><i>✓</i> co najmniej 10 znaków</li>
+            <li data-r="mix"><i>✓</i> mała i wielka litera</li>
+            <li data-r="dig"><i>✓</i> co najmniej jedna cyfra</li>
+          </ul>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-line" type="button" data-back="1">Wstecz</button>
+          <button class="btn grow" type="button" id="toS3">Dalej</button>
+        </div>
+      </div>
+
+      <!-- ---------- KROK 3 ---------- -->
+      <div class="card-pad hide" id="s3">
+        <div class="consents note-anchor" style="border-top:0;margin-top:0;padding-top:0">
+          <span class="note" style="top:-10px;right:-10px" title="Zgody rozdzielone: wymagane osobno od dobrowolnych">5</span>
+          <h3>Zgody formalne</h3>
+          <p style="font-size:14px;color:var(--muted)">Dwie pierwsze są konieczne, żeby założyć konto.
+             Trzeciej nie musisz zaznaczać — nic przez to nie tracisz.</p>
+
+          <div class="cgroup">
+            <p>Wymagane <span class="req">*</span></p>
+            <label class="chk"><input type="checkbox" data-req="1">
+              <span class="txt"><b>Akceptuję Ogólne Warunki Handlowe</b>
+                <a href="#">Przeczytaj OWH</a></span></label>
+            <label class="chk"><input type="checkbox" data-req="1">
+              <span class="txt"><b>Potwierdzam zapoznanie się z Polityką Prywatności</b>
+                <a href="#">Przeczytaj politykę</a></span></label>
+          </div>
+
+          <div class="cgroup">
+            <p>Dobrowolne</p>
+            <label class="chk" id="cOpt"><input type="checkbox">
+              <span class="txt"><b>Chcę dostawać informacje o promocjach i nowościach</b>
+                Maksymalnie dwie wiadomości w miesiącu. Wypisujesz się jednym kliknięciem.
+                <span class="more">Administratorem danych jest Moris sp. z o.o., ul. Wiejska 27,
+                  41-503 Chorzów. Dane przetwarzamy w celu wysyłki informacji handlowych
+                  na podstawie Twojej zgody. Zgodę możesz wycofać w każdej chwili.</span>
+                <button class="toggle" type="button" data-more="1">Pełna treść zgody</button>
+              </span></label>
+          </div>
+        </div>
+
+        <div class="actions">
+          <button class="btn btn-line" type="button" data-back="2">Wstecz</button>
+          <button class="btn btn-lg grow" type="button" id="submitBtn" disabled>Załóż konto</button>
+        </div>
+        <p class="hint" style="margin-top:12px">Konto jest aktywne od razu.
+           Ceny w Twoich warunkach handlowych przypisujemy w ciągu
+           <b>[X godzin roboczych — do uzupełnienia]</b>.</p>
+      </div>
+
+      <!-- ---------- EKRAN KOŃCOWY ---------- -->
+      <div class="done hide" id="s4">
+        <div class="tick">✓</div>
+        <h2>Konto założone</h2>
+        <p>Wysłaliśmy potwierdzenie na Twój adres e-mail. Możesz już przeglądać katalog
+           i składać zamówienia.</p>
+        <p style="margin-top:14px"><b>Jesteś naszym dotychczasowym klientem?</b><br>
+           Twoje ustalone ceny, terminy płatności i warunki transportu przypisujemy do konta
+           automatycznie — zobaczysz je po zalogowaniu.</p>
+        <div class="actions" style="justify-content:center">
+          <button class="btn btn-lg" type="button">Przejdź do katalogu</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ---------- panel uwag ---------- -->
+    <div class="notes-panel">
+      <h2>Uwagi UX — co zmieniono i dlaczego</h2>
+      <p>Numery odpowiadają znacznikom przypiętym do elementów powyżej.
+         Pełna lista usterek obecnego ekranu: <code>ANALIZA-REJESTRACJA.md</code>.</p>
+      <ol>
+        <li><b>1</b><span><strong>Wskaźnik postępu.</strong> Obecny formularz nie mówi,
+          ile zostało. Po weryfikacji NIP użytkownik dostaje naraz pięć pól i trzy zgody —
+          wygląda to na dłuższe niż jest. Trzy nazwane kroki zdejmują tę niepewność
+          i dają miejsce na oddech między firmą a hasłem.</span></li>
+        <li><b>2</b><span><strong>Kraj i NIP.</strong> Obecna lista jest posortowana po kodzie
+          ISO przy polskich nazwach (Bułgaria, Belgia, Czechy, Niemcy, Dania…), więc alfabetycznie
+          nie działa, a Polski nie ma na górze mimo że to główny rynek. Tu: Polska ustawiona
+          domyślnie, lista sortowana po polsku, wpisanie kilku liter filtruje.
+          Instrukcja formatu NIP widoczna od razu, nie dopiero po błędzie.</span></li>
+        <li><b>3</b><span><strong>Potwierdzenie sukcesu.</strong> Obecnie dane firmy pojawiają się
+          bez żadnego sygnału, że weryfikacja się powiodła, i bez możliwości poprawki.
+          Tu: jawne potwierdzenie, plus dwa wyjścia — inny adres dostawy i „to nie moja firma”.
+          Bez nich każdy przypadek nieaktualnych danych w rejestrze kończy się porzuceniem
+          albo telefonem do BOK.</span></li>
+        <li><b>4</b><span><strong>Hasło.</strong> Obecny wymóg — minimum 6 znaków, w tym wielka
+          litera, cyfra i symbol — jest jednocześnie za słaby i za uciążliwy. Wymuszony znak
+          specjalny to jedna z najczęstszych przyczyn porzucenia rejestracji, a NIST odradza
+          wymuszanie klas znaków od 2017 r. Tu: 10 znaków, litery i cyfra, reguły odhaczane
+          na żywo, podgląd hasła — i przez to bez pola „powtórz hasło”.</span></li>
+        <li><b>5</b><span><strong>Zgody.</strong> Obecnie trzy zgody stoją w jednym bloku pod
+          wspólnym „Zaznacz wszystkie”, dwie są ucięte w połowie zdania, żadna nie jest oznaczona
+          jako wymagana lub dobrowolna. Łączenie zgody marketingowej z akceptacją OWH pod jednym
+          przełącznikiem podważa dobrowolność zgody. Tu: dwie grupy, jawne oznaczenie,
+          pełna treść rozwijana w miejscu.</span></li>
+      </ol>
+    </div>
+    </div>
+
+    <!-- ================= PANEL BOCZNY ================= -->
+    <aside class="aside">
+      <div class="box note-anchor">
+        <span class="note" style="top:-10px;left:-10px" title="Uzasadnienie wartości na ekranie rejestracji">6</span>
+        <h3>Co dostajesz po rejestracji</h3>
+        <ul>
+          <li><i>✓</i> Ceny w Twoich warunkach handlowych, nie katalogowe</li>
+          <li><i>✓</i> Stan magazynowy przy każdym z ok. 4 000 indeksów</li>
+          <li><i>✓</i> Koszt dostawy policzony dla Twojego adresu</li>
+          <li><i>✓</i> Cięcie na wymiar zamawiane razem z wyrobem</li>
+          <li><i>✓</i> Historia zamówień — również tych z Działu Handlowego</li>
+        </ul>
+      </div>
+      <div class="box">
+        <h3>Co się stanie dalej</h3>
+        <ol class="timeline">
+          <li><b>1</b><span class="t">Zakładasz konto<em>teraz, około 2 minut</em></span></li>
+          <li><b>2</b><span class="t">Dostajesz e-mail potwierdzający<em>natychmiast</em></span></li>
+          <li><b>3</b><span class="t">Przypisujemy Twoje warunki handlowe<em>[X godzin roboczych — do uzupełnienia]</em></span></li>
+          <li><b>4</b><span class="t">Zamawiasz<em>z ceną i terminem widocznymi od razu</em></span></li>
+        </ol>
+      </div>
+      <div class="box dark">
+        <h3>Potrzebujesz pomocy?</h3>
+        <ul>
+          <li><i>›</i> <a href="mailto:info@moris.eu">info@moris.eu</a></li>
+          <li><i>›</i> <a href="tel:+48324163699">+48 32 416 36 99</a></li>
+        </ul>
+        <p style="font-size:13px;color:var(--paper-3);margin-top:12px">
+          Dział Obsługi Klienta, pn–pt 8:00–16:00.</p>
+      </div>
+    </aside>
+  </div>
+</div></main>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- lista krajów: nazwy polskie, sortowanie po polsku ---------- */
+var COUNTRIES=[
+ {n:"Austria",c:"AT"},{n:"Belgia",c:"BE"},{n:"Bułgaria",c:"BG"},{n:"Chorwacja",c:"HR"},
+ {n:"Cypr",c:"CY"},{n:"Czechy",c:"CZ"},{n:"Dania",c:"DK"},{n:"Estonia",c:"EE"},
+ {n:"Finlandia",c:"FI"},{n:"Francja",c:"FR"},{n:"Grecja",c:"GR"},{n:"Hiszpania",c:"ES"},
+ {n:"Holandia",c:"NL"},{n:"Irlandia",c:"IE"},{n:"Litwa",c:"LT"},{n:"Luksemburg",c:"LU"},
+ {n:"Łotwa",c:"LV"},{n:"Malta",c:"MT"},{n:"Niemcy",c:"DE"},{n:"Polska",c:"PL"},
+ {n:"Portugalia",c:"PT"},{n:"Rumunia",c:"RO"},{n:"Słowacja",c:"SK"},{n:"Słowenia",c:"SI"},
+ {n:"Szwecja",c:"SE"},{n:"Węgry",c:"HU"},{n:"Włochy",c:"IT"}
+];
+var coll=new Intl.Collator("pl");
+COUNTRIES.sort(function(a,b){return coll.compare(a.n,b.n);});
+
+var $=function(s){return document.querySelector(s);};
+var country=$("#country"), clist=$("#clist"), hi=-1, shown=[];
+
+function renderList(q){
+  q=(q||"").trim().toLowerCase();
+  var base=COUNTRIES.filter(function(x){return x.n.toLowerCase().indexOf(q)===0||x.c.toLowerCase()===q;});
+  if(!base.length) base=COUNTRIES.filter(function(x){return x.n.toLowerCase().indexOf(q)>-1;});
+  // Polska zawsze pierwsza przy pustym zapytaniu — to główny rynek
+  if(!q){
+    base=base.slice();
+    var i=base.findIndex(function(x){return x.c==="PL";});
+    if(i>0) base.unshift(base.splice(i,1)[0]);
+  }
+  shown=base; hi=-1;
+  clist.innerHTML = base.length
+    ? base.map(function(x,k){
+        return '<li role="option" data-c="'+x.c+'"'+(!q&&k===0?' data-top="1"':'')+'>'+
+               '<span>'+x.n+'</span><b>'+x.c+'</b></li>';}).join("")
+    : '<div class="combo-empty">Brak kraju o takiej nazwie. Napisz do nas: info@moris.eu</div>';
+}
+function openList(o){
+  clist.setAttribute("data-open",o?"1":"0");
+  country.setAttribute("aria-expanded",o?"true":"false");
+}
+country.addEventListener("focus",function(){renderList("");openList(true);country.select();});
+country.addEventListener("input",function(){renderList(country.value);openList(true);});
+country.addEventListener("keydown",function(e){
+  if(!shown.length) return;
+  if(e.key==="ArrowDown"||e.key==="ArrowUp"){
+    e.preventDefault(); hi+= (e.key==="ArrowDown"?1:-1);
+    if(hi<0) hi=shown.length-1; if(hi>=shown.length) hi=0;
+    Array.prototype.forEach.call(clist.children,function(li,k){
+      if(li.setAttribute) li.setAttribute("data-hi",k===hi?"1":"0");});
+    if(clist.children[hi]&&clist.children[hi].scrollIntoView)
+      clist.children[hi].scrollIntoView({block:"nearest"});
+  } else if(e.key==="Enter"&&hi>-1){ e.preventDefault(); pick(shown[hi]); }
+  else if(e.key==="Escape"){ openList(false); }
+});
+clist.addEventListener("click",function(e){
+  var li=e.target.closest("li[data-c]"); if(!li) return;
+  pick(COUNTRIES.filter(function(x){return x.c===li.getAttribute("data-c");})[0]);
+});
+function pick(x){ if(!x) return; country.value=x.n; country.dataset.code=x.c; openList(false); }
+document.addEventListener("click",function(e){
+  if(!e.target.closest(".combo")) openList(false);
+});
+country.dataset.code="PL";
+
+/* ---------- NIP: suma kontrolna (algorytm urzędowy) ---------- */
+function nipValid(v){
+  v=String(v).replace(/[^0-9]/g,"");
+  if(v.length!==10) return false;
+  var w=[6,5,7,2,3,4,5,6,7], s=0;
+  for(var i=0;i<9;i++) s+=w[i]*Number(v[i]);
+  var r=s%11;
+  return r!==10 && r===Number(v[9]);
+}
+
+var nip=$("#nip"), nipErr=$("#nipErr");
+nip.addEventListener("input",function(){
+  nip.value=nip.value.replace(/[^0-9]/g,"").slice(0,10);
+  nip.removeAttribute("data-err"); nipErr.removeAttribute("data-on");
+  nip.setAttribute("data-ok", nipValid(nip.value)?"1":"0");
+});
+nip.addEventListener("keydown",function(e){ if(e.key==="Enter"){e.preventDefault();check();} });
+
+$("#checkBtn").addEventListener("click",check);
+function check(){
+  var v=nip.value.replace(/[^0-9]/g,"");
+  if(!v){ fail("Wpisz numer NIP — bez niego nie znajdziemy Twojej firmy."); return; }
+  if(v.length!==10){ fail("NIP ma dziesięć cyfr. Wpisano "+v.length+"."); return; }
+  if(!nipValid(v)){ fail("Ten numer nie przechodzi kontroli poprawności. Sprawdź, czy nie ma literówki."); return; }
+  // Prototyp: brak backendu — dane firmy są przykładowe.
+  $("#fName").textContent="PRZYKŁADOWA FIRMA sp. z o.o.";
+  $("#fAddr").textContent="ul. Przykładowa 1, 40-000 Katowice, "+country.value;
+  $("#fNip").textContent=v.replace(/(\d{3})(\d{3})(\d{2})(\d{2})/,"$1-$2-$3-$4");
+  $("#aStreet").value="ul. Przykładowa 1"; $("#aZip").value="40-000"; $("#aCity").value="Katowice";
+  go(2);
+}
+function fail(msg){
+  nip.setAttribute("data-err","1"); nip.removeAttribute("data-ok");
+  nipErr.textContent=msg; nipErr.setAttribute("data-on","1"); nip.focus();
+}
+
+$("#noNipBtn").addEventListener("click",function(){ $("#noNipBox").classList.toggle("hide"); });
+$("#editAddr").addEventListener("click",function(){ $("#addrEdit").classList.remove("hide"); $("#aStreet").focus(); });
+$("#notMine").addEventListener("click",function(){ go(1); nip.value=""; nip.removeAttribute("data-ok"); nip.focus(); });
+
+/* ---------- kroki ---------- */
+var panels={1:$("#s1"),2:$("#s2"),3:$("#s3"),4:$("#s4")};
+function go(n){
+  for(var k in panels) panels[k].classList.toggle("hide", String(k)!==String(n));
+  var li=$("#steps").children;
+  for(var i=0;i<3;i++){
+    li[i].removeAttribute("data-state");
+    if(i+1<n && n<4) li[i].setAttribute("data-state","done");
+    if(i+1===n) li[i].setAttribute("data-state","on");
+    if(n===4) li[i].setAttribute("data-state","done");
+  }
+  $("#steps").classList.toggle("hide", n===4);
+  window.scrollTo({top:0,behavior:"smooth"});
+}
+Array.prototype.forEach.call(document.querySelectorAll("[data-back]"),function(b){
+  b.addEventListener("click",function(){ go(Number(b.getAttribute("data-back"))); });
+});
+
+/* ---------- hasło ---------- */
+var pw=$("#pw"), rules=$("#rules"), bar=$("#meterBar");
+function scorePw(v){
+  var r={len:v.length>=10, mix:/[a-ząćęłńóśźż]/.test(v)&&/[A-ZĄĆĘŁŃÓŚŹŻ]/.test(v), dig:/[0-9]/.test(v)};
+  Array.prototype.forEach.call(rules.children,function(li){
+    li.setAttribute("data-ok", r[li.getAttribute("data-r")]?"1":"0");
+  });
+  var n=(r.len?1:0)+(r.mix?1:0)+(r.dig?1:0);
+  bar.style.width=(n/3*100)+"%";
+  bar.style.background = n===3?"var(--ok)" : n===2?"var(--warn)" : "var(--stop)";
+  return n===3;
+}
+pw.addEventListener("input",function(){ scorePw(pw.value); });
+$("#peek").addEventListener("click",function(){
+  var on=pw.type==="password";
+  pw.type=on?"text":"password";
+  this.textContent=on?"Ukryj":"Pokaż";
+  this.setAttribute("aria-pressed",on?"true":"false");
+});
+
+$("#toS3").addEventListener("click",function(){
+  var need=[["#fn","imię"],["#ln","nazwisko"],["#tel","telefon"],["#mail","adres e-mail"]];
+  var bad=null;
+  need.forEach(function(p){ var el=$(p[0]);
+    var empty=!el.value.trim();
+    el.setAttribute("data-err", empty?"1":"0");
+    if(empty&&!bad) bad=el;
+  });
+  if(!scorePw(pw.value)){ pw.setAttribute("data-err","1"); if(!bad) bad=pw; }
+  else pw.setAttribute("data-err","0");
+  if(bad){ bad.focus(); return; }
+  go(3);
+});
+
+/* ---------- zgody ---------- */
+var reqBoxes=document.querySelectorAll('.chk input[data-req]');
+function syncSubmit(){
+  var all=true;
+  Array.prototype.forEach.call(reqBoxes,function(b){ if(!b.checked) all=false; });
+  $("#submitBtn").disabled=!all;
+}
+Array.prototype.forEach.call(document.querySelectorAll('.chk input'),function(b){
+  b.addEventListener("change",syncSubmit);
+});
+Array.prototype.forEach.call(document.querySelectorAll('[data-more]'),function(b){
+  b.addEventListener("click",function(e){
+    e.preventDefault(); e.stopPropagation();
+    var chk=b.closest(".chk"), open=chk.getAttribute("data-open")==="1";
+    chk.setAttribute("data-open",open?"0":"1");
+    b.textContent=open?"Pełna treść zgody":"Zwiń";
+  });
+});
+$("#submitBtn").addEventListener("click",function(){ go(4); });
+
+/* ---------- uwagi UX ---------- */
+$("#notesBtn").addEventListener("click",function(){
+  var on=document.body.classList.toggle("notes-on");
+  this.setAttribute("aria-pressed",on?"true":"false");
+  this.textContent=on?"Ukryj uwagi UX":"Pokaż uwagi UX";
+});
+
+renderList("");
+})();
+</script>
+</body>
+</html>

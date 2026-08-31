@@ -7,6 +7,8 @@ Repozytorium robocze Działu Sprzedaży E-Commerce Moris sp. z o.o.
 | [`ANALIZA.md`](ANALIZA.md) | Odtworzona architektura informacji obecnego serwisu, diagnoza dziesięciu problemów konwersyjnych, propozycja nowego układu strony głównej wraz z uzasadnieniem każdej sekcji, miary skuteczności. |
 | [`odwzorowanie/index.html`](odwzorowanie/index.html) | Model strukturalny obecnej strony `moris.eu/pl` z przełącznikiem „Pokaż uwagi UX" — siedem ponumerowanych uwag przypiętych do miejsc, których dotyczą. |
 | [`redesign/index.html`](redesign/index.html) | Prototyp nowego układu. Działające: wyszukiwarka parametryczna, konfigurator cięcia z podglądem odpadu, kalkulator masy i ceny z rabatem progowym, szybkie zamówienie z listy. |
+| [`ANALIZA-REJESTRACJA.md`](ANALIZA-REJESTRACJA.md) | Analiza UX ekranu rejestracji: 7 usterek krytycznych, 6 wysokiego wpływu, 12 średnich, kolejność wdrożenia, niespójności kontaktowe w serwisie. |
+| [`rejestracja/index.html`](rejestracja/index.html) | Prototyp przebudowanego ekranu rejestracji z przełącznikiem „Pokaż uwagi UX". Działające: weryfikacja sumy kontrolnej NIP, lista krajów sortowana po polsku z filtrowaniem, trzy kroki, żywa walidacja hasła, rozdzielone zgody. |
 | [`ANALIZA-MAILINGI.md`](ANALIZA-MAILINGI.md) | Analiza kodu przekazanych mailingów ExpertSender: 23 usterki z numerami linii, rozbieżność palety z księgą znaku, opis czterech nowych kompilacji, lista kontrolna przed wysyłką. |
 | [`mailingi/`](mailingi/) | Cztery szablony mailingowe — obsługa platformy, budowanie zaufania, baza produktowa, usługi dodatkowe i transport. Plus `podglad.html` (wszystkie obok siebie) i `build.py` (generator wspólnej ramy). |
 
