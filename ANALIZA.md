@@ -155,7 +155,71 @@ Znikają jako osobne pozycje w menu: „Dlaczego my" (wchodzi w pas dowodów i s
 - **Dostępność**: kontrast tekstu ≥ 4,5:1, widoczny stan focus, `prefers-reduced-motion`,
   tabele przewijane poziomo we własnym kontenerze.
 
-### 4.4 Co zmienia się poza stroną główną (rekomendacje dalszych kroków)
+### 4.4 Rejestracja konta B2B — przebudowa formularza
+
+Prototyp: `redesign/rejestracja.html`.
+
+Obecny formularz prosi o NIP, po czym pokazuje pobrany adres rejestracyjny firmy,
+dane użytkownika i blok zgód. Trzy rzeczy w nim brakują lub działają wbrew
+sposobowi, w jaki kupuje firma.
+
+**A. Dane firmy pobierane z rejestru — dopowiedzenie tego, co już jest**
+
+Adres rejestracyjny już się zaciąga. Warto pokazać wprost, skąd: **CEIDG** dla
+jednoosobowej działalności, **KRS** dla spółek, **GUS/REGON** jako uzupełnienie
+oraz **biała lista VAT** jako status podatnika. To nie jest kosmetyka — status na
+białej liście przesądza o sposobie rozliczenia płatności, a klient powinien go
+zobaczyć przed założeniem konta, nie przy pierwszej fakturze.
+
+Trzy poprawki wykonawcze:
+
+- **Walidacja sumy kontrolnej NIP przed odpytaniem rejestru.** Dziesięć cyfr
+  i algorytm wagowy — koszt zerowy, a odsiewa literówki, zanim klient zobaczy
+  komunikat „nie znaleziono firmy" i uzna, że platforma nie działa.
+- **Karta danych z rejestru zamiast surowego adresu**: nazwa, NIP i REGON, adres,
+  forma prawna, znacznik źródła, znacznik VAT, data i godzina pobrania.
+- **Ścieżka korekty ręcznej.** Rejestry bywają nieaktualne. Poprawione dane
+  kierują konto do weryfikacji BOK zamiast blokować rejestrację.
+
+**B. Kontakt do firmy — sekcja, której nie ma**
+
+Obecny formularz zbiera wyłącznie dane osoby zakładającej konto. To błąd
+strukturalny: **faktura, dokument WZ i potwierdzenie dostawy adresowane są do
+firmy, nie do osoby**. Kiedy pracownik zaopatrzenia zmienia stanowisko lub
+firmę, dokumenty przestają docierać, a odzyskanie konta staje się sprawą dla BOK.
+
+Nowe pola:
+
+| Pole | Status | Do czego służy |
+|---|---|---|
+| E-mail firmowy do dokumentów | wymagane | faktury, WZ, potwierdzenia terminów |
+| Telefon firmowy | wymagane | kontakt kierowcy przy dostawie i rozładunku HDS |
+| Dodatkowy e-mail | opcjonalne | kopia dla księgowości lub zaopatrzenia |
+| Strona www | opcjonalne | skraca weryfikację nowego kontrahenta |
+
+**C. „Czy inne dane do faktury?" — pole wyboru rozwijające sekcję**
+
+Domyślnie fakturujemy na dane z rejestru. Jedno pole wyboru rozwija dane nabywcy:
+NIP (walidowany tak samo jak główny, z podpowiedzią nazwy z rejestru), nazwa,
+adres, e-mail do e-faktur. Wewnątrz — drugie pole wyboru: **odbiorca towaru inny
+niż nabywca**, czyli dostawa na budowę albo do oddziału przy fakturze na centralę.
+
+To najczęstszy powód, dla którego zamówienie B2B kończy się telefonem do
+handlowca zamiast w koszyku. Rozwiązanie kosztuje jedno pole wyboru.
+
+**D. Dwie poprawki przy okazji**
+
+- **Wymagania hasła jako lista warunków zapalających się na zielono**, zamiast
+  zdania „min. 6 znaków, w tym 1 wielka litera, 1 cyfra i 1 symbol". Przy okazji
+  minimum warto podnieść z 6 do 8 znaków — sześć znaków to dziś próg poniżej
+  przyjętej praktyki.
+- **Rozdzielenie zgód wymaganych od marketingowych.** Obecne pole „Zaznacz
+  wszystkie zgody" zaznacza jednym kliknięciem także zgody marketingowe. Zgoda
+  marketingowa musi być dobrowolna i odrębna — zbiorcze zaznaczenie osłabia jej
+  ważność. W prototypie przycisk zaznacza wyłącznie zgody konieczne do założenia
+  konta, a zgody dobrowolne stoją w osobnej grupie z wyraźnym oznaczeniem.
+
+### 4.5 Co zmienia się poza stroną główną (rekomendacje dalszych kroków)
 
 1. **Karta produktu**: cena orientacyjna bez logowania, dostępność w sztukach,
    deklarowany termin, kalkulator cięcia na miejscu, plik z atestem/deklaracją.
@@ -187,6 +251,7 @@ Znikają jako osobne pozycje w menu: „Dlaczego my" (wchodzi w pas dowodów i s
 |---|---|
 | `ANALIZA.md` | ten dokument |
 | `odwzorowanie/index.html` | model strukturalny obecnej strony + nakładka z uwagami UX |
-| `redesign/index.html` | propozycja nowego układu, działający prototyp |
+| `redesign/index.html` | propozycja nowego układu strony głównej, działający prototyp |
+| `redesign/rejestracja.html` | przebudowany formularz rejestracji konta B2B |
 
 Prototypy są samodzielnymi plikami HTML — wystarczy otworzyć je w przeglądarce.

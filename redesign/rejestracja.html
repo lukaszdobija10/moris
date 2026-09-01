@@ -1,0 +1,668 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rejestracja konta B2B moris.eu</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap">
+<style>
+/* =========================================================================
+   Moris — propozycja nowego formularza rejestracji konta B2B
+   Paleta i typografia wg księgi znaku Moris. Jeden, jasny świat wizualny —
+   wszystkie kolory malowane wprost.
+   ========================================================================= */
+:root{
+  --navy:#156082; --navy-deep:#0E4258; --navy-ink:#0A2E3E;
+  --ink:#12202B; --muted:#5B7385;
+  --paper:#FFFFFF; --paper-2:#F2F6F8; --paper-3:#D9E5EC;
+  --line:#CBD5E1; --line-soft:#E3EBF0;
+  --ok:#15803D; --ok-bg:#E6F4EA;
+  --warn:#B45309; --warn-bg:#FDF2E3;
+  --stop:#B91C1C; --stop-bg:#FBEAEA;
+  --mono:"JetBrains Mono", ui-monospace, "Courier New", monospace;
+  --sans:Arial, "Helvetica Neue", Helvetica, sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0; background:var(--paper-2); color:var(--ink); font:16px/1.55 var(--sans)}
+h1,h2,h3,h4{margin:0; text-wrap:balance}
+p{margin:0}
+a{color:var(--navy)}
+button,input,select,textarea{font:inherit; color:inherit}
+:focus-visible{outline:2px solid var(--navy); outline-offset:2px}
+.num{font-family:var(--mono); font-variant-numeric:tabular-nums}
+.wrap{max-width:1180px; margin-inline:auto; padding-inline:24px}
+
+/* ---------- nagłówek ---------- */
+.utility{background:var(--navy-ink); color:#BBD1DC; font-size:13px}
+.utility .wrap{display:flex; gap:22px; align-items:center; min-height:40px; flex-wrap:wrap}
+.utility strong{color:#fff; font-family:var(--mono)}
+.utility .right{margin-left:auto; display:flex; gap:20px}
+.utility a{color:#BBD1DC; text-decoration:none}
+.utility a:hover{color:#fff}
+header.site{background:var(--paper); border-bottom:1px solid var(--line)}
+header.site .wrap{display:flex; align-items:center; gap:24px; min-height:72px}
+.logo{font:700 27px/1 var(--sans); color:var(--navy); letter-spacing:-.03em; text-decoration:none}
+.logo span{color:var(--ink)}
+header.site .right{margin-left:auto; font-size:14.5px}
+header.site .right a{text-decoration:none; color:var(--ink)}
+
+/* ---------- kroki ---------- */
+.steps{background:var(--paper); border-bottom:1px solid var(--line)}
+.steps ol{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:0}
+.steps li{display:flex; align-items:center; gap:11px; padding:16px 26px 16px 0; color:var(--muted); font-size:14px}
+.steps li b{
+  width:26px; height:26px; flex:0 0 26px; border-radius:50%; background:var(--paper-3); color:var(--navy-deep);
+  font:700 13px/26px var(--mono); text-align:center;
+}
+.steps li[aria-current="step"]{color:var(--navy-deep); font-weight:700}
+.steps li[aria-current="step"] b{background:var(--navy); color:#fff}
+.steps li.done b{background:var(--ok-bg); color:var(--ok)}
+
+/* ---------- układ strony ---------- */
+.page{padding-block:40px 64px}
+.page .wrap{display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:40px; align-items:start}
+.form{background:var(--paper); border:1px solid var(--line)}
+.block{padding:32px; border-bottom:1px solid var(--line-soft)}
+.block:last-child{border-bottom:0}
+.block > h2{font-size:21px; color:var(--navy-deep); letter-spacing:-.01em}
+.block > .desc{color:var(--muted); font-size:14.5px; margin-top:8px; max-width:60ch}
+.kicker{font:700 11.5px/1 var(--mono); letter-spacing:.18em; text-transform:uppercase; color:var(--navy); display:block; margin-bottom:12px}
+
+/* ---------- pola ---------- */
+.grid{display:grid; gap:18px; margin-top:22px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.field{display:flex; flex-direction:column; gap:7px; min-width:0}
+.field > label, .lbl{font-size:12.5px; font-weight:700; color:var(--muted); letter-spacing:.04em; text-transform:uppercase}
+.field .req{color:var(--stop)}
+input[type=text],input[type=email],input[type=tel],input[type=password],select,textarea{
+  padding:12px 13px; border:1px solid var(--line); border-radius:2px; background:var(--paper); width:100%;
+}
+input::placeholder,textarea::placeholder{color:#93A7B4}
+.help{font-size:12.5px; color:var(--muted)}
+.help.err{color:var(--stop)}
+.help.good{color:var(--ok)}
+input[aria-invalid="true"]{border-color:var(--stop); background:var(--stop-bg)}
+
+/* ---------- wiersz NIP ---------- */
+.nip-row{display:grid; grid-template-columns:170px minmax(0,1fr) auto; gap:12px; align-items:end; margin-top:22px}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:9px; cursor:pointer; text-decoration:none;
+  padding:12px 22px; border-radius:2px; border:1px solid var(--navy); background:var(--navy); color:#fff;
+  font-weight:700; font-size:15px; white-space:nowrap;
+}
+.btn:hover{background:var(--navy-deep); border-color:var(--navy-deep)}
+.btn.ghost{background:transparent; color:var(--navy)}
+.btn.ghost:hover{background:var(--paper-2)}
+.btn.lg{padding:15px 30px; font-size:16px}
+.btn[disabled]{opacity:.5; cursor:not-allowed}
+
+/* ---------- karta danych z rejestru ---------- */
+.registry{margin-top:24px; border:1px solid var(--line); background:var(--paper-2)}
+.registry[hidden]{display:none}
+.registry .top{display:flex; flex-wrap:wrap; gap:12px; align-items:center; padding:16px 20px; border-bottom:1px solid var(--line)}
+.registry .name{font-weight:700; font-size:16px; color:var(--navy-deep)}
+.registry .body{display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0}
+.registry .cell{padding:16px 20px; border-right:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft)}
+.registry .cell:nth-child(2n){border-right:0}
+.registry dt{font-size:11.5px; letter-spacing:.09em; text-transform:uppercase; color:var(--muted)}
+.registry dd{margin:6px 0 0; font-family:var(--mono); font-size:14px; line-height:1.5}
+.registry .foot{padding:14px 20px; display:flex; flex-wrap:wrap; gap:14px; align-items:center; font-size:13px; color:var(--muted)}
+.chip{display:inline-flex; align-items:center; gap:7px; padding:5px 11px; border-radius:2px; font:700 12px/1.4 var(--mono); white-space:nowrap}
+.chip.ok{background:var(--ok-bg); color:var(--ok)}
+.chip.warn{background:var(--warn-bg); color:var(--warn)}
+.chip.stop{background:var(--stop-bg); color:var(--stop)}
+.chip.info{background:var(--paper-3); color:var(--navy-deep)}
+
+/* ---------- przełącznik (checkbox rozwijający sekcję) ---------- */
+.switch{
+  display:flex; gap:14px; align-items:flex-start; padding:18px 20px; margin-top:24px;
+  border:1px solid var(--line); background:var(--paper-2); cursor:pointer;
+}
+.switch:hover{border-color:var(--navy)}
+.switch input{margin:2px 0 0; width:19px; height:19px; flex:0 0 19px; accent-color:var(--navy); cursor:pointer}
+.switch b{display:block; font-size:15px}
+.switch span{display:block; color:var(--muted); font-size:13.5px; margin-top:4px}
+.reveal{border:1px solid var(--navy); border-top:3px solid var(--navy); background:var(--paper); padding:26px; margin-top:-1px}
+.reveal[hidden]{display:none}
+.reveal h3{font-size:16px; color:var(--navy-deep)}
+
+/* ---------- hasło ---------- */
+.pwd-req{list-style:none; margin:12px 0 0; padding:0; display:grid; grid-template-columns:repeat(2,1fr); gap:7px}
+.pwd-req li{font-size:13px; color:var(--muted); display:flex; gap:8px; align-items:center}
+.pwd-req li::before{content:"○"; font-family:var(--mono); color:var(--line)}
+.pwd-req li.met{color:var(--ok)}
+.pwd-req li.met::before{content:"●"; color:var(--ok)}
+
+/* ---------- zgody ---------- */
+.consent{display:flex; gap:13px; align-items:flex-start; padding:14px 0; border-bottom:1px solid var(--line-soft)}
+.consent:last-of-type{border-bottom:0}
+.consent input{margin:2px 0 0; width:19px; height:19px; flex:0 0 19px; accent-color:var(--navy); cursor:pointer}
+.consent label{font-size:14.5px; line-height:1.5}
+.consent .tag{
+  display:inline-block; margin-left:8px; padding:2px 8px; border-radius:2px;
+  font:700 11px/1.5 var(--mono); letter-spacing:.04em; vertical-align:1px;
+}
+.tag.must{background:var(--stop-bg); color:var(--stop)}
+.tag.opt{background:var(--paper-3); color:var(--navy-deep)}
+.consent-group{margin-top:20px; border:1px solid var(--line-soft); padding:6px 20px 14px}
+.consent-group > h3{font-size:13px; letter-spacing:.08em; text-transform:uppercase; color:var(--muted); margin:16px 0 4px}
+.selall{display:flex; gap:13px; align-items:center; padding:14px 20px; background:var(--paper-2); border:1px solid var(--line); margin-top:20px}
+.selall input{width:19px; height:19px; accent-color:var(--navy); cursor:pointer}
+.selall label{font-weight:700; font-size:14.5px}
+
+/* ---------- podsumowanie / submit ---------- */
+.submit-bar{padding:28px 32px; background:var(--paper-2); display:flex; flex-wrap:wrap; gap:18px; align-items:center}
+.submit-bar .note{color:var(--muted); font-size:13.5px; max-width:44ch}
+.alert{padding:14px 18px; border-left:3px solid var(--warn); background:var(--warn-bg); color:#7A3B06; font-size:14px; margin-top:20px}
+.alert[hidden]{display:none}
+
+/* ---------- kolumna boczna ---------- */
+aside .box{background:var(--paper); border:1px solid var(--line); padding:24px; margin-bottom:20px}
+aside h3{font-size:16px; color:var(--navy-deep); margin-bottom:12px}
+aside p, aside li{color:var(--muted); font-size:14px}
+aside ul{margin:0; padding-left:18px; display:grid; gap:8px}
+aside .box.dark{background:var(--navy-deep); border-color:var(--navy-deep); color:#fff}
+aside .box.dark h3{color:#fff}
+aside .box.dark p, aside .box.dark li{color:#C3D7E1}
+aside .box.dark a{color:#fff}
+.newbadge{display:inline-block; margin-bottom:10px; padding:4px 10px; background:var(--navy); color:#fff; font:700 11px/1.5 var(--mono); letter-spacing:.1em; text-transform:uppercase}
+
+footer.site{background:var(--ink); color:#94A7B3; padding-block:30px; font-size:13px}
+footer.site .wrap{display:flex; flex-wrap:wrap; gap:20px}
+footer.site a{color:#C3D0D8; text-decoration:none}
+
+@media (max-width:1000px){
+  .page .wrap{grid-template-columns:1fr}
+  aside{order:-1}
+}
+@media (max-width:720px){
+  .nip-row{grid-template-columns:1fr}
+  .g2,.g3,.registry .body,.pwd-req{grid-template-columns:1fr}
+  .registry .cell{border-right:0}
+  .block{padding:24px 20px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important; animation:none!important}}
+</style>
+</head>
+<body>
+
+<div class="utility">
+  <div class="wrap">
+    <span>Biuro Obsługi Klienta <strong>32 416 36 99</strong></span>
+    <span>pn–pt 8:00–16:00</span>
+    <div class="right"><a href="#">Pomoc</a><a href="#">Mam już konto</a></div>
+  </div>
+</div>
+
+<header class="site">
+  <div class="wrap">
+    <a class="logo" href="index.html">moris<span>.eu</span></a>
+    <div class="right">Rejestracja konta B2B</div>
+  </div>
+</header>
+
+<div class="steps">
+  <div class="wrap">
+    <ol>
+      <li aria-current="step"><b>1</b> Firma i dane do faktury</li>
+      <li><b>2</b> Osoba do kontaktu i hasło</li>
+      <li><b>3</b> Potwierdzenie adresu e-mail</li>
+      <li><b>4</b> Zakupy i limit kredytowy</li>
+    </ol>
+  </div>
+</div>
+
+<div class="page">
+<div class="wrap">
+
+<form class="form" id="reg" novalidate>
+
+  <!-- ============ 1. NIP ============ -->
+  <div class="block">
+    <span class="kicker">Krok 1 z 4</span>
+    <h2>Firma — podaj numer NIP</h2>
+    <p class="desc">Resztę danych pobierzemy z rejestru: CEIDG dla działalności gospodarczej, KRS dla spółek. Sprawdzimy też status podatnika VAT na białej liście.</p>
+
+    <div class="nip-row">
+      <div class="field">
+        <label for="country">Kraj</label>
+        <select id="country">
+          <option value="PL">Polska</option>
+          <option value="CZ">Czechy</option>
+          <option value="SK">Słowacja</option>
+          <option value="DE">Niemcy</option>
+        </select>
+      </div>
+      <div class="field">
+        <label for="nip">Numer Identyfikacji Podatkowej <span class="req">*</span></label>
+        <input id="nip" type="text" inputmode="numeric" autocomplete="off" class="num" value="6462852427" placeholder="1234567890" aria-describedby="nip-help">
+      </div>
+      <button class="btn" type="button" id="check">Pobierz dane firmy</button>
+    </div>
+    <p class="help" id="nip-help">Bez prefiksu PL, bez spacji i myślników. Poprawność sumy kontrolnej sprawdzamy od razu — zanim odpytamy rejestr.</p>
+
+    <!-- karta z danymi z rejestru -->
+    <div class="registry" id="registry" hidden>
+      <div class="top">
+        <span class="name" id="r-name">—</span>
+        <span class="chip ok" id="r-src">CEIDG</span>
+        <span class="chip ok" id="r-vat">Czynny podatnik VAT</span>
+        <button class="btn ghost" type="button" id="r-edit" style="margin-left:auto; padding:8px 14px; font-size:13.5px">Popraw dane ręcznie</button>
+      </div>
+      <dl class="body">
+        <div class="cell"><dt>Nazwa</dt><dd id="r-fullname">—</dd></div>
+        <div class="cell"><dt>NIP / REGON</dt><dd id="r-ids">—</dd></div>
+        <div class="cell"><dt>Adres rejestracyjny</dt><dd id="r-addr">—</dd></div>
+        <div class="cell"><dt>Forma prawna</dt><dd id="r-form">—</dd></div>
+      </dl>
+      <div class="foot">
+        <span id="r-stamp">Dane pobrane z rejestru</span>
+        <span class="chip info">Rachunek bankowy zweryfikujemy przy pierwszej płatności przelewem</span>
+      </div>
+    </div>
+    <div class="alert" id="nip-alert" hidden></div>
+  </div>
+
+  <!-- ============ 2. kontakt do firmy (NOWE) ============ -->
+  <div class="block">
+    <span class="kicker">Nowa sekcja</span>
+    <h2>Kontakt do firmy</h2>
+    <p class="desc">To adresy firmowe, a nie prywatne dane osoby zakładającej konto. Na firmowy e-mail wysyłamy faktury, dokumenty WZ i potwierdzenia dostaw — także wtedy, gdy osoba, która założyła konto, zmieni stanowisko.</p>
+
+    <div class="grid g2">
+      <div class="field">
+        <label for="c-mail">E-mail firmowy do dokumentów <span class="req">*</span></label>
+        <input id="c-mail" type="email" placeholder="zakupy@twojafirma.pl" autocomplete="email">
+        <span class="help">Tu trafiają faktury, WZ i potwierdzenia terminów dostaw.</span>
+      </div>
+      <div class="field">
+        <label for="c-phone">Telefon firmowy <span class="req">*</span></label>
+        <input id="c-phone" type="tel" placeholder="+48 32 000 00 00" autocomplete="tel">
+        <span class="help">Kontakt kierowcy przy dostawie i rozładunku HDS.</span>
+      </div>
+      <div class="field">
+        <label for="c-mail2">Dodatkowy e-mail (opcjonalnie)</label>
+        <input id="c-mail2" type="email" placeholder="ksiegowosc@twojafirma.pl">
+        <span class="help">Np. księgowość albo dział zaopatrzenia — kopia dokumentów.</span>
+      </div>
+      <div class="field">
+        <label for="c-www">Strona www (opcjonalnie)</label>
+        <input id="c-www" type="text" placeholder="twojafirma.pl">
+        <span class="help">Skraca weryfikację nowego kontrahenta po naszej stronie.</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 3. dane do faktury (NOWE) ============ -->
+  <div class="block">
+    <span class="kicker">Nowa sekcja</span>
+    <h2>Dane do faktury</h2>
+    <p class="desc">Domyślnie fakturujemy na dane pobrane z rejestru. Zaznacz poniżej, jeśli faktura ma iść na inny podmiot — spółkę matkę, centrum usług wspólnych albo inny oddział.</p>
+
+    <label class="switch" for="fv-toggle">
+      <input type="checkbox" id="fv-toggle">
+      <span>
+        <b>Inne dane do faktury niż dane firmy</b>
+        <span>Zaznacz, jeśli nabywca na fakturze jest inny niż podmiot zarejestrowany pod podanym numerem NIP.</span>
+      </span>
+    </label>
+
+    <div class="reveal" id="fv-box" hidden>
+      <h3>Nabywca na fakturze</h3>
+      <div class="grid g2">
+        <div class="field">
+          <label for="fv-nip">NIP nabywcy <span class="req">*</span></label>
+          <input id="fv-nip" type="text" inputmode="numeric" class="num" placeholder="1234567890">
+          <span class="help" id="fv-nip-help">Sprawdzimy go w rejestrze tak samo jak NIP główny.</span>
+        </div>
+        <div class="field">
+          <label for="fv-name">Nazwa nabywcy <span class="req">*</span></label>
+          <input id="fv-name" type="text" placeholder="Nazwa zgodna z rejestrem">
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label for="fv-street">Ulica i numer <span class="req">*</span></label>
+          <input id="fv-street" type="text" placeholder="ul. Przykładowa 1/2">
+        </div>
+        <div class="field">
+          <label for="fv-zip">Kod pocztowy <span class="req">*</span></label>
+          <input id="fv-zip" type="text" class="num" placeholder="00-000">
+        </div>
+        <div class="field">
+          <label for="fv-city">Miejscowość <span class="req">*</span></label>
+          <input id="fv-city" type="text" placeholder="Miejscowość">
+        </div>
+        <div class="field" style="grid-column:1/-1">
+          <label for="fv-mail">E-mail do e-faktur <span class="req">*</span></label>
+          <input id="fv-mail" type="email" placeholder="efaktury@nabywca.pl">
+          <span class="help">Jeśli zostawisz puste, faktury pójdą na firmowy e-mail do dokumentów.</span>
+        </div>
+      </div>
+      <label class="switch" for="fv-recipient" style="margin-top:22px">
+        <input type="checkbox" id="fv-recipient">
+        <span>
+          <b>Odbiorca towaru jest inny niż nabywca</b>
+          <span>Dodamy pole odbiorcy na fakturze i w dokumencie WZ — typowe przy dostawach na budowę lub do oddziału.</span>
+        </span>
+      </label>
+    </div>
+  </div>
+
+  <!-- ============ 4. użytkownik ============ -->
+  <div class="block">
+    <span class="kicker">Krok 2 z 4</span>
+    <h2>Osoba zakładająca konto</h2>
+    <p class="desc">Te dane służą do logowania i kontaktu roboczego. Nie trafiają na fakturę.</p>
+
+    <div class="grid g2">
+      <div class="field">
+        <label for="u-first">Imię <span class="req">*</span></label>
+        <input id="u-first" type="text" placeholder="Podaj imię" autocomplete="given-name">
+      </div>
+      <div class="field">
+        <label for="u-last">Nazwisko <span class="req">*</span></label>
+        <input id="u-last" type="text" placeholder="Podaj nazwisko" autocomplete="family-name">
+      </div>
+      <div class="field">
+        <label for="u-phone">Telefon bezpośredni <span class="req">*</span></label>
+        <input id="u-phone" type="tel" placeholder="+48 600 000 000" autocomplete="tel">
+      </div>
+      <div class="field">
+        <label for="u-mail">E-mail do logowania <span class="req">*</span></label>
+        <input id="u-mail" type="email" placeholder="imie.nazwisko@twojafirma.pl" autocomplete="email">
+        <span class="help">Na ten adres wyślemy link aktywacyjny.</span>
+      </div>
+      <div class="field">
+        <label for="u-role">Rola w firmie</label>
+        <select id="u-role">
+          <option>Zaopatrzenie / zakupy</option>
+          <option>Właściciel / zarząd</option>
+          <option>Produkcja / technolog</option>
+          <option>Księgowość</option>
+          <option>Inna</option>
+        </select>
+        <span class="help">Dopasujemy zakres uprawnień w koncie firmowym.</span>
+      </div>
+      <div class="field">
+        <label for="u-pwd">Hasło <span class="req">*</span></label>
+        <input id="u-pwd" type="password" placeholder="Ustaw hasło" autocomplete="new-password">
+        <ul class="pwd-req" id="pwd-req">
+          <li data-r="len">min. 8 znaków</li>
+          <li data-r="upper">1 wielka litera</li>
+          <li data-r="digit">1 cyfra</li>
+          <li data-r="sym">1 znak specjalny</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ 5. zgody ============ -->
+  <div class="block">
+    <span class="kicker">Krok 3 z 4</span>
+    <h2>Zgody formalne</h2>
+    <p class="desc">Zgody wymagane są oddzielone od dobrowolnych. Jedno pole „zaznacz wszystko” obejmujące zgody marketingowe nie spełnia wymogu dobrowolności i odrębności zgody — dlatego przycisk poniżej zaznacza wyłącznie to, co konieczne do założenia konta.</p>
+
+    <div class="selall">
+      <input type="checkbox" id="sel-req">
+      <label for="sel-req">Zaznacz zgody wymagane do założenia konta</label>
+    </div>
+
+    <div class="consent-group">
+      <h3>Wymagane</h3>
+      <div class="consent">
+        <input type="checkbox" id="cs-1" data-req="1">
+        <label for="cs-1">Potwierdzam przeczytanie i akceptację <a href="#">Ogólnych Warunków Handlowych</a> oraz <a href="#">Polityki Prywatności</a>.<span class="tag must">wymagane</span></label>
+      </div>
+      <div class="consent">
+        <input type="checkbox" id="cs-2" data-req="1">
+        <label for="cs-2">Przyjmuję do wiadomości informację o przetwarzaniu danych osobowych przez Moris sp. z o.o. w celu realizacji zamówień i obsługi konta.<span class="tag must">wymagane</span></label>
+      </div>
+    </div>
+
+    <div class="consent-group">
+      <h3>Dobrowolne — możesz je wycofać w każdej chwili</h3>
+      <div class="consent">
+        <input type="checkbox" id="cs-3">
+        <label for="cs-3">Chcę otrzymywać informacje handlowe na adres e-mail (nowości w ofercie, promocje, zmiany cen).<span class="tag opt">dobrowolne</span></label>
+      </div>
+      <div class="consent">
+        <input type="checkbox" id="cs-4">
+        <label for="cs-4">Zgadzam się na kontakt telefoniczny opiekuna handlowego w sprawie oferty.<span class="tag opt">dobrowolne</span></label>
+      </div>
+    </div>
+  </div>
+
+  <div class="submit-bar">
+    <button class="btn lg" type="submit" id="send">Załóż konto</button>
+    <p class="note">Po założeniu konta zobaczysz ceny netto dla swojej firmy, dostępność magazynową i terminy dostaw. Limit kredytowy jest osobnym wnioskiem — nie jest częścią rejestracji.</p>
+  </div>
+  <div class="alert" id="form-alert" hidden></div>
+</form>
+
+<aside>
+  <div class="box">
+    <span class="newbadge">Co się zmienia</span>
+    <h3>Trzy poprawki w formularzu</h3>
+    <ul>
+      <li><b>Dane firmy z rejestru</b> — CEIDG dla działalności, KRS dla spółek, plus status na białej liście VAT. Klient przepisuje jedną liczbę zamiast pięciu pól.</li>
+      <li><b>Kontakt do firmy</b> — e-mail i telefon firmowy oddzielone od danych osoby. Faktury nie giną, gdy zmieni się osoba w zaopatrzeniu.</li>
+      <li><b>Inne dane do faktury</b> — jedno pole wyboru rozwijające dane nabywcy i, opcjonalnie, odbiorcy towaru.</li>
+    </ul>
+  </div>
+  <div class="box">
+    <h3>Dlaczego to skraca ścieżkę</h3>
+    <p>Klient B2B rejestruje się w trakcie pracy, często z telefonu na hali. Każde pole, które da się wypełnić za niego, to jeden powód mniej, żeby porzucić formularz i zadzwonić do handlowca.</p>
+  </div>
+  <div class="box dark">
+    <h3>Potrzebujesz pomocy?</h3>
+    <p>Biuro Obsługi Klienta<br>
+      <a href="tel:+48324163699">32 416 36 99</a><br>
+      <a href="mailto:info@moris.eu">info@moris.eu</a><br>
+      pn–pt 8:00–16:00</p>
+  </div>
+</aside>
+
+</div>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <span>Moris sp. z o.o., ul. Wiejska 27, 41-503 Chorzów</span>
+    <a href="#">Regulamin</a>
+    <a href="#">Polityka prywatności</a>
+    <span>Prototyp formularza — dane rejestrowe symulowane lokalnie.</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  "use strict";
+  var $ = function(id){ return document.getElementById(id); };
+
+  /* ---------- suma kontrolna NIP ---------- */
+  function nipValid(v){
+    v = (v || "").replace(/[\s-]/g, "");
+    if(!/^\d{10}$/.test(v)) return false;
+    var w = [6,5,7,2,3,4,5,6,7], s = 0;
+    for(var i = 0; i < 9; i++) s += w[i] * (+v[i]);
+    var c = s % 11;
+    return c !== 10 && c === (+v[9]);
+  }
+
+  /* ---------- symulacja rejestrów CEIDG / KRS ---------- */
+  var REGISTRY = {
+    "6462852427": {
+      name:"Doradztwo Biznesowe Łukasz Dobija",
+      full:"Doradztwo Biznesowe Łukasz Dobija",
+      regon:"243250880",
+      addr:"Aleja Bielska 149/2\n43-100 Tychy\nPolska",
+      form:"Jednoosobowa działalność gospodarcza",
+      src:"CEIDG",
+      vat:"czynny"
+    },
+    "6272543012": {
+      name:"Moris sp. z o.o.",
+      full:"MORIS spółka z ograniczoną odpowiedzialnością",
+      regon:"242964210",
+      addr:"ul. Wiejska 27\n41-503 Chorzów\nPolska",
+      form:"Spółka z ograniczoną odpowiedzialnością (KRS 0000407187)",
+      src:"KRS",
+      vat:"czynny"
+    }
+  };
+
+  function lookup(nip){
+    if(REGISTRY[nip]) return REGISTRY[nip];
+    // dowolny poprawny NIP — rekord przykładowy, żeby prototyp dało się przeklikać
+    return {
+      name:"Podmiot gospodarczy " + nip.slice(0,3) + "…",
+      full:"Dane przykładowe — w produkcji pobierane z rejestru",
+      regon:"—",
+      addr:"ul. Przykładowa 1\n00-000 Miejscowość\nPolska",
+      form:"Do ustalenia po odpytaniu rejestru",
+      src:"CEIDG / KRS",
+      vat:"czynny"
+    };
+  }
+
+  /* ---------- krok 1: pobranie danych ---------- */
+  (function step1(){
+    var nip = $("nip"), btn = $("check"), box = $("registry"), alert = $("nip-alert"), help = $("nip-help");
+
+    function fail(msg){
+      nip.setAttribute("aria-invalid", "true");
+      box.hidden = true;
+      alert.hidden = false;
+      alert.textContent = msg;
+    }
+
+    function run(){
+      var v = nip.value.replace(/[\s-]/g, "");
+      alert.hidden = true;
+      if(!/^\d{10}$/.test(v)){
+        fail("Numer NIP ma dokładnie 10 cyfr. Wpisano " + v.length + ". Sprawdź, czy nie został skopiowany razem z prefiksem PL.");
+        return;
+      }
+      if(!nipValid(v)){
+        fail("Ten numer nie przechodzi kontroli sumy kontrolnej — najczęściej oznacza to przestawione cyfry. Popraw numer, zanim odpytamy rejestr.");
+        return;
+      }
+      nip.removeAttribute("aria-invalid");
+      var d = lookup(v);
+      $("r-name").textContent = d.name;
+      $("r-fullname").textContent = d.full;
+      $("r-ids").textContent = "NIP " + v + " · REGON " + d.regon;
+      $("r-addr").innerHTML = d.addr.split("\n").join("<br>");
+      $("r-form").textContent = d.form;
+      $("r-src").textContent = "Dane z " + d.src;
+      $("r-vat").textContent = d.vat === "czynny" ? "Czynny podatnik VAT" : "Brak na białej liście";
+      $("r-vat").className = "chip " + (d.vat === "czynny" ? "ok" : "stop");
+      var now = new Date();
+      $("r-stamp").textContent = "Pobrano " + now.toLocaleDateString("pl-PL") + " o " + now.toLocaleTimeString("pl-PL", {hour:"2-digit", minute:"2-digit"}) + " — biała lista VAT sprawdzona tego samego dnia";
+      box.hidden = false;
+      help.className = "help good";
+      help.textContent = "Numer poprawny. Jeśli dane różnią się od stanu faktycznego, użyj „Popraw dane ręcznie”.";
+    }
+
+    btn.addEventListener("click", run);
+    nip.addEventListener("keydown", function(e){ if(e.key === "Enter"){ e.preventDefault(); run(); } });
+    $("r-edit").addEventListener("click", function(){
+      alert.hidden = false;
+      alert.textContent = "Ręczna korekta danych rejestrowych wymaga potwierdzenia — po zapisaniu konto trafia do weryfikacji Biura Obsługi Klienta, zwykle tego samego dnia roboczego.";
+    });
+    run();
+  })();
+
+  /* ---------- inne dane do faktury ---------- */
+  (function invoice(){
+    var t = $("fv-toggle"), box = $("fv-box"), fnip = $("fv-nip"), fhelp = $("fv-nip-help");
+    t.addEventListener("change", function(){
+      box.hidden = !t.checked;
+      if(t.checked) fnip.focus();
+    });
+    fnip.addEventListener("blur", function(){
+      var v = fnip.value.replace(/[\s-]/g, "");
+      if(!v){ fhelp.className = "help"; fhelp.textContent = "Sprawdzimy go w rejestrze tak samo jak NIP główny."; fnip.removeAttribute("aria-invalid"); return; }
+      if(nipValid(v)){
+        fnip.removeAttribute("aria-invalid");
+        fhelp.className = "help good";
+        var d = lookup(v);
+        fhelp.textContent = "Numer poprawny — " + d.name + ".";
+        if(!$("fv-name").value) $("fv-name").value = d.full;
+      } else {
+        fnip.setAttribute("aria-invalid", "true");
+        fhelp.className = "help err";
+        fhelp.textContent = "Numer nie przechodzi kontroli sumy kontrolnej. Popraw go albo zostaw puste i uzupełnimy dane telefonicznie.";
+      }
+    });
+  })();
+
+  /* ---------- siła hasła ---------- */
+  (function pwd(){
+    var input = $("u-pwd"), list = $("pwd-req");
+    var tests = {
+      len:   function(v){ return v.length >= 8; },
+      upper: function(v){ return /[A-ZĄĆĘŁŃÓŚŹŻ]/.test(v); },
+      digit: function(v){ return /\d/.test(v); },
+      sym:   function(v){ return /[^A-Za-z0-9ĄĆĘŁŃÓŚŹŻąćęłńóśźż]/.test(v); }
+    };
+    input.addEventListener("input", function(){
+      var v = input.value;
+      Array.prototype.forEach.call(list.children, function(li){
+        li.classList.toggle("met", tests[li.dataset.r](v));
+      });
+    });
+  })();
+
+  /* ---------- zgody ---------- */
+  (function consents(){
+    var all = $("sel-req");
+    var required = Array.prototype.slice.call(document.querySelectorAll('[data-req="1"]'));
+    all.addEventListener("change", function(){
+      required.forEach(function(c){ c.checked = all.checked; });
+    });
+    required.forEach(function(c){
+      c.addEventListener("change", function(){
+        var on = required.filter(function(x){ return x.checked; }).length;
+        all.checked = on === required.length;
+        all.indeterminate = on > 0 && on < required.length;
+      });
+    });
+  })();
+
+  /* ---------- walidacja przy wysyłce ---------- */
+  $("reg").addEventListener("submit", function(e){
+    e.preventDefault();
+    var alert = $("form-alert");
+    var missing = [];
+    if($("registry").hidden) missing.push("dane firmy pobrane z rejestru");
+    if(!$("c-mail").value) missing.push("e-mail firmowy do dokumentów");
+    if(!$("c-phone").value) missing.push("telefon firmowy");
+    if(!$("u-first").value || !$("u-last").value) missing.push("imię i nazwisko");
+    if(!$("u-mail").value) missing.push("e-mail do logowania");
+    if(!$("u-pwd").value) missing.push("hasło");
+    if($("fv-toggle").checked && !$("fv-nip").value) missing.push("NIP nabywcy na fakturze");
+    var reqOk = Array.prototype.slice.call(document.querySelectorAll('[data-req="1"]')).every(function(c){ return c.checked; });
+    if(!reqOk) missing.push("zgody wymagane");
+
+    alert.hidden = false;
+    if(missing.length){
+      alert.style.borderLeftColor = "#B45309";
+      alert.style.background = "#FDF2E3";
+      alert.style.color = "#7A3B06";
+      alert.textContent = "Do założenia konta brakuje: " + missing.join(", ") + ".";
+    } else {
+      alert.style.borderLeftColor = "#15803D";
+      alert.style.background = "#E6F4EA";
+      alert.style.color = "#14532D";
+      alert.textContent = "Formularz kompletny. W wersji produkcyjnej konto zostałoby założone, a na adres " + $("u-mail").value + " poszedłby link aktywacyjny.";
+    }
+    alert.scrollIntoView({block:"center", behavior:"smooth"});
+  });
+})();
+</script>
+</body>
+</html>
