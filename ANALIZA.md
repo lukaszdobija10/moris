@@ -138,22 +138,43 @@ Znikają jako osobne pozycje w menu: „Dlaczego my" (wchodzi w pas dowodów i s
 
 ### 4.3 Decyzje projektowe
 
-- **Kolorystyka z księgi znaku**: granat `#156082` jako kolor marki i akcji,
-  granat ciemny `#0E4258` dla nagłówków, błękit `#F2F6F8` / `#D9E5EC` jako tła
-  sekcji, grafit `#12202B` dla tekstu. Zieleń / bursztyn / czerwień **wyłącznie**
-  jako status (dostępność, termin, ostrzeżenie) — zgodnie z zasadą kolorów
-  funkcyjnych z księgi.
-- **Typografia**: Arial zgodnie z księgą znaku dla całej treści. Propozycja
-  rozszerzenia księgi o **jeden krój szeryfowy bezszeryfowy o stałej szerokości
-  (JetBrains Mono)** stosowany wyłącznie do danych technicznych: wymiary, gatunki,
-  indeksy, ceny. Cyfry w kolumnach mają się wyrównywać — to warunek czytelności
-  tabel wyrobów, a nie ozdobnik.
-- **Język wizualny**: rysunek techniczny. Przekroje profili jako grafiki wektorowe,
-  linie wymiarowe jako separatory sekcji, delikatna siatka milimetrowa w tle
-  pierwszego ekranu. Zamiast zdjęć stockowych — geometria wyrobu, którą klient
-  rozpoznaje zawodowo.
-- **Dostępność**: kontrast tekstu ≥ 4,5:1, widoczny stan focus, `prefers-reduced-motion`,
-  tabele przewijane poziomo we własnym kontenerze.
+System wizualny pochodzi z księgi znaku (`brand/moris-logo-manual.pdf`).
+Pełne przepisanie: `brand/BRANDBOOK.md`, wartości wykonawcze: `brand/tokens.css`.
+
+- **Znak.** Symbol i oba logotypy wyciągnięte z księgi jako krzywe i zapisane
+  w SVG (`brand/moris-symbol.svg`, `moris-logo-poziomy.svg`, `moris-logo-pionowy.svg`).
+  To geometria z księgi, nie przerysowanie. Wypełnienie ustawione na
+  `currentColor`, więc znak działa granatowy i w kontrze na białą bez drugiego pliku.
+- **Kolorystyka.** Steel blue `#1A2B3C` (RAL 5011) niesie tekst i ciemne
+  powierzchnie. Sapphire blue `#1F3855` (RAL 5003) jest kolorem działania:
+  przyciski, odnośniki, ramki pól aktywnych. Pastel blue `#73B7E5` (RAL 5024)
+  i jego 30% rozbicie są tłem sekcji i znaczników. Luminous Orange `#FF7517`
+  (RAL 2007) zostaje akcentem wyróżniającym jeden element — nigdy kilkanaście.
+- **Kolory informacyjne (UI)** z księgi: `#47C98B` potwierdzenie, `#F95050` błąd,
+  `#FFE97D` ostrzeżenie — użyte tak, jak księga je pokazuje, czyli w rozbiciach
+  30% jako tło znacznika. Tekst w znaczniku zostaje w kolorze Steel blue: same
+  kolory UI mają na bieli kontrast poniżej progu czytelności.
+- **Typografia.** Display — Paralucent Extra Light (nagłówek pierwszego ekranu,
+  duże liczby w pasie dowodów, dokładnie ta rola, w której księga pokazuje „02”).
+  Nagłówki sekcji — Paralucent Medium. Tekst — Poppins Regular. Paralucent jest
+  krojem komercyjnym i nie jest hostowany na Google Fonts; w prototypach stoi
+  pierwszy w stosie, zapasem jest Poppins w wagach 200 i 500. Po wykupieniu
+  licencji webfont wystarczy dograć pliki, bez zmian w kodzie.
+- **Dane liczbowe.** Księga wskazuje na cyfry Paralucent Stencil Extra Light.
+  To krój ekspozycyjny — świetny w liczbie wyróżnikowej, nieczytelny w tabeli
+  cen. Tabele i wyceny składamy Poppinsem z `font-variant-numeric: tabular-nums`,
+  żeby cyfry wyrównywały się w kolumnach.
+- **Trzy tokeny pochodne**, których księga nie definiuje, bo dotyczą tylko
+  interfejsu: `--muted #5F6E75` (Telegrey 2 przyciemniony — oryginał daje na
+  bieli 3,3:1, poniżej WCAG AA dla tekstu ciągłego), `--line-soft #DCE6EA`
+  (delikatne linie wewnętrzne) oraz warianty kolorów UI do tekstu przy polach
+  formularza. Wszystkie opisane w `brand/BRANDBOOK.md` i wymagają akceptacji.
+- **Język wizualny**: rysunek techniczny. Przekroje profili jako grafiki
+  wektorowe, linie wymiarowe jako separatory sekcji, delikatna siatka
+  milimetrowa w tle pierwszego ekranu. Zamiast zdjęć stockowych — geometria
+  wyrobu, którą klient rozpoznaje zawodowo.
+- **Dostępność**: kontrast tekstu ≥ 4,5:1, widoczny stan focus,
+  `prefers-reduced-motion`, tabele przewijane poziomo we własnym kontenerze.
 
 ### 4.4 Rejestracja konta B2B — przebudowa formularza
 
@@ -253,5 +274,6 @@ handlowca zamiast w koszyku. Rozwiązanie kosztuje jedno pole wyboru.
 | `odwzorowanie/index.html` | model strukturalny obecnej strony + nakładka z uwagami UX |
 | `redesign/index.html` | propozycja nowego układu strony głównej, działający prototyp |
 | `redesign/rejestracja.html` | przebudowany formularz rejestracji konta B2B |
+| `brand/` | księga znaku (PDF), jej przepisanie, tokeny CSS i znak w SVG |
 
 Prototypy są samodzielnymi plikami HTML — wystarczy otworzyć je w przeglądarce.
