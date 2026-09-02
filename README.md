@@ -8,6 +8,7 @@ Repozytorium robocze Działu Sprzedaży E-Commerce Moris sp. z o.o.
 | [`odwzorowanie/index.html`](odwzorowanie/index.html) | Model strukturalny obecnej strony `moris.eu/pl` z przełącznikiem „Pokaż uwagi UX" — siedem ponumerowanych uwag przypiętych do miejsc, których dotyczą. |
 | [`redesign/index.html`](redesign/index.html) | Prototyp nowego układu. Działające: wyszukiwarka parametryczna, konfigurator cięcia z podglądem odpadu, kalkulator masy i ceny z rabatem progowym, szybkie zamówienie z listy. |
 | [`redesign/rejestracja.html`](redesign/rejestracja.html) | Ekran rejestracji w dwóch odsłonach — przed podaniem NIP (dla kogo, dlaczego warto, potrzebne kroki) i po weryfikacji (formularz, postęp, pomoc): dane firmy z CEIDG/KRS i białej listy VAT, walidacja sumy kontrolnej NIP, kontakt firmowy oddzielony od danych osoby, przełącznik „inne dane do faktury" wraz z odbiorcą towaru, rozdzielone zgody wymagane i marketingowe. |
+| [`redesign/po-rejestracji.html`](redesign/po-rejestracji.html) | Ekran po rejestracji, też w dwóch momentach: „sprawdź skrzynkę” zaraz po wysłaniu formularza i „jak zamówić” po aktywacji konta — sześć kroków ścieżki zamówienia, skróty na kolejne zamówienia, checklista ustawień konta, terminy i płatności. |
 | [`brand/`](brand/) | Księga znaku Moris (PDF), jej przepisanie do `BRANDBOOK.md`, tokeny `tokens.css` oraz znak wyciągnięty z księgi jako SVG. Wszystkie prototypy korzystają z tego systemu. |
 
 Wszystkie trzy prototypy to samodzielne pliki HTML — wystarczy otworzyć w przeglądarce,

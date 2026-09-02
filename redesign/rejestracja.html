@@ -1172,8 +1172,9 @@ footer.site a:hover{color:#fff; text-decoration:underline}
       alert.style.borderLeftColor = "#47C98B";
       alert.style.background = "#C8EFDC";
       alert.style.color = "#1B6B48";
-      alert.textContent = "Formularz kompletny. W wersji produkcyjnej konto zostałoby założone, a na adres " +
-        $("u-mail").value + " poszedłby link aktywacyjny.";
+      alert.innerHTML = "Formularz kompletny. W wersji produkcyjnej konto zostałoby założone, a na adres " +
+        ($("u-mail").value || "podany adres") + " poszedłby link aktywacyjny. " +
+        '<a href="po-rejestracji.html" style="font-weight:500">Zobacz następny ekran →</a>';
     }
     alert.scrollIntoView({ block: "center", behavior: "smooth" });
   });

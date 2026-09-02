@@ -277,7 +277,54 @@ nie wyparował całkowicie, ale też nie konkurował z polami do wypełnienia.
   ważność. W prototypie przycisk zaznacza wyłącznie zgody konieczne do założenia
   konta, a zgody dobrowolne stoją w osobnej grupie z wyraźnym oznaczeniem.
 
-### 4.5 Co zmienia się poza stroną główną (rekomendacje dalszych kroków)
+### 4.5 Po rejestracji — ekran, którego dziś nie ma
+
+Prototyp: `redesign/po-rejestracji.html`.
+
+Klient kończy rejestrację i trafia w puste konto. Zna już cenę i termin, ale nie
+wie, gdzie zacząć zamówienie — a to jest moment, w którym najłatwiej go stracić:
+zainwestował trzy minuty, nic z tego jeszcze nie ma i nikt mu nie powiedział,
+co dalej. Ekran powitalny to nie uprzejmość, tylko domknięcie ścieżki.
+
+Znowu dwa momenty, bo mają różne zadania.
+
+**A. Zaraz po wysłaniu formularza — „Został jeden klik"**
+
+Jedyny sensowny krok to kliknięcie linku w wiadomości, więc ekran nie może
+udawać, że da się zrobić coś więcej. Zawiera: adres, na który poszła wiadomość
+(często literówka wychodzi dopiero tutaj), termin ważności linku, trzy kroki
+opisane wprost oraz sekcję **„wiadomość nie dotarła?"** — spam i zakładka
+„Oferty", literówka w adresie, dodanie `info@moris.eu` do zaufanych nadawców.
+Ponowne wysłanie linku ma trzydziestosekundową blokadę, żeby nie zasypać
+skrzynki. Z boku: co jeszcze jest w tej wiadomości (dane konta, OWH w PDF,
+kontakt do BOK) oraz „w międzyczasie" — katalog jest otwarty bez logowania,
+więc czas oczekiwania może pracować.
+
+**B. Po kliknięciu linku — „Konto jest gotowe. Teraz pierwsze zamówienie"**
+
+Trzy wejścia od razu pod nagłówkiem: wyroby hutnicze, kolej, szybkie zamówienie
+z listy. Dalej **sześć kroków ścieżki zamówienia** — znajdź wyrób, ustaw długość
+i cięcie, sprawdź cenę i rabat, wybierz dostawę, zapłać, śledź i odbierz
+dokumenty. Numeracja jest tu uzasadniona: to naprawdę sekwencja, a nie ozdobnik.
+
+Pod spodem trzy sekcje, które robią różnicę przy drugim zamówieniu:
+
+- **Trzy skróty na później** — powtórzenie zamówienia, listy zakupowe, wklejenie
+  listy indeksów albo pliku CSV. Klient, który ustawi je przy pierwszym
+  zakupie, przy drugim zamawia w dwie minuty.
+- **Cztery rzeczy do dokończenia** — checklista z paskiem postępu: adres dostawy
+  (bez niego koszyk nie policzy transportu), dane do faktury, osoby z firmy,
+  limit kredytowy jako opcja. Każda pozycja z własnym przyciskiem, nic nie
+  blokuje zakupów.
+- **Terminy i płatność w jednej tabeli** — 3 dni / 5 dni / odbiór własny /
+  powyżej 10 ton, plus lista metod płatności. Zdejmuje to najczęstsze pytania
+  do Biura Obsługi Klienta jeszcze przed pierwszym zamówieniem.
+
+Do tego opiekun handlowy z imienia i nazwiska — platforma nie zastępuje
+handlowca, tylko przejmuje od niego pracę powtarzalną, i klient powinien
+wiedzieć, kiedy zadzwonić.
+
+### 4.6 Co zmienia się poza stroną główną (rekomendacje dalszych kroków)
 
 1. **Karta produktu**: cena orientacyjna bez logowania, dostępność w sztukach,
    deklarowany termin, kalkulator cięcia na miejscu, plik z atestem/deklaracją.
@@ -311,6 +358,7 @@ nie wyparował całkowicie, ale też nie konkurował z polami do wypełnienia.
 | `odwzorowanie/index.html` | model strukturalny obecnej strony + nakładka z uwagami UX |
 | `redesign/index.html` | propozycja nowego układu strony głównej, działający prototyp |
 | `redesign/rejestracja.html` | przebudowany formularz rejestracji konta B2B |
+| `redesign/po-rejestracji.html` | ekran po rejestracji: potwierdzenie e-maila i „jak zamówić” |
 | `brand/` | księga znaku (PDF), jej przepisanie, tokeny CSS i znak w SVG |
 
 Prototypy są samodzielnymi plikami HTML — wystarczy otworzyć je w przeglądarce.
