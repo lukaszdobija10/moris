@@ -228,6 +228,43 @@ niż nabywca**, czyli dostawa na budowę albo do oddziału przy fakturze na cent
 To najczęstszy powód, dla którego zamówienie B2B kończy się telefonem do
 handlowca zamiast w koszyku. Rozwiązanie kosztuje jedno pole wyboru.
 
+**D. Dwie odsłony jednego ekranu**
+
+Ekran rejestracji ma dwa zadania, które stoją ze sobą w sprzeczności: **przekonać**
+firmę, która trafiła tu pierwszy raz, i **nie przeszkadzać** tej, która już
+zdecydowała. Obecny formularz robi tylko to drugie — otwiera się pytaniem o NIP,
+bez słowa o tym, dla kogo jest Moris i co klient z tego ma.
+
+Rozwiązanie: jeden adres, dwie odsłony przełączane momentem podania NIP.
+
+| | Przed podaniem NIP | Po weryfikacji NIP |
+|---|---|---|
+| Zadanie ekranu | przekonać i wytłumaczyć | doprowadzić do końca |
+| Formularz | kompaktowa karta, tylko kraj i NIP | pełny, na całą szerokość |
+| Treść wokół | dla kogo, dlaczego warto, potrzebne kroki, pytania | pasek postępu, co zostało, kontakt do BOK |
+| Nagłówek | „Stal zamawiasz sam, kiedy jej potrzebujesz." | „Zostały dwa kroki." |
+
+**Dla kogo** — sześć typowych sytuacji zakupowych zamiast listy branż: produkcja
+i warsztat, budownictwo, utrzymanie ruchu, kolej, handel i odsprzedaż, dział
+zakupów. Każda z jednym zdaniem, które klient rozpozna jako swoje („biorę sześć
+prętów, nie całą wiązkę"). Do tego jawnie powiedziane, kogo Moris **jeszcze** nie
+obsługuje — konto zakłada się na NIP, więc klient indywidualny dowiaduje się tego
+od razu, a nie po wypełnieniu połowy formularza.
+
+**Dlaczego warto** — sześć konkretów z liczbą zamiast przymiotników: wycena
+w 0 minut, zamówienia 24/7, sprzedaż od 1 sztuki, cięcie 90°, termin 3 dni znany
+przed zapłatą, rabat −7% naliczany automatycznie. Pod spodem pasek wiarygodności:
+1994, ISO 9001:2015, magazyn 20 m, ~4 000 indeksów, licencjonowany spedytor.
+
+**Potrzebne kroki** — trzy kroki z czasem przy każdym (30 s / 2 min / 30 s) oraz
+sekcja **„czego nie potrzebujesz"**: skanów dokumentów, umowy ramowej, wniosku
+o limit kredytowy. To najskuteczniejsza część takiego ekranu — zdejmuje obawę,
+że rejestracja w hurtowni stali oznacza papierologię i tydzień oczekiwania.
+
+Po podaniu NIP treść sprzedażowa znika. Zostaje pasek postępu, formularz i trzy
+kafle pomocy z boku, a na dole wąski pas z trzema wartościami — żeby argument
+nie wyparował całkowicie, ale też nie konkurował z polami do wypełnienia.
+
 **D. Dwie poprawki przy okazji**
 
 - **Wymagania hasła jako lista warunków zapalających się na zielono**, zamiast
