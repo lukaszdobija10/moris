@@ -140,19 +140,6 @@ body[data-state="b"] .stage-b{display:block}
 .lead-row{display:grid; grid-template-columns:minmax(0,1fr) 440px; gap:56px; align-items:start; padding-block:14px 64px}
 .lead-row h1{font-family:var(--font-display); font-weight:200; font-size:52px; line-height:1.06; letter-spacing:-.025em; margin-bottom:20px}
 .lead-row .sub{font-size:18px; color:var(--muted); max-width:48ch}
-.pills{display:flex; flex-wrap:wrap; gap:10px; margin-top:26px}
-.pills span{border:1px solid var(--line); padding:8px 13px; border-radius:2px; font-size:13.5px; color:var(--steel); background:var(--paper)}
-.pills b{font-weight:500}
-
-/* skróty do sekcji w odsłonie A */
-.jump{margin-top:38px; padding-top:26px; border-top:1px solid var(--line)}
-.jump-lead{font-size:12.5px; font-weight:500; letter-spacing:.1em; text-transform:uppercase; color:var(--muted); margin-bottom:14px}
-.jump ul{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr 1fr; gap:2px 24px}
-.jump ul a{display:flex; flex-direction:column; gap:3px; padding:11px 0; text-decoration:none; border-bottom:1px solid var(--line-soft)}
-.jump ul a span{font-size:15px; font-weight:500; color:var(--steel)}
-.jump ul a small{font-size:13px; color:var(--muted)}
-.jump ul a:hover span{color:var(--sapphire)}
-.jump-foot{margin-top:18px; font-size:14.5px; color:var(--muted)}
 
 /* karta NIP */
 .nipcard{background:var(--paper); border:1px solid var(--line); border-top:3px solid var(--steel); padding:30px; position:sticky; top:74px}
@@ -192,7 +179,7 @@ section.tint{background:var(--tint)}
 .steps-foot{display:flex; flex-wrap:wrap; gap:14px; align-items:center; margin-top:20px; font-size:14.5px; color:var(--muted)}
 
 /* dla kogo */
-.who{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
+.who{display:grid; grid-template-columns:repeat(4,1fr); gap:18px}
 .who .card{border:1px solid var(--line); background:var(--paper); padding:26px; display:flex; flex-direction:column; gap:12px}
 .who .card svg{width:34px; height:34px; color:var(--sapphire)}
 .who h3{font-size:17.5px}
@@ -202,25 +189,13 @@ section.tint{background:var(--tint)}
 .notfor b{font-weight:500}
 
 /* dlaczego warto */
-.why{display:grid; grid-template-columns:repeat(3,1fr); gap:26px 34px}
+.why{display:grid; grid-template-columns:repeat(4,1fr); gap:26px 30px}
 .why .item{display:grid; gap:9px}
 .why .big{font-family:var(--font-numeral); font-weight:200; font-size:38px; line-height:1; color:var(--steel); letter-spacing:-.02em}
 .why h3{font-size:16.5px}
 .why p{color:var(--muted); font-size:14.5px}
 .trustbar{display:flex; flex-wrap:wrap; gap:10px; margin-top:42px; padding-top:26px; border-top:1px solid var(--line)}
 .trustbar span{border:1px solid var(--line); background:var(--paper); padding:8px 14px; font-size:13.5px; border-radius:2px}
-
-/* co potrzebne / czego nie */
-.need{display:grid; grid-template-columns:1fr 1fr; gap:24px}
-.need .box{border:1px solid var(--line); background:var(--paper); padding:28px}
-.need .box.no{background:var(--tint)}
-.need h3{font-size:18px; margin-bottom:16px; display:flex; align-items:center; gap:10px}
-.need ul{list-style:none; margin:0; padding:0; display:grid; gap:14px}
-.need li{display:flex; gap:12px; font-size:14.5px; color:var(--muted); line-height:1.5}
-.need li b{color:var(--steel); font-weight:500}
-.need li svg{flex:0 0 18px; width:18px; height:18px; margin-top:2px}
-.need .box svg.ok{color:var(--ok-ink)}
-.need .box svg.no{color:var(--grey-2)}
 
 /* brak działalności */
 .noco{border:1px solid var(--line); background:var(--paper); padding:36px; display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:40px; align-items:center}
@@ -229,15 +204,6 @@ section.tint{background:var(--tint)}
 .noco form{display:flex; gap:10px; flex-wrap:wrap}
 .noco input{flex:1; min-width:200px}
 .noco .rodo{font-size:12px; color:var(--muted); margin-top:12px; line-height:1.5}
-
-/* FAQ */
-.faq{display:grid; grid-template-columns:1fr 1fr; gap:0 40px}
-.faq details{border-bottom:1px solid var(--line-soft); padding:18px 0}
-.faq summary{cursor:pointer; font-weight:500; font-size:15.5px; list-style:none; display:flex; justify-content:space-between; gap:16px}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+"; color:var(--sapphire); font-size:20px; line-height:1}
-.faq details[open] summary::after{content:"–"}
-.faq p{margin-top:12px; color:var(--muted); font-size:14.5px}
 
 /* ================= ODSŁONA B ================= */
 .bhead{padding-block:14px 30px}
@@ -314,12 +280,6 @@ aside .box.dark h3{color:#fff}
 aside .box.dark p{color:var(--grey-3)}
 aside .box.dark a{color:#fff}
 
-.recap{border-top:1px solid var(--line); background:var(--tint)}
-.recap .wrap{display:grid; grid-template-columns:repeat(3,1fr); gap:28px; padding-block:34px}
-.recap .item{display:flex; gap:14px}
-.recap .big{font-family:var(--font-numeral); font-weight:200; font-size:30px; line-height:1; color:var(--sapphire); flex:0 0 auto}
-.recap h4{font-size:15px; margin-bottom:5px}
-.recap p{color:var(--muted); font-size:13.5px}
 
 /* ---------- stopka ---------- */
 footer.site{background:var(--steel); color:var(--grey-3); padding-block:40px 24px; font-size:14px}
@@ -335,16 +295,13 @@ footer.site a:hover{color:#fff; text-decoration:underline}
 @media (max-width:1080px){
   .lead-row{grid-template-columns:1fr; gap:36px}
   .nipcard{position:static}
-  .who,.why,.recap .wrap{grid-template-columns:repeat(2,1fr)}
-  .jump ul{grid-template-columns:1fr}
-  .bgrid{grid-template-columns:1fr}
+  .who,.why,  .bgrid{grid-template-columns:1fr}
   .noco{grid-template-columns:1fr}
   .hsearch{display:none}
 }
 @media (max-width:760px){
   .lead-row h1{font-size:34px}
-  .steps,.who,.why,.need,.faq,.registry .body,.g2,.pwd-req,.recap .wrap,footer.site .cols{grid-template-columns:1fr}
-  .steps li{border-right:0; border-bottom:1px solid var(--line-soft)}
+  .steps,.who,.why,.need,.faq,.registry .body,.g2,.pwd-req,  .steps li{border-right:0; border-bottom:1px solid var(--line-soft)}
   .registry .cell{border-right:0}
   .block{padding:24px 20px}
   section{padding-block:48px}
@@ -435,23 +392,6 @@ footer.site a:hover{color:#fff; text-decoration:underline}
         <p class="sub">Konto na moris.eu otwiera magazyn automatyczny w Chorzowie: około 4 000 indeksów
           wyrobów hutniczych i kolejowych, z ceną, dostępnością i terminem widocznym od razu —
           bez zapytania ofertowego i bez czekania na odpowiedź handlowca.</p>
-        <div class="pills">
-          <span>Sprzedaż już od <b>1 sztuki</b></span>
-          <span>Cięcie <b>na wymiar</b></span>
-          <span>Dostawa <b>3 dni robocze</b></span>
-          <span>Zamówienia <b>24/7</b></span>
-        </div>
-
-        <div class="jump">
-          <p class="jump-lead">Zanim wpiszesz NIP, sprawdź niżej:</p>
-          <ul>
-            <li><a href="#kroki"><span>Potrzebne kroki</span><small>trzy, łącznie około 3 minut</small></a></li>
-            <li><a href="#dla-kogo"><span>Dla kogo jest Moris</span><small>sześć typowych sytuacji zakupowych</small></a></li>
-            <li><a href="#warto"><span>Dlaczego warto</span><small>co daje konto, czego nie ma w telefonie do hurtowni</small></a></li>
-            <li><a href="#pytania"><span>Pytania przed rejestracją</span><small>ceny, limit kredytowy, kto zakłada konto</small></a></li>
-          </ul>
-          <p class="jump-foot">Masz już konto? <a href="#">Zaloguj się</a></p>
-        </div>
       </div>
 
       <!-- karta NIP -->
@@ -493,185 +433,84 @@ footer.site a:hover{color:#fff; text-decoration:underline}
   <!-- POTRZEBNE KROKI -->
   <section class="tint" id="kroki">
     <div class="wrap">
-      <div class="sec-head">
+      <div class="sec-head" style="margin-bottom:26px">
         <span class="kicker">Potrzebne kroki</span>
-        <h2>Trzy kroki do konta</h2>
-        <p>Nic więcej. Każdy kolejny ekran pokazuje, ile zostało — nie zaczynasz formularza w ciemno.</p>
+        <h2>Trzy kroki, około 3 minut</h2>
       </div>
       <ol class="steps">
-        <li>
-          <span class="no">1</span>
+        <li><span class="no">1</span>
           <h3>Numer NIP</h3>
-          <p>Wpisujesz dziesięć cyfr. Nazwę, adres, REGON i formę prawną pobieramy z CEIDG albo KRS,
-             a status podatnika sprawdzamy na białej liście VAT.</p>
-          <span class="time">około 30 sekund</span>
-        </li>
-        <li>
-          <span class="no">2</span>
+          <p>Nazwę, adres, REGON i status podatnika VAT pobieramy z CEIDG albo KRS.</p></li>
+        <li><span class="no">2</span>
           <h3>Kontakt i osoba</h3>
-          <p>Firmowy e-mail do faktur i dokumentów WZ, telefon dla kierowcy przy dostawie oraz
-             dane osoby, która będzie się logować.</p>
-          <span class="time">około 2 minut</span>
-        </li>
-        <li>
-          <span class="no">3</span>
+          <p>Firmowy e-mail do faktur, telefon dla kierowcy, dane do logowania.</p></li>
+        <li><span class="no">3</span>
           <h3>Potwierdzenie e-maila</h3>
-          <p>Klikasz link, który wysyłamy natychmiast. Konto działa od razu — ceny i dostępność
-             widzisz przy pierwszym zalogowaniu.</p>
-          <span class="time">około 30 sekund</span>
-        </li>
+          <p>Klikasz link — konto włącza się od razu, bez akceptacji po naszej stronie.</p></li>
       </ol>
-      <div class="steps-foot">
-        <span class="chip info">Łącznie około 3 minut</span>
-        <span>Limit kredytowy to osobny wniosek — nie jest częścią rejestracji i nie blokuje zakupów.</span>
-      </div>
     </div>
   </section>
 
   <!-- DLA KOGO -->
   <section id="dla-kogo">
     <div class="wrap">
-      <div class="sec-head">
+      <div class="sec-head" style="margin-bottom:28px">
         <span class="kicker">Dla kogo</span>
-        <h2>Dla firm, które kupują stal do pracy — nie do magazynu</h2>
-        <p>Moris obsługuje zarówno zamówienie na jedną sztukę, jak i dostawę wielotonową. Poniżej sześć
-          sytuacji, w których platforma zdejmuje z klienta najwięcej roboty.</p>
+        <h2>Dla firm, które kupują stal do pracy</h2>
       </div>
       <div class="who">
         <div class="card">
           <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 27h24M9 27V13l8-5 8 5v14M14 27v-7h6v7"/></svg>
           <h3>Produkcja i warsztat</h3>
-          <p>Pręty okrągłe i sześciokątne, płaskowniki, profile. Cięcie na wymiar zamiast docinania
-             u siebie i wyrzucania końcówek.</p>
-          <p class="quote">„Biorę sześć prętów, nie całą wiązkę."</p>
+          <p>Pręty, płaskowniki, profile — cięte na wymiar, od jednej sztuki.</p>
         </div>
         <div class="card">
           <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M4 29h26M7 29V9h9v20M16 15h11v14M20 20h3M20 25h3M10 14h3M10 20h3"/></svg>
-          <h3>Budownictwo i konstrukcje</h3>
-          <p>Dwuteowniki, ceowniki, kątowniki, profile zamknięte, blachy. Dostawa na plac budowy
-             z rozładunkiem HDS, zasięg żurawia do 11 m.</p>
-          <p class="quote">Wyroby do 7 m rozładowane na miejscu.</p>
+          <h3>Budownictwo</h3>
+          <p>Dwuteowniki, ceowniki, blachy — z rozładunkiem HDS na plac budowy.</p>
         </div>
         <div class="card">
           <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="17" cy="17" r="12"/><path d="M17 10v7l5 3"/></svg>
           <h3>Utrzymanie ruchu</h3>
-          <p>Zabrakło profilu w piątek po południu? Zamawiasz o dwudziestej trzeciej i od razu wiesz,
-             kiedy przyjedzie. Bez zapytania ofertowego.</p>
-          <p class="quote">Magazyn automatyczny nie ma godzin pracy.</p>
+          <p>Zamawiasz o dowolnej porze i od razu wiesz, kiedy towar przyjedzie.</p>
         </div>
         <div class="card">
           <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M6 26h22M10 26V8h14v18M10 14h14M14 26v-5h6v5"/><path d="M4 30h26"/></svg>
-          <h3>Kolej i infrastruktura</h3>
-          <p>Szyny transportowe, dźwignicowe, tramwajowe i lekkie oraz akcesoria kolejowe.
-             Dostawa samochodem albo koleją — Moris jest licencjonowanym spedytorem.</p>
-          <p class="quote">Osobny katalog kolejowy, ta sama ścieżka zamówienia.</p>
-        </div>
-        <div class="card">
-          <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M5 12h24l-2 15H7z"/><path d="M12 12V8a5 5 0 0 1 10 0v4"/></svg>
-          <h3>Handel i odsprzedaż</h3>
-          <p>Stały asortyment około 4 000 indeksów, rabaty progowe naliczane automatycznie od 500 kg,
-             limit kredytowy dostępny na wniosek.</p>
-          <p class="quote">Powtarzasz zamówienie zamiast składać je od nowa.</p>
-        </div>
-        <div class="card">
-          <svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><path d="M17 4l12 6v8c0 7-5 11-12 12-7-1-12-5-12-12v-8z"/><path d="M12 17l4 4 7-8"/></svg>
-          <h3>Zakupy i przetargi</h3>
-          <p>Wycena natychmiastowa do porównania ofert, faktury i dokumenty WZ do pobrania z konta,
-             certyfikat ISO 9001:2015 do dokumentacji.</p>
-          <p class="quote">Cena na ekranie zamiast maila z prośbą o ofertę.</p>
+          <h3>Kolej</h3>
+          <p>Szyny transportowe, dźwignicowe, tramwajowe oraz akcesoria kolejowe.</p>
         </div>
       </div>
-      <p class="notfor"><b>Kogo jeszcze nie obsługujemy.</b> Konto zakłada się na numer NIP, więc dziś platforma
-        działa wyłącznie dla firm. Rejestracja dla klientów indywidualnych jest w przygotowaniu —
-        formularz powiadomienia znajdziesz niżej.</p>
+      <p class="notfor"><b>Konto zakłada się na numer NIP</b>, więc dziś platforma działa wyłącznie dla firm.
+        Rejestracja dla klientów indywidualnych jest w przygotowaniu — formularz powiadomienia niżej.</p>
     </div>
   </section>
 
   <!-- DLACZEGO WARTO -->
   <section class="tint" id="warto">
     <div class="wrap">
-      <div class="sec-head">
+      <div class="sec-head" style="margin-bottom:30px">
         <span class="kicker">Dlaczego warto</span>
-        <h2>Sześć rzeczy, których nie ma w telefonie do hurtowni</h2>
-        <p>Konto nie zastępuje handlowca — zdejmuje z niego pracę powtarzalną, żeby został przy tym,
-          co wymaga rozmowy.</p>
+        <h2>Cztery rzeczy, których nie ma w telefonie do hurtowni</h2>
       </div>
       <div class="why">
-        <div class="item">
-          <span class="big">0 min</span>
-          <h3>Cena od razu, nie za dwa dni</h3>
-          <p>System wycenia zamówienie natychmiast. Nie wysyłasz zapytania i nie czekasz na odpowiedź.</p>
-        </div>
-        <div class="item">
-          <span class="big">24/7</span>
-          <h3>Zamawiasz o dowolnej porze</h3>
-          <p>Magazyn automatyczny pracuje niezależnie od godzin biura. Zamówienie złożone w nocy
-             wchodzi do realizacji rano.</p>
-        </div>
-        <div class="item">
-          <span class="big">1 szt.</span>
-          <h3>Bez minimum logistycznego</h3>
-          <p>Kupujesz tyle, ile potrzebujesz — również pojedynczą sztukę, także przy pierwszym zamówieniu.</p>
-        </div>
-        <div class="item">
-          <span class="big">90°</span>
-          <h3>Cięcie na wymiar i transportowe</h3>
-          <p>Płacisz za metry, których używasz. Podział wyrobu handlowego obniża też koszt dostawy.</p>
-        </div>
-        <div class="item">
-          <span class="big">3 dni</span>
-          <h3>Termin znasz przed zapłatą</h3>
-          <p>Wyroby standardowe w trzy dni robocze, cięte na wymiar w pięć — licząc od potwierdzenia płatności.</p>
-        </div>
-        <div class="item">
-          <span class="big">−7%</span>
-          <h3>Rabat nalicza się sam</h3>
-          <p>Próg masowy zamówienia obniża cenę automatycznie, bez negocjacji i bez dzwonienia.</p>
-        </div>
+        <div class="item"><span class="big">0 min</span>
+          <h3>Cena od razu</h3>
+          <p>Wycena natychmiast po zalogowaniu — bez zapytania ofertowego i bez czekania na odpowiedź.</p></div>
+        <div class="item"><span class="big">24/7</span>
+          <h3>O dowolnej porze</h3>
+          <p>Magazyn automatyczny pracuje niezależnie od godzin pracy biura.</p></div>
+        <div class="item"><span class="big">1 szt.</span>
+          <h3>Bez minimum</h3>
+          <p>Kupujesz tyle, ile potrzebujesz — także przy pierwszym zamówieniu.</p></div>
+        <div class="item"><span class="big">3 dni</span>
+          <h3>Termin przed zapłatą</h3>
+          <p>Wyroby standardowe w trzy dni robocze, cięte na wymiar w pięć.</p></div>
       </div>
       <div class="trustbar">
-        <span>Na rynku stali od <b>1994</b></span>
+        <span>Na rynku od <b>1994</b></span>
         <span>ISO <b>9001:2015</b></span>
-        <span>Magazyn automatyczny <b>20 m</b></span>
-        <span>Około <b>4 000</b> indeksów</span>
-        <span>Licencjonowany spedytor — samochód i kolej</span>
-        <span>Płatność: Autopay, BLIK, Apple Pay, Google Pay, karta, przelew</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- CO PRZYGOTOWAĆ -->
-  <section>
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="kicker">Zanim zaczniesz</span>
-        <h2>Co przygotować, a czego nie potrzebujesz</h2>
-      </div>
-      <div class="need">
-        <div class="box">
-          <h3><span class="chip ok">Przygotuj</span> Trzy rzeczy</h3>
-          <ul>
-            <li><svg class="ok" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10.5l4 4 8-9"/></svg>
-              <span><b>Numer NIP firmy.</b> Dziesięć cyfr, bez prefiksu PL.</span></li>
-            <li><svg class="ok" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10.5l4 4 8-9"/></svg>
-              <span><b>Firmowy e-mail i telefon.</b> Na e-mail idą faktury i dokumenty WZ, telefon służy
-              kierowcy przy dostawie.</span></li>
-            <li><svg class="ok" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10.5l4 4 8-9"/></svg>
-              <span><b>Dostęp do skrzynki.</b> Link aktywacyjny przychodzi natychmiast.</span></li>
-          </ul>
-        </div>
-        <div class="box no">
-          <h3><span class="chip info">Nie potrzebujesz</span> Trzech rzeczy</h3>
-          <ul>
-            <li><svg class="no" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15"/></svg>
-              <span><b>Skanów dokumentów.</b> Wypis z CEIDG, odpis z KRS i zaświadczenia pobieramy z rejestrów.</span></li>
-            <li><svg class="no" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15"/></svg>
-              <span><b>Umowy ramowej.</b> Kupujesz od pierwszego zamówienia, bez podpisywania niczego wcześniej.</span></li>
-            <li><svg class="no" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 5l10 10M15 5L5 15"/></svg>
-              <span><b>Wniosku o limit kredytowy.</b> Płacisz online albo przelewem z proformy.
-              Limit to osobna, dobrowolna ścieżka dla stałych klientów.</span></li>
-          </ul>
-        </div>
+        <span>Około <b>4 000</b> indeksów z magazynu</span>
+        <span>Płatność online albo przelew z proformy — <b>limit kredytowy nie jest wymagany</b></span>
       </div>
     </div>
   </section>
@@ -698,41 +537,6 @@ footer.site a:hover{color:#fff; text-decoration:underline}
     </div>
   </section>
 
-  <!-- FAQ -->
-  <section id="pytania">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="kicker">Pytania przed rejestracją</span>
-        <h2>Cztery rzeczy, o które pytają najczęściej</h2>
-      </div>
-      <div class="faq">
-        <div>
-          <details open>
-            <summary>Czy zobaczę ceny bez zakładania konta?</summary>
-            <p>Ceny katalogowe i dostępność są widoczne od razu. Cena z rabatem przypisanym do Twojej
-              firmy oraz termin dostawy pojawiają się po zalogowaniu.</p>
-          </details>
-          <details>
-            <summary>Kto w firmie powinien założyć konto?</summary>
-            <p>Osoba, która faktycznie zamawia — zwykle zaopatrzenie. Kolejne osoby dodasz później do tego
-              samego konta firmowego; nie zakłada się osobnych kont dla każdego pracownika.</p>
-          </details>
-        </div>
-        <div>
-          <details>
-            <summary>Ile trwa aktywacja konta?</summary>
-            <p>Link aktywacyjny wysyłamy natychmiast po wypełnieniu formularza. Konto działa od razu po
-              jego kliknięciu — nie czekasz na akceptację po naszej stronie.</p>
-          </details>
-          <details>
-            <summary>Czy muszę brać limit kredytowy?</summary>
-            <p>Nie. Płacisz online (Autopay, BLIK, Apple Pay, Google Pay, karta) albo przelewem z faktury
-              proforma. Limit kredytowy to osobny wniosek dla stałych klientów, rozpatrywany po weryfikacji.</p>
-          </details>
-        </div>
-      </div>
-    </div>
-  </section>
 </div>
 
 <!-- ============================================================
@@ -939,11 +743,6 @@ footer.site a:hover{color:#fff; text-decoration:underline}
               <span>Kliknięcie linku w wiadomości e-mail</span></li>
           </ul>
         </div>
-        <div class="box">
-          <h3>Czego nadal nie potrzebujesz</h3>
-          <p>Żadnych skanów dokumentów, umowy ramowej ani wniosku o limit kredytowy. Zakupy działają
-            od pierwszego zamówienia.</p>
-        </div>
         <div class="box dark">
           <h3>Coś się nie zgadza?</h3>
           <p>Biuro Obsługi Klienta<br>
@@ -955,14 +754,6 @@ footer.site a:hover{color:#fff; text-decoration:underline}
     </div>
   </div>
 
-  <!-- przypomnienie wartości, już bez natłoku -->
-  <div class="recap">
-    <div class="wrap">
-      <div class="item"><span class="big">1 szt.</span><div><h4>Bez minimum</h4><p>Kupujesz tyle, ile potrzebujesz — także przy pierwszym zamówieniu.</p></div></div>
-      <div class="item"><span class="big">3 dni</span><div><h4>Termin przed zapłatą</h4><p>Wyroby standardowe w trzy dni robocze, cięte na wymiar w pięć.</p></div></div>
-      <div class="item"><span class="big">24/7</span><div><h4>Zamówienia o każdej porze</h4><p>Magazyn automatyczny pracuje niezależnie od godzin biura.</p></div></div>
-    </div>
-  </div>
 </div>
 
 </main>

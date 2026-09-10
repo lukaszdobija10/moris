@@ -241,29 +241,34 @@ Rozwiązanie: jeden adres, dwie odsłony przełączane momentem podania NIP.
 |---|---|---|
 | Zadanie ekranu | przekonać i wytłumaczyć | doprowadzić do końca |
 | Formularz | kompaktowa karta, tylko kraj i NIP | pełny, na całą szerokość |
-| Treść wokół | dla kogo, dlaczego warto, potrzebne kroki, pytania | pasek postępu, co zostało, kontakt do BOK |
+| Treść wokół | trzy kroki, dla kogo, dlaczego warto | pasek postępu, co zostało, kontakt do BOK |
 | Nagłówek | „Stal zamawiasz sam, kiedy jej potrzebujesz." | „Zostały dwa kroki." |
 
-**Dla kogo** — sześć typowych sytuacji zakupowych zamiast listy branż: produkcja
-i warsztat, budownictwo, utrzymanie ruchu, kolej, handel i odsprzedaż, dział
-zakupów. Każda z jednym zdaniem, które klient rozpozna jako swoje („biorę sześć
-prętów, nie całą wiązkę"). Do tego jawnie powiedziane, kogo Moris **jeszcze** nie
-obsługuje — konto zakłada się na NIP, więc klient indywidualny dowiaduje się tego
-od razu, a nie po wypełnieniu połowy formularza.
+**Zasada porządkująca: jeden ekran, jedno zadanie, jedno główne działanie.**
+Ekran, który ma przekonać, kusi, żeby dołożyć jeszcze jeden argument. Po kilku
+takich dołożeniach przestaje prowadzić do formularza i staje się drugą stroną
+główną. Odsłona przed podaniem NIP ma dlatego trzy bloki, nie siedem:
 
-**Dlaczego warto** — sześć konkretów z liczbą zamiast przymiotników: wycena
-w 0 minut, zamówienia 24/7, sprzedaż od 1 sztuki, cięcie 90°, termin 3 dni znany
-przed zapłatą, rabat −7% naliczany automatycznie. Pod spodem pasek wiarygodności:
-1994, ISO 9001:2015, magazyn 20 m, ~4 000 indeksów, licencjonowany spedytor.
+- **Trzy kroki, około 3 minut** — co się wydarzy i ile to potrwa.
+- **Dla kogo** — cztery sytuacje zakupowe (produkcja, budownictwo, utrzymanie
+  ruchu, kolej), każda w jednym zdaniu, plus jawna informacja, że konto zakłada
+  się na NIP, więc klient indywidualny dowiaduje się tego od razu.
+- **Dlaczego warto** — cztery konkrety z liczbą: wycena w 0 minut, zamówienia
+  24/7, sprzedaż od 1 sztuki, termin 3 dni znany przed zapłatą. Pod spodem
+  jedna linia wiarygodności: 1994, ISO 9001:2015, ~4 000 indeksów oraz zdanie
+  zdejmujące najczęstszą obawę — limit kredytowy nie jest wymagany.
 
-**Potrzebne kroki** — trzy kroki z czasem przy każdym (30 s / 2 min / 30 s) oraz
-sekcja **„czego nie potrzebujesz"**: skanów dokumentów, umowy ramowej, wniosku
-o limit kredytowy. To najskuteczniejsza część takiego ekranu — zdejmuje obawę,
-że rejestracja w hurtowni stali oznacza papierologię i tydzień oczekiwania.
+Trzy najmocniejsze argumenty stoją tam, gdzie pracują najciężej — **w karcie
+NIP, obok pola do wypełnienia**: około 3 minut, bez skanów dokumentów, bez umowy
+ramowej.
 
-Po podaniu NIP treść sprzedażowa znika. Zostaje pasek postępu, formularz i trzy
-kafle pomocy z boku, a na dole wąski pas z trzema wartościami — żeby argument
-nie wyparował całkowicie, ale też nie konkurował z polami do wypełnienia.
+**Czego świadomie tu nie ma.** Sekcji „co przygotować, a czego nie potrzebujesz"
+(powtarzała te trzy zapewnienia z karty), listy pytań przed rejestracją (to praca
+dla strony pomocy — najważniejsza odpowiedź, o limit kredytowy, weszła do paska
+wiarygodności), pigułek z parametrami w nagłówku ani spisu treści prowadzącego do
+sekcji niżej. Po weryfikacji NIP zniknął też pas przypominający wartości: na tym
+etapie klient jest już przekonany, a każdy element poza formularzem opóźnia
+jego wypełnienie.
 
 **D. Dwie poprawki przy okazji**
 
