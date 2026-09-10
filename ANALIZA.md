@@ -282,47 +282,46 @@ nie wyparował całkowicie, ale też nie konkurował z polami do wypełnienia.
 Prototyp: `redesign/po-rejestracji.html`.
 
 Klient kończy rejestrację i trafia w puste konto. Zna już cenę i termin, ale nie
-wie, gdzie zacząć zamówienie — a to jest moment, w którym najłatwiej go stracić:
-zainwestował trzy minuty, nic z tego jeszcze nie ma i nikt mu nie powiedział,
-co dalej. Ekran powitalny to nie uprzejmość, tylko domknięcie ścieżki.
+wie, gdzie zacząć — a to moment, w którym najłatwiej go stracić: zainwestował
+trzy minuty, nic z tego jeszcze nie ma i nikt mu nie powiedział, co dalej.
 
-Znowu dwa momenty, bo mają różne zadania.
+**Zasada: jeden ekran, jedno zadanie, jedno główne działanie.** Ekran powitalny
+kusi, żeby wrzucić na niego wszystko — samouczek, listę funkcji, checklistę
+ustawień, FAQ. Wtedy przestaje prowadzić do zamówienia i staje się drugą stroną
+główną. Wszystko, co nie prowadzi do działania, zostało wycięte albo sprowadzone
+do jednej linijki.
 
-**A. Zaraz po wysłaniu formularza — „Został jeden klik"**
+| | Zadanie | Główne działanie |
+|---|---|---|
+| Po wysłaniu formularza | potwierdzić adres e-mail | kliknięcie linku w wiadomości |
+| Po aktywacji konta | złożyć pierwsze zamówienie | „Przejdź do katalogu" |
 
-Jedyny sensowny krok to kliknięcie linku w wiadomości, więc ekran nie może
-udawać, że da się zrobić coś więcej. Zawiera: adres, na który poszła wiadomość
-(często literówka wychodzi dopiero tutaj), termin ważności linku, trzy kroki
-opisane wprost oraz sekcję **„wiadomość nie dotarła?"** — spam i zakładka
-„Oferty", literówka w adresie, dodanie `info@moris.eu` do zaufanych nadawców.
-Ponowne wysłanie linku ma trzydziestosekundową blokadę, żeby nie zasypać
-skrzynki. Z boku: co jeszcze jest w tej wiadomości (dane konta, OWH w PDF,
-kontakt do BOK) oraz „w międzyczasie" — katalog jest otwarty bez logowania,
-więc czas oczekiwania może pracować.
+**A. Potwierdź adres e-mail.** Adres, na który poszła wiadomość (tu wychodzi
+literówka), termin ważności linku, dwie linijki „nie dotarła?" i przycisk
+ponownego wysłania z blokadą 30 sekund. Nic więcej — jedyny sensowny krok to
+kliknięcie linku, więc ekran nie udaje, że da się zrobić coś innego.
 
-**B. Po kliknięciu linku — „Konto jest gotowe. Teraz pierwsze zamówienie"**
+**B. Zamów pierwszy raz.** Jeden ciemny przycisk do katalogu i jeden cichy
+odnośnik dla klienta z gotową listą indeksów. Pod spodem trzy rzeczy, każda
+w jednej linijce myśli:
 
-Trzy wejścia od razu pod nagłówkiem: wyroby hutnicze, kolej, szybkie zamówienie
-z listy. Dalej **sześć kroków ścieżki zamówienia** — znajdź wyrób, ustaw długość
-i cięcie, sprawdź cenę i rabat, wybierz dostawę, zapłać, śledź i odbierz
-dokumenty. Numeracja jest tu uzasadniona: to naprawdę sekwencja, a nie ozdobnik.
+- **jedna rzecz do zrobienia** — adres dostawy, bo to jedyne, co realnie blokuje
+  koszyk. Pasek jest celowo cichszy od głównego przycisku;
+- **jak zamówić w trzech krokach** — wybierz wyrób, ustaw długość, dostawa
+  i płatność;
+- **cztery fakty** — 3 dni robocze, 5 dni dla ciętych, rabat od 500 kg, płatność
+  online albo proforma. To odpowiedzi na pytania, które i tak trafiłyby do BOK.
 
-Pod spodem trzy sekcje, które robią różnicę przy drugim zamówieniu:
+Na dole opiekun handlowy z imienia i nazwiska oraz kontakt do Biura Obsługi
+Klienta — jeden cichy blok.
 
-- **Trzy skróty na później** — powtórzenie zamówienia, listy zakupowe, wklejenie
-  listy indeksów albo pliku CSV. Klient, który ustawi je przy pierwszym
-  zakupie, przy drugim zamawia w dwie minuty.
-- **Cztery rzeczy do dokończenia** — checklista z paskiem postępu: adres dostawy
-  (bez niego koszyk nie policzy transportu), dane do faktury, osoby z firmy,
-  limit kredytowy jako opcja. Każda pozycja z własnym przyciskiem, nic nie
-  blokuje zakupów.
-- **Terminy i płatność w jednej tabeli** — 3 dni / 5 dni / odbiór własny /
-  powyżej 10 ton, plus lista metod płatności. Zdejmuje to najczęstsze pytania
-  do Biura Obsługi Klienta jeszcze przed pierwszym zamówieniem.
-
-Do tego opiekun handlowy z imienia i nazwiska — platforma nie zastępuje
-handlowca, tylko przejmuje od niego pracę powtarzalną, i klient powinien
-wiedzieć, kiedy zadzwonić.
+**Czego świadomie tu nie ma.** Sześciu kroków ścieżki zamówienia (trzy wystarczą,
+resztę klient zobaczy w koszyku), skrótów na kolejne zamówienia (dotyczą drugiego
+zakupu, nie pierwszego), pięciopozycyjnej checklisty ustawień (tylko adres
+dostawy cokolwiek blokuje), tabeli terminów (cztery znaczniki mówią to samo) ani
+sekcji „co jeśli" (to jest praca dla strony pomocy, nie dla ekranu powitalnego).
+Każda z nich była w pierwszej wersji prototypu i każda odciągała od jedynego
+celu tego ekranu.
 
 ### 4.6 Co zmienia się poza stroną główną (rekomendacje dalszych kroków)
 

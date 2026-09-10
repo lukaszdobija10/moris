@@ -10,8 +10,10 @@
 <style>
 /* =========================================================================
    Moris — ekran po rejestracji, dwa momenty
-   A: zaraz po wysłaniu formularza — czekamy na kliknięcie linku w mailu.
-   B: po aktywacji konta — jak zamówić i co dokończyć w ustawieniach.
+   Zasada: jeden ekran, jedno zadanie i jedno główne działanie.
+   A: potwierdź adres e-mail.   B: złóż pierwsze zamówienie.
+   Wszystko, co nie prowadzi do tego działania, zostało usunięte albo
+   sprowadzone do jednej linijki.
    System wizualny wg księgi znaku (brand/moris-logo-manual.pdf).
    ========================================================================= */
 :root{
@@ -51,12 +53,12 @@
   --wrap:1240px;
 }
 *{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%; scroll-behavior:smooth}
-body{margin:0; background:var(--paper); color:var(--steel); font:16px/1.55 var(--font-body)}
-h1,h2,h3,h4{margin:0; text-wrap:balance; font-family:var(--font-head); font-weight:500}
+html{-webkit-text-size-adjust:100%}
+body{margin:0; background:var(--tint); color:var(--steel); font:16px/1.55 var(--font-body)}
+h1,h2,h3{margin:0; text-wrap:balance; font-family:var(--font-head); font-weight:500}
 p{margin:0}
 a{color:var(--sapphire)}
-button,input,select,textarea{font:inherit; color:inherit}
+button,input,select{font:inherit; color:inherit}
 :focus-visible{outline:2px solid var(--sapphire); outline-offset:2px}
 .wrap{max-width:1240px; margin-inline:auto; padding-inline:24px}
 .num{font-variant-numeric:tabular-nums}
@@ -71,7 +73,7 @@ button,input,select,textarea{font:inherit; color:inherit}
 .demo .hint{margin-left:auto; color:var(--grey-3); opacity:.85}
 
 /* chrome serwisu */
-.utility{background:var(--tint); border-bottom:1px solid var(--line); font-size:13px; color:var(--muted)}
+.utility{background:var(--paper); border-bottom:1px solid var(--line); font-size:13px; color:var(--muted)}
 .utility .wrap{display:flex; gap:20px; align-items:center; min-height:36px; flex-wrap:wrap}
 .utility .right{margin-left:auto; display:flex; gap:18px}
 .utility a{color:var(--muted); text-decoration:none}
@@ -92,7 +94,7 @@ nav.main .wrap{display:flex; align-items:center; gap:28px; min-height:46px; font
 nav.main a{color:var(--steel); text-decoration:none}
 nav.main a:hover{color:var(--sapphire)}
 nav.main .right{margin-left:auto; display:flex; gap:20px; color:var(--muted); font-size:13.5px}
-.shapes{background:var(--tint); border-bottom:1px solid var(--line)}
+.shapes{background:var(--paper); border-bottom:1px solid var(--line)}
 .shapes .wrap{display:flex; align-items:center; gap:10px; min-height:56px; overflow-x:auto}
 .shapes .switch2{display:flex; align-items:center; gap:9px; font-size:13.5px; font-weight:500; white-space:nowrap; margin-right:14px}
 .shapes .track{width:38px; height:20px; border-radius:10px; background:var(--steel); position:relative}
@@ -104,151 +106,69 @@ nav.main .right{margin-left:auto; display:flex; gap:20px; color:var(--muted); fo
 .shapes .icons svg{width:26px; height:26px}
 .shapes .sale{background:var(--orange); color:var(--steel); font-size:11px; font-weight:600; letter-spacing:.06em; padding:7px 11px; border-radius:2px; white-space:nowrap}
 
-/* wspólne */
-.kicker{display:block; font-size:11.5px; font-weight:600; letter-spacing:.18em; text-transform:uppercase; color:var(--sapphire); margin-bottom:12px}
-.btn{display:inline-flex; align-items:center; justify-content:center; gap:9px; cursor:pointer; text-decoration:none;
-  padding:13px 24px; border-radius:2px; border:1px solid var(--steel); background:var(--steel); color:#fff; font-weight:500; font-size:15px}
-.btn:hover{background:var(--sapphire); border-color:var(--sapphire)}
-.btn.ghost{background:transparent; color:var(--sapphire); border-color:var(--line)}
-.btn.ghost:hover{background:var(--tint); color:var(--steel)}
-.btn.sm{padding:9px 16px; font-size:14px}
-.btn[disabled]{opacity:.5; cursor:not-allowed}
-.chip{display:inline-flex; align-items:center; gap:7px; padding:6px 12px; border-radius:2px; font-size:12.5px; font-weight:500; white-space:nowrap}
-.chip.ok{background:var(--ui-ok-30); color:var(--steel)}
-.chip.info{background:var(--pastel-30); color:var(--steel)}
-.chip.warn{background:var(--ui-warn-50); color:var(--steel)}
-section{padding-block:64px}
-section.tint{background:var(--tint)}
-.sec-head{margin-bottom:38px; max-width:64ch}
-.sec-head h2{font-size:30px; line-height:1.15; letter-spacing:-.015em}
-.sec-head p{color:var(--muted); margin-top:12px; font-size:16px}
-
+/* ---------- jedna kolumna, jedno zadanie ---------- */
 .stage{display:none}
 body[data-state="mail"] .stage-mail{display:block}
 body[data-state="active"] .stage-active{display:block}
 
-/* ================= A — sprawdź skrzynkę ================= */
-.mailwrap{padding-block:56px 72px; display:grid; grid-template-columns:minmax(0,1fr) 380px; gap:48px; align-items:start}
-.mailcard{border:1px solid var(--line); border-top:3px solid var(--ui-ok); background:var(--paper); padding:38px}
-.mailcard h1{font-family:var(--font-display); font-weight:200; font-size:42px; line-height:1.08; letter-spacing:-.02em; margin:18px 0 16px}
-.mailcard .lead{font-size:17px; color:var(--muted); max-width:52ch}
-.mailto{margin-top:26px; padding:18px 22px; background:var(--tint); border-left:3px solid var(--sapphire); font-size:15.5px}
-.mailto b{font-weight:500}
-.mailto small{display:block; color:var(--muted); font-size:13px; margin-top:5px}
-.todo{list-style:none; margin:30px 0 0; padding:0; display:grid; gap:16px}
-.todo li{display:flex; gap:14px; align-items:flex-start}
-.todo .n{flex:0 0 26px; width:26px; height:26px; border-radius:50%; background:var(--steel); color:#fff; font-size:13px; display:grid; place-items:center}
-.todo h3{font-size:16px; margin-bottom:4px}
-.todo p{color:var(--muted); font-size:14.5px}
-.resend{margin-top:30px; padding-top:26px; border-top:1px solid var(--line-soft)}
-.resend h3{font-size:16px; margin-bottom:10px}
-.resend ul{margin:0 0 18px; padding-left:20px; color:var(--muted); font-size:14.5px; display:grid; gap:7px}
-.resend .acts{display:flex; gap:12px; flex-wrap:wrap; align-items:center}
-.resend .state{font-size:13.5px; color:var(--muted)}
+.col{max-width:760px; margin-inline:auto; padding:56px 24px 72px}
+.card{background:var(--paper); border:1px solid var(--line); padding:44px 46px}
+.chip{display:inline-flex; align-items:center; gap:7px; padding:6px 12px; border-radius:2px; font-size:12.5px; font-weight:500}
+.chip.ok{background:var(--ui-ok-30); color:var(--steel)}
+h1{font-family:var(--font-display); font-weight:200; font-size:42px; line-height:1.07; letter-spacing:-.025em; margin:20px 0 16px}
+.lead{font-size:17.5px; color:var(--muted)}
+.lead b{color:var(--steel); font-weight:500}
 
-.meanwhile{border:1px solid var(--line); background:var(--paper); padding:26px}
-.meanwhile h3{font-size:17px; margin-bottom:10px}
-.meanwhile p{color:var(--muted); font-size:14.5px}
-.meanwhile .links{display:grid; gap:2px; margin-top:18px}
-.meanwhile .links a{display:flex; justify-content:space-between; gap:12px; padding:12px 0; border-bottom:1px solid var(--line-soft); text-decoration:none; color:var(--steel); font-size:14.5px}
-.meanwhile .links a:last-child{border-bottom:0}
-.meanwhile .links a:hover{color:var(--sapphire)}
-.meanwhile .links span{color:var(--grey-2)}
-.inmail{border:1px solid var(--line); background:var(--tint); padding:26px; margin-top:20px}
-.inmail h3{font-size:16px; margin-bottom:12px}
-.inmail ul{margin:0; padding:0; list-style:none; display:grid; gap:10px; color:var(--muted); font-size:14px}
-.inmail li{display:flex; gap:10px}
-.inmail svg{flex:0 0 17px; width:17px; height:17px; margin-top:2px; color:var(--ok-ink)}
+.btn{display:inline-flex; align-items:center; justify-content:center; gap:9px; cursor:pointer; text-decoration:none;
+  padding:15px 30px; border-radius:2px; border:1px solid var(--steel); background:var(--steel); color:#fff;
+  font-weight:500; font-size:16px}
+.btn:hover{background:var(--sapphire); border-color:var(--sapphire)}
+.btn.ghost{background:transparent; color:var(--sapphire); border-color:var(--line); padding:11px 20px; font-size:14.5px}
+.btn.ghost:hover{background:var(--tint); color:var(--steel)}
+.btn[disabled]{opacity:.5; cursor:not-allowed}
+.action{margin-top:32px; display:flex; gap:18px; align-items:center; flex-wrap:wrap}
+.action .alt{font-size:14.5px; color:var(--muted)}
 
-/* ================= B — konto aktywne ================= */
-.hero{background:var(--tint); border-bottom:1px solid var(--line)}
-.hero .wrap{padding-block:54px 58px}
-.hero h1{font-family:var(--font-display); font-weight:200; font-size:52px; line-height:1.06; letter-spacing:-.025em; margin:16px 0 18px}
-.hero .lead{font-size:18px; color:var(--muted); max-width:58ch}
-.starts{display:grid; grid-template-columns:repeat(3,1fr); gap:18px; margin-top:36px}
-.start{display:flex; gap:16px; align-items:flex-start; padding:22px; border:1px solid var(--line); background:var(--paper); text-decoration:none; color:inherit}
-.start:hover{border-color:var(--sapphire)}
-.start svg.ic{flex:0 0 40px; width:40px; height:40px; color:var(--sapphire)}
-.start b{display:block; font-size:16px; font-weight:500; margin-bottom:5px}
-.start span{color:var(--muted); font-size:14px; line-height:1.45}
-.start .go{margin-left:auto; color:var(--sapphire); font-size:20px; align-self:center}
+/* jedna rzecz do zrobienia */
+.todo{display:flex; gap:16px; align-items:center; flex-wrap:wrap; margin-top:34px; padding:18px 20px;
+  border:1px solid var(--line); border-left:3px solid var(--orange); background:var(--paper)}
+.todo div{flex:1; min-width:220px}
+.todo b{display:block; font-weight:500; font-size:15.5px; margin-bottom:3px}
+.todo span{color:var(--muted); font-size:14px}
+.todo .btn{padding:10px 18px; font-size:14px}
 
-/* jak zamówić */
-.flow{display:grid; grid-template-columns:repeat(3,1fr); gap:0; border:1px solid var(--line); background:var(--paper)}
-.flow li{list-style:none; padding:28px; border-right:1px solid var(--line-soft); border-bottom:1px solid var(--line-soft)}
-.flow li:nth-child(3n){border-right:0}
-.flow li:nth-child(n+4){border-bottom:0}
-.flow .no{font-family:var(--font-numeral); font-weight:200; font-size:40px; line-height:1; color:var(--sapphire); display:block; margin-bottom:12px}
-.flow h3{font-size:17px; margin-bottom:8px}
-.flow p{color:var(--muted); font-size:14.5px}
-.flow .note{display:block; margin-top:12px; font-size:13px; color:var(--steel); background:var(--pastel-30); padding:5px 10px; border-radius:2px}
+/* trzy kroki */
+.how{margin-top:44px; padding-top:34px; border-top:1px solid var(--line-soft)}
+.how h2{font-size:13px; letter-spacing:.14em; text-transform:uppercase; color:var(--muted); margin-bottom:22px}
+.how ol{list-style:none; margin:0; padding:0; display:grid; grid-template-columns:repeat(3,1fr); gap:26px}
+.how li{display:grid; gap:7px; align-content:start}
+.how .no{font-family:var(--font-numeral); font-weight:200; font-size:30px; line-height:1; color:var(--sapphire)}
+.how h3{font-size:15.5px}
+.how p{color:var(--muted); font-size:14px; line-height:1.5}
 
-/* szybciej następnym razem */
-.faster{display:grid; grid-template-columns:repeat(3,1fr); gap:20px}
-.faster .card{border:1px solid var(--line); background:var(--paper); padding:26px; display:grid; gap:10px}
-.faster svg{width:32px; height:32px; color:var(--sapphire)}
-.faster h3{font-size:17px}
-.faster p{color:var(--muted); font-size:14.5px}
+/* fakty w jednej linii */
+.facts{margin-top:34px; padding-top:26px; border-top:1px solid var(--line-soft); display:flex; flex-wrap:wrap; gap:10px}
+.facts span{border:1px solid var(--line); background:var(--paper); padding:8px 13px; font-size:13.5px; border-radius:2px}
+.facts b{font-weight:500}
 
-/* checklista konta */
-.setup{display:grid; grid-template-columns:minmax(0,1fr) 340px; gap:36px; align-items:start}
-.checks{border:1px solid var(--line); background:var(--paper)}
-.checks .bar{padding:20px 26px; border-bottom:1px solid var(--line-soft); display:flex; gap:16px; align-items:center; flex-wrap:wrap}
-.checks .meter{flex:1; min-width:180px; height:8px; background:var(--tint); border-radius:4px; overflow:hidden}
-.checks .meter i{display:block; height:100%; width:20%; background:var(--ui-ok)}
-.checks .count{font-size:13.5px; color:var(--muted)}
-.checks .row{display:flex; gap:16px; align-items:flex-start; padding:20px 26px; border-bottom:1px solid var(--line-soft)}
-.checks .row:last-child{border-bottom:0}
-.checks .row .mark{flex:0 0 22px; width:22px; height:22px; border-radius:50%; border:2px solid var(--line); margin-top:2px}
-.checks .row.done .mark{border-color:var(--ui-ok); background:var(--ui-ok-30); position:relative}
-.checks .row.done .mark::after{content:"✓"; position:absolute; inset:0; display:grid; place-items:center; font-size:13px; color:var(--ok-ink)}
-.checks h3{font-size:16px; margin-bottom:5px}
-.checks p{color:var(--muted); font-size:14px}
-.checks .act{margin-left:auto; align-self:center; white-space:nowrap}
-.checks .row.done h3{color:var(--muted)}
+/* pomoc — jeden cichy blok */
+.help{max-width:760px; margin:0 auto; padding:0 24px 72px}
+.helpbox{display:flex; gap:18px; align-items:center; flex-wrap:wrap; padding:22px 26px; background:var(--paper); border:1px solid var(--line)}
+.helpbox .av{flex:0 0 44px; width:44px; height:44px; border-radius:50%; background:var(--pastel-30); display:grid; place-items:center; font-weight:500; font-size:14px}
+.helpbox .who b{display:block; font-weight:500; font-size:15px}
+.helpbox .who span{color:var(--muted); font-size:13.5px}
+.helpbox .bok{margin-left:auto; text-align:right; font-size:14px; color:var(--muted); line-height:1.6}
+.helpbox .bok a{text-decoration:none}
 
-aside .box{border:1px solid var(--line); background:var(--paper); padding:24px; margin-bottom:20px}
-aside h3{font-size:16px; margin-bottom:12px}
-aside p, aside li{color:var(--muted); font-size:14px}
-aside .box.dark{background:var(--steel); border-color:var(--steel); color:#fff}
-aside .box.dark h3{color:#fff}
-aside .box.dark p{color:var(--grey-3)}
-aside .box.dark a{color:#fff}
-.person{display:flex; gap:14px; align-items:center; margin-bottom:14px}
-.person .av{flex:0 0 46px; width:46px; height:46px; border-radius:50%; background:var(--pastel-30); color:var(--steel); display:grid; place-items:center; font-weight:500}
-.person b{display:block; font-size:15px; font-weight:500}
-.person span{color:var(--muted); font-size:13px}
+/* odsłona A — dodatki */
+.mailto{margin-top:10px; font-size:18px}
+.mailto b{font-weight:500; color:var(--steel); background:var(--pastel-30); padding:4px 10px; border-radius:2px}
+.retry{margin-top:36px; padding-top:28px; border-top:1px solid var(--line-soft)}
+.retry h2{font-size:16px; margin-bottom:10px}
+.retry ul{margin:0 0 20px; padding-left:20px; color:var(--muted); font-size:14.5px; display:grid; gap:6px}
+.retry .acts{display:flex; gap:14px; align-items:center; flex-wrap:wrap}
+.retry .state{font-size:13.5px; color:var(--muted)}
 
-/* terminy i płatność */
-.tblwrap{overflow-x:auto; border:1px solid var(--line); background:var(--paper)}
-table{border-collapse:collapse; width:100%; min-width:520px; font-size:14.5px}
-th,td{padding:13px 18px; text-align:left; border-bottom:1px solid var(--line-soft)}
-thead th{background:var(--steel); color:#fff; font-size:12.5px; letter-spacing:.06em; text-transform:uppercase; font-weight:500}
-tbody tr:nth-child(even){background:var(--tint)}
-tbody tr:last-child td{border-bottom:0}
-.pay{display:flex; flex-wrap:wrap; gap:8px; margin-top:22px}
-.pay span{border:1px solid var(--line); padding:7px 12px; font-size:12.5px; color:var(--steel); background:var(--paper); border-radius:2px}
-
-/* FAQ */
-.faq{display:grid; grid-template-columns:1fr 1fr; gap:0 40px}
-.faq details{border-bottom:1px solid var(--line-soft); padding:18px 0}
-.faq summary{cursor:pointer; font-weight:500; font-size:15.5px; list-style:none; display:flex; justify-content:space-between; gap:16px}
-.faq summary::-webkit-details-marker{display:none}
-.faq summary::after{content:"+"; color:var(--sapphire); font-size:20px; line-height:1}
-.faq details[open] summary::after{content:"–"}
-.faq p{margin-top:12px; color:var(--muted); font-size:14.5px}
-
-.cta{background:var(--steel); color:#fff}
-.cta .wrap{padding-block:52px; display:flex; gap:32px; align-items:center; flex-wrap:wrap}
-.cta h2{color:#fff; font-size:28px; max-width:26ch}
-.cta p{color:var(--grey-3); margin-top:10px; max-width:52ch}
-.cta .acts{margin-left:auto; display:flex; gap:14px; flex-wrap:wrap}
-.cta .btn{background:#fff; color:var(--steel); border-color:#fff}
-.cta .btn:hover{background:var(--pastel); border-color:var(--pastel); color:var(--steel)}
-.cta .btn.ghost{background:transparent; color:#fff; border-color:rgba(255,255,255,.5)}
-.cta .btn.ghost:hover{background:rgba(255,255,255,.1); color:#fff}
-
-/* stopka */
 footer.site{background:var(--steel); color:var(--grey-3); padding-block:40px 24px; font-size:14px}
 footer.site .cols{display:grid; grid-template-columns:1.4fr 1fr 1fr; gap:32px}
 footer.site .brand svg{height:30px; width:auto; color:#fff; display:block; margin-bottom:14px}
@@ -259,24 +179,15 @@ footer.site a{color:var(--grey-3); text-decoration:none}
 footer.site a:hover{color:#fff; text-decoration:underline}
 .legal{border-top:1px solid rgba(255,255,255,.14); margin-top:34px; padding-top:20px; display:flex; flex-wrap:wrap; gap:18px; color:var(--grey-2); font-size:13px}
 
-@media (max-width:1080px){
-  .mailwrap,.setup{grid-template-columns:1fr}
-  .starts,.faster{grid-template-columns:repeat(2,1fr)}
-  .flow{grid-template-columns:repeat(2,1fr)}
-  .flow li:nth-child(3n){border-right:1px solid var(--line-soft)}
-  .flow li:nth-child(2n){border-right:0}
-  .flow li:nth-child(n+4){border-bottom:1px solid var(--line-soft)}
-  .hsearch{display:none}
+@media (max-width:1080px){ .hsearch{display:none} }
+@media (max-width:700px){
+  h1{font-size:31px}
+  .card{padding:28px 22px}
+  .how ol{grid-template-columns:1fr; gap:20px}
+  .helpbox .bok{margin-left:0; text-align:left}
+  footer.site .cols{grid-template-columns:1fr}
 }
-@media (max-width:760px){
-  .hero h1{font-size:34px} .mailcard h1{font-size:30px} .mailcard{padding:26px 22px}
-  .starts,.faster,.flow,.faq,footer.site .cols{grid-template-columns:1fr}
-  .flow li{border-right:0!important}
-  section{padding-block:48px}
-  .checks .act{margin-left:0}
-  .checks .row{flex-wrap:wrap}
-}
-@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto} *{transition:none!important}}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
 </style>
 </head>
 <body data-state="mail">
@@ -285,10 +196,10 @@ footer.site a:hover{color:#fff; text-decoration:underline}
   <div class="wrap">
     <b>Po rejestracji — dwa momenty</b>
     <div class="seg" role="group" aria-label="Wybór momentu">
-      <button type="button" id="go-mail" aria-pressed="true">Zaraz po wysłaniu formularza</button>
-      <button type="button" id="go-active" aria-pressed="false">Po kliknięciu linku w mailu</button>
+      <button type="button" id="go-mail" aria-pressed="true">Potwierdzenie e-maila</button>
+      <button type="button" id="go-active" aria-pressed="false">Konto aktywne</button>
     </div>
-    <span class="hint">Ekran „co dalej” pojawia się dopiero po aktywacji konta. <a href="rejestracja.html" style="color:#fff">← wróć do rejestracji</a></span>
+    <span class="hint">Jeden ekran, jedno działanie.</span>
   </div>
 </div>
 
@@ -346,337 +257,87 @@ footer.site a:hover{color:#fff; text-decoration:underline}
 
 <main>
 
-<!-- ============================================================
-     A — zaraz po wysłaniu formularza
-     ============================================================ -->
+<!-- ======================= A — potwierdź e-mail ======================= -->
 <div class="stage stage-mail">
-  <div class="wrap">
-    <div class="mailwrap">
-      <div class="mailcard">
-        <span class="chip ok">Formularz przyjęty</span>
-        <h1>Został jeden klik.</h1>
-        <p class="lead">Wysłaliśmy wiadomość z linkiem aktywacyjnym. Konto działa od razu po jego kliknięciu —
-          nie czekasz na akceptację po naszej stronie.</p>
+  <div class="col">
+    <div class="card">
+      <span class="chip ok">Konto założone</span>
+      <h1>Potwierdź adres e-mail.</h1>
+      <p class="lead">Wysłaliśmy wiadomość z linkiem na adres</p>
+      <p class="mailto"><b>zakupy@twojafirma.pl</b></p>
+      <p class="lead" style="margin-top:14px">Kliknij link — konto włącza się od razu. Link jest ważny 24 godziny.</p>
 
-        <p class="mailto"><b>zakupy@twojafirma.pl</b>
-          <small>Link jest ważny 24 godziny. Jeśli wygaśnie, wyślemy nowy jednym kliknięciem.</small></p>
-
-        <ol class="todo">
-          <li><span class="n">1</span>
-            <div><h3>Otwórz wiadomość od <span class="num">info@moris.eu</span></h3>
-              <p>Temat: „Potwierdź adres e-mail — konto Moris".</p></div></li>
-          <li><span class="n">2</span>
-            <div><h3>Kliknij przycisk „Potwierdzam adres"</h3>
-              <p>Wrócisz na moris.eu z aktywnym kontem i ekranem pierwszego zamówienia.</p></div></li>
-          <li><span class="n">3</span>
-            <div><h3>Zaloguj się i złóż pierwsze zamówienie</h3>
-              <p>Ceny z Twoim rabatem, dostępność i termin dostawy widzisz od razu.</p></div></li>
-        </ol>
-
-        <div class="resend">
-          <h3>Wiadomość nie dotarła?</h3>
-          <ul>
-            <li>Sprawdź folder spam i zakładkę „Oferty" — filtry firmowe potrafią zatrzymać pierwszą wiadomość od nowego nadawcy.</li>
-            <li>Sprawdź, czy w adresie nie ma literówki. Poprawisz go bez zakładania konta od nowa.</li>
-            <li>Dodaj <span class="num">info@moris.eu</span> do zaufanych nadawców — tym samym adresem wysyłamy faktury i dokumenty WZ.</li>
-          </ul>
-          <div class="acts">
-            <button class="btn" type="button" id="resend">Wyślij link ponownie</button>
-            <button class="btn ghost" type="button">Zmień adres e-mail</button>
-            <span class="state" id="resend-state"></span>
-          </div>
+      <div class="retry">
+        <h2>Wiadomość nie dotarła?</h2>
+        <ul>
+          <li>Sprawdź folder spam i zakładkę „Oferty".</li>
+          <li>Sprawdź, czy w adresie nie ma literówki — poprawisz go bez zakładania konta od nowa.</li>
+        </ul>
+        <div class="acts">
+          <button class="btn ghost" type="button" id="resend">Wyślij link ponownie</button>
+          <button class="btn ghost" type="button">Zmień adres e-mail</button>
+          <span class="state" id="resend-state"></span>
         </div>
       </div>
+    </div>
+  </div>
 
-      <aside>
-        <div class="meanwhile">
-          <h3>W międzyczasie</h3>
-          <p>Katalog jest otwarty bez logowania. Możesz już przygotować listę wyrobów — po zalogowaniu
-            zobaczysz przy nich ceny ze swoim rabatem.</p>
-          <div class="links">
-            <a href="#">Wyroby hutnicze <span>→</span></a>
-            <a href="#">Kolej <span>→</span></a>
-            <a href="#">Jak działa cięcie na wymiar <span>→</span></a>
-            <a href="#">Terminy dostaw i płatności <span>→</span></a>
-          </div>
-        </div>
-        <div class="inmail">
-          <h3>Co jeszcze jest w tej wiadomości</h3>
-          <ul>
-            <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10.5l4 4 8-9"/></svg>
-              <span>Dane konta: firma, NIP i adres do logowania</span></li>
-            <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10.5l4 4 8-9"/></svg>
-              <span>Ogólne Warunki Handlowe w pliku PDF</span></li>
-            <li><svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 10.5l4 4 8-9"/></svg>
-              <span>Bezpośredni kontakt do Biura Obsługi Klienta</span></li>
-          </ul>
-        </div>
-        <div class="inmail" style="background:var(--paper)">
-          <h3>Coś poszło nie tak?</h3>
-          <ul>
-            <li><span>Biuro Obsługi Klienta<br><a href="tel:+48324163699">32 416 36 99</a>, pn–pt 8:00–16:00<br>
-              <a href="mailto:info@moris.eu">info@moris.eu</a></span></li>
-          </ul>
-        </div>
-      </aside>
+  <div class="help">
+    <div class="helpbox">
+      <div class="who"><b>Biuro Obsługi Klienta</b><span>pn–pt 8:00–16:00</span></div>
+      <p class="bok"><a href="tel:+48324163699">32 416 36 99</a><br><a href="mailto:info@moris.eu">info@moris.eu</a></p>
     </div>
   </div>
 </div>
 
-<!-- ============================================================
-     B — konto aktywne
-     ============================================================ -->
+<!-- ======================= B — konto aktywne ======================= -->
 <div class="stage stage-active">
-
-  <div class="hero">
-    <div class="wrap">
+  <div class="col">
+    <div class="card">
       <span class="chip ok">Konto aktywne · Doradztwo Biznesowe Łukasz Dobija</span>
-      <h1>Konto jest gotowe. Teraz pierwsze zamówienie.</h1>
-      <p class="lead">Ceny z Twoim rabatem, dostępność magazynowa i termin dostawy są już widoczne.
-        Poniżej masz całą ścieżkę zamówienia — od znalezienia wyrobu po odbiór dokumentów.</p>
-      <div class="starts">
-        <a class="start" href="#">
-          <svg class="ic" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="#E8F1F4"/><path d="M8 7h24v5.5h-9v15h9V33H8v-5.5h9v-15H8z" fill="currentColor"/></svg>
-          <span><b>Wyroby hutnicze</b><span>Pręty, płaskowniki, kątowniki, ceowniki, dwuteowniki, profile, blachy.</span></span>
-          <span class="go" aria-hidden="true">→</span>
-        </a>
-        <a class="start" href="#">
-          <svg class="ic" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="#E8F1F4"/><path d="M14 7h12v5l-4 3v11l5 3v4H13v-4l5-3V15l-4-3z" fill="currentColor"/></svg>
-          <span><b>Kolej</b><span>Szyny transportowe, dźwignicowe, tramwajowe i lekkie oraz akcesoria.</span></span>
-          <span class="go" aria-hidden="true">→</span>
-        </a>
-        <a class="start" href="#">
-          <svg class="ic" viewBox="0 0 40 40" aria-hidden="true"><rect width="40" height="40" fill="#E8F1F4"/><path d="M10 11h20M10 17h20M10 23h13M10 29h13M26 26v8M22 30h8" stroke="currentColor" stroke-width="2.4" fill="none" stroke-linecap="square"/></svg>
-          <span><b>Szybkie zamówienie</b><span>Masz gotową listę indeksów? Wklej ją i przejdź prosto do koszyka.</span></span>
-          <span class="go" aria-hidden="true">→</span>
-        </a>
+      <h1>Zamów pierwszy raz.</h1>
+      <p class="lead">Ceny z Twoim rabatem, dostępność i termin dostawy są już widoczne przy każdym wyrobie.
+        Sprzedajemy <b>od jednej sztuki</b> — pierwsze zamówienie nie musi być duże.</p>
+
+      <div class="action">
+        <a class="btn" href="#">Przejdź do katalogu</a>
+        <span class="alt">albo <a href="#">wklej gotową listę indeksów</a></span>
+      </div>
+
+      <div class="todo">
+        <div>
+          <b>Dodaj adres dostawy</b>
+          <span>To jedyna rzecz, która blokuje koszyk — bez adresu nie policzy transportu ani nie zaproponuje terminu.</span>
+        </div>
+        <a class="btn ghost" href="#">Dodaj adres</a>
+      </div>
+
+      <div class="how">
+        <h2>Jak zamówić</h2>
+        <ol>
+          <li><span class="no">1</span><h3>Wybierz wyrób</h3>
+            <p>Szukaj po parametrach: rodzaj, gatunek, wymiar. Albo po rysunku przekroju.</p></li>
+          <li><span class="no">2</span><h3>Ustaw długość</h3>
+            <p>Zostaw handlową 6 lub 12 m albo podaj własną — potniemy na wymiar.</p></li>
+          <li><span class="no">3</span><h3>Dostawa i płatność</h3>
+            <p>Termin i slot transportowy wybierasz w koszyku, przed zapłatą.</p></li>
+        </ol>
+      </div>
+
+      <div class="facts">
+        <span>Wyroby standardowe <b>3 dni robocze</b></span>
+        <span>Cięte na wymiar <b>5 dni</b></span>
+        <span>Rabat od <b>500 kg</b> nalicza się sam</span>
+        <span>Płatność online albo <b>proforma</b></span>
       </div>
     </div>
   </div>
 
-  <!-- JAK ZAMÓWIĆ -->
-  <section>
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="kicker">Jak zamówić</span>
-        <h2>Sześć kroków od wyrobu do dostawy</h2>
-        <p>Cała ścieżka dzieje się na jednym ekranie koszyka — nie ma etapu „czekam na odpowiedź".</p>
-      </div>
-      <ol class="flow">
-        <li><span class="no">1</span>
-          <h3>Znajdź wyrób</h3>
-          <p>Wyszukiwarka po parametrach: rodzaj, gatunek, wymiar, długość. Albo katalog po rysunku
-             przekroju, jeśli szybciej rozpoznajesz kształt niż nazwę.</p>
-          <span class="note">Gatunki S235JR – S355J2+N</span>
-        </li>
-        <li><span class="no">2</span>
-          <h3>Ustaw długość i cięcie</h3>
-          <p>Zostaw długość handlową 6 lub 12 m albo podaj własną. Cięcie transportowe dzieli wyrób
-             na 2–6 części, żeby zmieścił się na samochodzie.</p>
-          <span class="note">Cięcie proste 90°</span>
-        </li>
-        <li><span class="no">3</span>
-          <h3>Sprawdź cenę i rabat</h3>
-          <p>Wycena pojawia się natychmiast. Rabat progowy nalicza się sam — system pokazuje też,
-             ile kilogramów brakuje do kolejnego progu.</p>
-          <span class="note">Progi od 500 kg</span>
-        </li>
-        <li><span class="no">4</span>
-          <h3>Wybierz dostawę</h3>
-          <p>Dostawa naszą flotą z rozładunkiem HDS albo odbiór własny w Chorzowie. Termin i slot
-             transportowy wybierasz w koszyku, przed zapłatą.</p>
-          <span class="note">Żuraw do 11 m, wyroby do 7 m</span>
-        </li>
-        <li><span class="no">5</span>
-          <h3>Zapłać</h3>
-          <p>Autopay, BLIK, Apple Pay, Google Pay, karta albo przelew z faktury proforma.
-             Termin realizacji liczy się od potwierdzenia płatności.</p>
-          <span class="note">Płatność online lub proforma</span>
-        </li>
-        <li><span class="no">6</span>
-          <h3>Śledź i odbierz dokumenty</h3>
-          <p>Status zamówienia widzisz w koncie. Faktura i dokument WZ trafiają na firmowy e-mail
-             i są do pobrania z historii zamówień.</p>
-          <span class="note">Faktura i WZ w koncie</span>
-        </li>
-      </ol>
-    </div>
-  </section>
-
-  <!-- SZYBCIEJ NASTĘPNYM RAZEM -->
-  <section class="tint">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="kicker">Następnym razem</span>
-        <h2>Trzy skróty, które oszczędzą Ci pierwszą godzinę</h2>
-        <p>Zakupy stali są powtarzalne. Warto ustawić je raz, żeby kolejne zamówienie zajęło dwie minuty.</p>
-      </div>
-      <div class="faster">
-        <div class="card">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M27 16a11 11 0 1 1-3.2-7.8"/><path d="M28 5v7h-7"/></svg>
-          <h3>Powtórz zamówienie</h3>
-          <p>Historia zamówień ma przycisk powtórzenia. Cały koszyk wraca jednym kliknięciem — możesz
-             tylko zmienić ilości.</p>
-        </div>
-        <div class="card">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 8h20M6 16h20M6 24h12"/><path d="M25 21v8M21 25h8"/></svg>
-          <h3>Listy zakupowe</h3>
-          <p>Zapisz stały zestaw wyrobów jako listę: „konstrukcja hali", „utrzymanie ruchu".
-             Dodajesz całą listę do koszyka naraz.</p>
-        </div>
-        <div class="card">
-          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M11 4h10l6 6v18H11z"/><path d="M21 4v6h6"/><path d="M5 12v16h14"/></svg>
-          <h3>Wklej listę albo plik CSV</h3>
-          <p>Masz zapotrzebowanie w Excelu? Wklej indeksy i ilości — system rozpozna pozycje i wyceni
-             je od razu.</p>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <!-- DOKOŃCZ USTAWIENIA -->
-  <section>
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="kicker">Ustawienia konta</span>
-        <h2>Cztery rzeczy do dokończenia</h2>
-        <p>Nic z tego nie blokuje zakupów — ale bez adresu dostawy koszyk nie policzy transportu.</p>
-      </div>
-      <div class="setup">
-        <div class="checks">
-          <div class="bar">
-            <span class="chip ok">1 z 5 gotowe</span>
-            <span class="meter" role="img" aria-label="Ukończono 1 z 5 kroków"><i></i></span>
-            <span class="count">Zostało około 4 minut</span>
-          </div>
-          <div class="row done">
-            <span class="mark" aria-hidden="true"></span>
-            <div><h3>Konto potwierdzone</h3><p>Adres e-mail zweryfikowany, dane firmy pobrane z rejestru.</p></div>
-          </div>
-          <div class="row">
-            <span class="mark" aria-hidden="true"></span>
-            <div><h3>Dodaj adres dostawy</h3>
-              <p>Bez niego koszyk nie policzy kosztu transportu ani nie zaproponuje terminu.
-                 Możesz dodać kilka adresów — magazyn, budowa, oddział.</p></div>
-            <a class="btn sm act" href="#">Dodaj adres</a>
-          </div>
-          <div class="row">
-            <span class="mark" aria-hidden="true"></span>
-            <div><h3>Sprawdź dane do faktury</h3>
-              <p>Pobraliśmy je z rejestru. Jeśli faktura ma iść na inny podmiot — na przykład na spółkę
-                 matkę — ustaw to teraz, a nie przy pierwszej fakturze.</p></div>
-            <a class="btn sm ghost act" href="#">Sprawdź</a>
-          </div>
-          <div class="row">
-            <span class="mark" aria-hidden="true"></span>
-            <div><h3>Dodaj osoby z firmy</h3>
-              <p>Kolejne osoby pracują na tym samym koncie firmowym, z własnym loginem i zakresem
-                 uprawnień. Nie zakładaj im osobnych kont.</p></div>
-            <a class="btn sm ghost act" href="#">Zaproś</a>
-          </div>
-          <div class="row">
-            <span class="mark" aria-hidden="true"></span>
-            <div><h3>Limit kredytowy — jeśli go chcesz</h3>
-              <p>Osobny, dobrowolny wniosek dla stałych klientów. Do pierwszych zamówień nie jest
-                 potrzebny: płacisz online albo przelewem z proformy.</p></div>
-            <a class="btn sm ghost act" href="#">Zobacz warunki</a>
-          </div>
-        </div>
-
-        <aside>
-          <div class="box">
-            <h3>Twój opiekun handlowy</h3>
-            <div class="person">
-              <span class="av" aria-hidden="true">MK</span>
-              <span><b>Marek Kowalczyk</b><span>Dział Sprzedaży E-Commerce</span></span>
-            </div>
-            <p>Platforma nie zastępuje handlowca — przejmuje pracę powtarzalną. Przy wycenie
-              powyżej 10 ton, nietypowym wyrobie albo pytaniu o gatunek dzwoń bezpośrednio.</p>
-          </div>
-          <div class="box dark">
-            <h3>Biuro Obsługi Klienta</h3>
-            <p><a href="tel:+48324163699">32 416 36 99</a><br>
-              <a href="mailto:info@moris.eu">info@moris.eu</a><br>
-              pn–pt 8:00–16:00</p>
-          </div>
-        </aside>
-      </div>
-    </div>
-  </section>
-
-  <!-- TERMINY I PŁATNOŚĆ -->
-  <section class="tint">
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="kicker">Zanim złożysz pierwsze zamówienie</span>
-        <h2>Terminy i płatność w jednej tabeli</h2>
-        <p>Wszystkie terminy liczone są od potwierdzenia płatności, nie od złożenia zamówienia.</p>
-      </div>
-      <div class="tblwrap">
-        <table>
-          <thead><tr><th>Rodzaj zamówienia</th><th>Termin realizacji</th><th>Co warto wiedzieć</th></tr></thead>
-          <tbody>
-            <tr><td>Wyroby standardowe, długość handlowa</td><td>3 dni robocze</td><td>Dostępność w sztukach widoczna przy produkcie</td></tr>
-            <tr><td>Wyroby cięte na wymiar</td><td>5 dni roboczych</td><td>Cięcie 90° i cięcie transportowe na 2–6 części</td></tr>
-            <tr><td>Odbiór własny w Chorzowie</td><td>po potwierdzeniu gotowości</td><td>ul. Wiejska 27, pn–pt 8:00–16:00</td></tr>
-            <tr><td>Zamówienie powyżej 10 ton</td><td>wycena indywidualna</td><td>Kontakt z opiekunem handlowym</td></tr>
-          </tbody>
-        </table>
-      </div>
-      <div class="pay">
-        <span>Autopay</span><span>BLIK</span><span>Apple&nbsp;Pay</span><span>Google&nbsp;Pay</span>
-        <span>Karta</span><span>Przelew z faktury proforma</span>
-      </div>
-    </div>
-  </section>
-
-  <!-- FAQ -->
-  <section>
-    <div class="wrap">
-      <div class="sec-head">
-        <span class="kicker">Pierwsze zamówienie</span>
-        <h2>Co jeśli…</h2>
-      </div>
-      <div class="faq">
-        <div>
-          <details open>
-            <summary>Nie znajduję wyrobu, którego potrzebuję</summary>
-            <p>W katalogu jest około 4 000 indeksów z magazynu. Jeśli czegoś nie ma, zwykle da się
-              to sprowadzić — napisz do opiekuna handlowego albo do Biura Obsługi Klienta z gatunkiem,
-              wymiarem i ilością.</p>
-          </details>
-          <details>
-            <summary>Potrzebuję długości, której nie ma na liście</summary>
-            <p>Podaj własną w konfiguratorze cięcia. Wyrób handlowy zostanie pocięty na Twój wymiar,
-              a termin realizacji wydłuża się z trzech do pięciu dni roboczych.</p>
-          </details>
-        </div>
-        <div>
-          <details>
-            <summary>Chcę zapłacić przelewem, nie kartą</summary>
-            <p>Wybierz płatność przelewem — wystawimy fakturę proforma. Zamówienie wchodzi do realizacji
-              po zaksięgowaniu wpłaty i od tego momentu liczy się termin.</p>
-          </details>
-          <details>
-            <summary>Zamówienie ma jechać na budowę, a faktura na centralę</summary>
-            <p>To standardowa sytuacja. Adres dostawy ustawiasz w koszyku, a dane nabywcy na fakturze
-              w ustawieniach konta — mogą być różne.</p>
-          </details>
-        </div>
-      </div>
-    </div>
-  </section>
-
-  <div class="cta">
-    <div class="wrap">
-      <div>
-        <h2>Zacznij od jednej pozycji</h2>
-        <p>Pierwsze zamówienie nie musi być duże — sprzedajemy od jednej sztuki, także nowym klientom.</p>
-      </div>
-      <div class="acts">
-        <a class="btn" href="#">Przeglądaj katalog</a>
-        <a class="btn ghost" href="#">Wklej listę indeksów</a>
-      </div>
+  <div class="help">
+    <div class="helpbox">
+      <span class="av" aria-hidden="true">MK</span>
+      <div class="who"><b>Marek Kowalczyk</b><span>Twój opiekun handlowy — wycena powyżej 10 ton, nietypowy wyrób</span></div>
+      <p class="bok"><a href="tel:+48324163699">32 416 36 99</a><br><a href="mailto:info@moris.eu">info@moris.eu</a></p>
     </div>
   </div>
 </div>
@@ -735,25 +396,24 @@ footer.site a:hover{color:#fff; text-decoration:underline}
   $("go-mail").addEventListener("click", function(){ setStage("mail"); });
   $("go-active").addEventListener("click", function(){ setStage("active"); });
 
-  /* ponowne wysłanie linku — blokada na 30 sekund, żeby nie zasypać skrzynki */
-  (function resend(){
+  /* ponowne wysłanie linku — blokada 30 s, żeby nie zasypać skrzynki */
+  (function(){
     var btn = $("resend"), state = $("resend-state"), left = 0, timer = null;
-    function tick(){
-      left--;
-      if(left <= 0){
-        clearInterval(timer); timer = null;
-        btn.disabled = false;
-        state.textContent = "Możesz wysłać ponownie.";
-      } else {
-        state.textContent = "Kolejną wiadomość wyślesz za " + left + " s.";
-      }
-    }
     btn.addEventListener("click", function(){
       btn.disabled = true;
       left = 30;
       state.textContent = "Wysłaliśmy nową wiadomość. Kolejną wyślesz za " + left + " s.";
       if(timer) clearInterval(timer);
-      timer = setInterval(tick, 1000);
+      timer = setInterval(function(){
+        left--;
+        if(left <= 0){
+          clearInterval(timer); timer = null;
+          btn.disabled = false;
+          state.textContent = "Możesz wysłać ponownie.";
+        } else {
+          state.textContent = "Kolejną wiadomość wyślesz za " + left + " s.";
+        }
+      }, 1000);
     });
   })();
 
