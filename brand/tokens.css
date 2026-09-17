@@ -1,0 +1,74 @@
+/* =========================================================================
+   Moris — tokeny systemu wizualnego
+   Źródło: brand/moris-logo-manual.pdf („Moris – podstawowe wytyczne
+   stosowania logo”). Jedyne źródło prawdy dla prototypów w tym repozytorium.
+   Tokeny oznaczone jako POCHODNE nie występują w księdze — powstały,
+   bo interfejs potrzebuje wartości, których materiał drukowany nie definiuje.
+   Każdy z nich ma uzasadnienie w komentarzu i wymaga akceptacji.
+   ========================================================================= */
+:root{
+  /* --- kolory marki --- */
+  --steel:#1A2B3C;        /* Steel blue     · RAL 5011 · CMYK 100–100–60–30 */
+  --sapphire:#1F3855;     /* Sapphire blue  · RAL 5003 · CMYK 70–30–0–70    */
+  --pastel:#73B7E5;       /* Pastel blue    · RAL 5024 · CMYK 55–15–0–0     */
+  --white:#FFFFFF;
+
+  /* --- kolory dodatkowe --- */
+  --grey-1:#838E91;       /* Telegrey 2   · RAL 7046 */
+  --grey-2:#9CA9AD;       /* Traffic grey · RAL 7042 */
+  --grey-3:#B6C5CA;
+  --tint:#E8F1F4;
+  --orange:#FF7517;       /* Luminous Orange · RAL 2007 */
+  --yellow:#FFE97D;       /* Zinc Yellow     · RAL 1018 */
+
+  /* --- kolory informacyjne (UI) — w księdze podane w rozbiciach 60% / 30% --- */
+  --ui-ok:#47C98B;
+  --ui-ok-60:#91DFB9;
+  --ui-ok-30:#C8EFDC;
+  --ui-err:#F95050;
+  --ui-err-60:#FB9696;
+  --ui-err-30:#FDCBCB;
+  --ui-warn:#FFE97D;
+  --ui-warn-50:#FFF4BE;
+
+  /* --- tokeny POCHODNE --- */
+  --muted:#5F6E75;        /* POCHODNY: Telegrey 2 przyciemniony do kontrastu 5,3:1
+                             na bieli. Telegrey w oryginale daje 3,3:1 i nie
+                             spełnia WCAG AA dla tekstu ciągłego.               */
+  --line:#B6C5CA;         /* linia siatki = kolor dodatkowy #B6C5CA            */
+  --line-soft:#DCE6EA;    /* POCHODNY: #B6C5CA rozjaśniony do delikatnych
+                             linii wewnętrznych w tabelach i kartach.          */
+  --pastel-30:#D5E9F7;    /* POCHODNY: Pastel blue 30% na bieli — tło sekcji
+                             i znaczników, spójne z rozbiciami z księgi.       */
+
+  /* --- typografia ---
+     Paralucent (The Northern Block) jest krojem komercyjnym i nie jest
+     hostowany na Google Fonts. W prototypach stoi na pierwszym miejscu
+     w stosie — po wykupieniu licencji webfont wystarczy dograć pliki.
+     Zapasem jest Poppins, który księga i tak wskazuje jako krój tekstowy:
+     Extra Light 200 zastępuje Paralucent Extra Light, Medium 500 zastępuje
+     Paralucent Medium.                                                        */
+  --font-display:"Paralucent","Poppins",-apple-system,"Segoe UI",sans-serif;
+  --font-head:"Paralucent","Poppins",-apple-system,"Segoe UI",sans-serif;
+  --font-body:"Poppins",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --wt-display:200;       /* Paralucent Extra Light */
+  --wt-head:500;          /* Paralucent Medium      */
+  --wt-body:400;          /* Poppins Regular        */
+
+  /* Cyfry i oznaczenia: księga wskazuje Paralucent Stencil Extra Light.
+     Krój ekspozycyjny — nadaje się do dużych liczb (nagłówki, wyróżniki),
+     nie do tabel cenowych i danych technicznych. Dane liczbowe składamy
+     Poppinsem z font-variant-numeric: tabular-nums.                          */
+  --font-numeral:"Paralucent Stencil","Paralucent","Poppins",sans-serif;
+  --font-data:"Poppins",-apple-system,"Segoe UI",sans-serif;
+}
+
+/* --- tokeny POCHODNE do tekstu statusowego na bieli ---
+   Kolory informacyjne z księgi mają na bieli kontrast poniżej 3:1 i nie nadają
+   się na tekst. Poniższe warianty to te same barwy przyciemnione do WCAG AA;
+   stosować wyłącznie do krótkich komunikatów przy polach formularza.          */
+:root{
+  --ok-ink:#1B6B48;    /* z #47C98B — kontrast 6,5:1 */
+  --err-ink:#C42222;   /* z #F95050 — kontrast 5,8:1 */
+  --warn-ink:#8A5A08;  /* z #FF7517 — kontrast 5,9:1 */
+}

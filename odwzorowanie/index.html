@@ -3,19 +3,52 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600&display=swap">
 <title>Odwzorowanie moris.eu</title>
 <style>
-  :root{
-    --navy:#156082; --navy-deep:#0E4258; --ink:#12202B; --muted:#5B7385;
-    --paper:#ffffff; --paper-2:#F2F6F8; --paper-3:#D9E5EC; --line:#CBD5E1;
-    --ok:#15803D; --warn:#B45309; --stop:#B91C1C;
-    --wrap:1200px;
-  }
+:root{
+  /* --- System wizualny Moris ---------------------------------------------
+     Źródło: brand/moris-logo-manual.pdf. Pełna specyfikacja: brand/BRANDBOOK.md,
+     tokeny wykonawcze: brand/tokens.css. Tu skopiowane, bo prototyp ma być
+     samodzielnym plikiem.                                                     */
+  --steel:#1A2B3C;      /* Steel blue     · RAL 5011 */
+  --sapphire:#1F3855;   /* Sapphire blue  · RAL 5003 */
+  --pastel:#73B7E5;     /* Pastel blue    · RAL 5024 */
+  --white:#FFFFFF;
+  --grey-1:#838E91;     /* Telegrey 2   · RAL 7046 */
+  --grey-2:#9CA9AD;     /* Traffic grey · RAL 7042 */
+  --grey-3:#B6C5CA;
+  --tint:#E8F1F4;
+  --orange:#FF7517;     /* Luminous Orange · RAL 2007 */
+  --yellow:#FFE97D;     /* Zinc Yellow     · RAL 1018 */
+  --ui-ok:#47C98B;  --ui-ok-60:#91DFB9;  --ui-ok-30:#C8EFDC;
+  --ui-err:#F95050; --ui-err-60:#FB9696; --ui-err-30:#FDCBCB;
+  --ui-warn:#FFE97D; --ui-warn-50:#FFF4BE;
+  /* tokeny pochodne — uzasadnienie w brand/BRANDBOOK.md, rozdział 6 */
+  --muted:#5F6E75; --line:#B6C5CA; --line-soft:#DCE6EA; --pastel-30:#D5E9F7;
+  --ok-ink:#1B6B48; --err-ink:#C42222; --warn-ink:#8A5A08;
+  /* typografia — Paralucent wymaga licencji webfont, zapasem jest Poppins */
+  --font-display:"Paralucent","Poppins",-apple-system,"Segoe UI",sans-serif;
+  --font-head:"Paralucent","Poppins",-apple-system,"Segoe UI",sans-serif;
+  --font-body:"Poppins",-apple-system,"Segoe UI",Roboto,sans-serif;
+  --font-numeral:"Paralucent Stencil","Paralucent","Poppins",sans-serif;
+  --font-data:"Poppins",-apple-system,"Segoe UI",sans-serif;
+  /* aliasy zgodności z resztą arkusza */
+  --navy:var(--sapphire); --navy-deep:var(--steel); --navy-ink:var(--steel);
+  --ink:var(--steel); --paper:var(--white); --paper-2:var(--tint); --paper-3:var(--pastel-30);
+  --ok:var(--ok-ink); --ok-bg:var(--ui-ok-30);
+  --warn:var(--warn-ink); --warn-bg:var(--ui-warn-50);
+  --stop:var(--err-ink); --stop-bg:var(--ui-err-30);
+  --mono:var(--font-data); --sans:var(--font-body);
+  --wrap:1200px;
+}
   *{box-sizing:border-box}
   html{-webkit-text-size-adjust:100%}
   body{
     margin:0; background:var(--paper); color:var(--ink);
-    font:16px/1.55 Arial, "Helvetica Neue", Helvetica, sans-serif;
+    font:16px/1.55 var(--font-body);
   }
   img{max-width:100%}
   a{color:var(--navy)}
@@ -74,7 +107,7 @@
   .btn:focus-visible{outline:2px solid var(--navy-deep); outline-offset:2px}
   .photo{
     aspect-ratio:4/3; border:1px solid var(--line); background:
-      repeating-linear-gradient(135deg,#e7eef3 0 14px,#dde7ee 14px 28px);
+      repeating-linear-gradient(135deg,#E8F1F4 0 14px,#D5E9F7 14px 28px);
     display:grid; place-items:center; color:var(--muted); font-size:13px; letter-spacing:.08em;
   }
 
@@ -107,25 +140,25 @@
   .newsletter input{flex:1; min-width:220px; font:inherit; padding:12px; border:0; border-radius:2px}
   .newsletter button{font:inherit; padding:12px 22px; border:1px solid #fff; background:#fff; color:var(--navy); border-radius:2px; cursor:pointer}
 
-  footer.site{background:var(--ink); color:#cfd9e0; padding-block:48px 28px; font-size:14px}
+  footer.site{background:var(--ink); color:#B6C5CA; padding-block:48px 28px; font-size:14px}
   footer.site h4{margin:0 0 12px; font-size:13px; letter-spacing:.1em; text-transform:uppercase; color:#fff}
-  footer.site a{color:#cfd9e0; text-decoration:none}
+  footer.site a{color:#B6C5CA; text-decoration:none}
   footer.site a:hover{color:#fff; text-decoration:underline}
   footer.site ul{list-style:none; margin:0; padding:0; display:grid; gap:8px}
-  .legal{border-top:1px solid rgba(255,255,255,.15); margin-top:36px; padding-top:20px; display:flex; flex-wrap:wrap; gap:18px; color:#93a6b3; font-size:13px}
+  .legal{border-top:1px solid rgba(255,255,255,.15); margin-top:36px; padding-top:20px; display:flex; flex-wrap:wrap; gap:18px; color:#9CA9AD; font-size:13px}
 
   /* ---------- nakładka z uwagami ---------- */
   .pin{
     position:absolute; z-index:40; width:26px; height:26px; border-radius:50%;
-    background:var(--stop); color:#fff; font:700 13px/26px Arial, sans-serif;
+    background:var(--stop); color:#fff; font:700 13px/26px var(--font-body);
     text-align:center; cursor:help; border:2px solid #fff; box-shadow:0 1px 6px rgba(0,0,0,.35);
   }
   .anno{position:relative}
   body:not(.show-notes) .pin{display:none}
-  body.show-notes .anno{outline:1px dashed rgba(185,28,28,.45); outline-offset:4px}
+  body.show-notes .anno{outline:1px dashed rgba(196,34,34,.45); outline-offset:4px}
   .pin span{
     display:none; position:absolute; top:32px; left:0; width:280px; padding:12px 14px;
-    background:var(--ink); color:#fff; font:400 13px/1.5 Arial, sans-serif; text-align:left;
+    background:var(--ink); color:#fff; font:400 13px/1.5 var(--font-body); text-align:left;
     border-radius:3px; box-shadow:0 8px 24px rgba(0,0,0,.3); z-index:50;
   }
   .pin:hover span, .pin:focus span{display:block}
@@ -138,6 +171,18 @@
     .hero h1{font-size:31px}
   }
   @media (prefers-reduced-motion:reduce){*{animation:none!important; transition:none!important}}
+
+/* --- typografia wg księgi znaku -------------------------------------------
+   Nagłówki: Paralucent Medium (zapas Poppins 500). Wyróżniki liczbowe:
+   Paralucent Extra Light (zapas Poppins 200). Dane tabelaryczne: Poppins
+   z tabular-nums — Paralucent Stencil jest krojem ekspozycyjnym i w tabeli
+   cen byłby nieczytelny.                                                     */
+h1,h2,h3,h4{font-family:var(--font-head); font-weight:500}
+h1{letter-spacing:-.02em}
+.num,td.n,th.n,.qval,dd,.res-price,.readout dd,.proof b{font-variant-numeric:tabular-nums}
+.logo{display:inline-flex; align-items:center; color:var(--steel); text-decoration:none}
+.logo svg{display:block; height:30px; width:auto}
+.logo:hover{color:var(--sapphire)}
 </style>
 </head>
 <body>
@@ -165,7 +210,7 @@
 <header class="site anno">
   <div class="pin" tabindex="0">1<span><strong>Wyszukiwarka tekstowa.</strong> Klient szuka „kątownik 50x50x5 S235JR”, nie słowa kluczowego. Brak wyboru po parametrach: typ → gatunek → wymiar → długość.</span></div>
   <div class="wrap">
-    <a class="logo" href="#">moris.eu</a>
+    <a class="logo" href="#" aria-label="Moris"><svg class="mark" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 264.58 43.33" role="img" aria-label="Moris"> <title>Moris</title> <path fill="currentColor" fill-rule="evenodd" d="M39.77 42.9L39.77 11.83L26.6 42.9L19.85 42.9L6.68 11.83L6.68 42.9L0 42.9L0 3.68L9.99 3.68L21.39 30.4C21.82 31.56 23.22 35.48 23.22 35.48C23.16 35.48 24.51 31.56 25.06 30.4L36.46 3.68L46.51 3.68L46.51 42.9L39.77 42.9ZM68 16.42C60.71 16.42 59.11 21.33 59.11 27.21C59.11 33.15 60.71 37.99 67.94 37.99C75.29 37.99 76.89 33.28 76.89 27.21C76.89 21.39 75.42 16.42 68 16.42M67.94 43.33C55.62 43.33 52.44 35.54 52.44 27.21C52.44 18.94 55.68 11.09 68 11.09C80.2 11.09 83.57 18.94 83.57 27.21C83.57 35.6 80.2 43.33 67.94 43.33ZM102.85 16.79C96.3 16.79 95.01 20.41 95.01 25.49L95.01 42.9L88.45 42.9L88.45 11.52L91.95 11.52L93.48 15.87C94.46 13.79 97.46 11.09 103.59 11.09L104.63 11.09L104.63 16.91C104.02 16.91 103.41 16.79 102.85 16.79ZM108.57 11.52H115.07V42.9H108.57ZM111.88 7.91C108.94 7.91 107.04 7.11 107.04 3.98C107.04 0.8 108.94 0 111.88 0C114.7 0 116.54 0.8 116.54 3.98C116.54 7.11 114.7 7.91 111.88 7.91ZM135.32 43.33C124.72 43.33 120.19 39.16 120.19 31.19L126.62 31.19C126.62 35.48 129.07 38.12 135.2 38.12C140.78 38.12 142.55 36.03 142.68 34.2C142.86 27.39 120.8 31.93 120.8 20.71C120.8 15.2 124.6 11.09 134.53 11.09C144.7 11.09 148.31 15.87 148.31 22.8L142.19 22.8C141.94 18.69 140.1 16.18 134.34 16.18C129.07 16.18 127.29 18.14 127.29 20.16C127.29 26.23 149.11 22.06 149.11 33.83C149.11 38.42 145.25 43.33 135.32 43.33ZM252.65 3.71L219.4 36.96C217.24 39.12 213.56 37.59 213.56 34.54L213.56 3.71L172.17 3.71L172.17 14.99L193.57 14.99L192.69 15.69C192.03 16.22 191.41 16.77 190.81 17.37L165.28 42.9L182.15 42.9L199.25 25.8C199.84 25.21 200.4 24.58 200.92 23.93L201.63 22.93L201.63 42.9L230.34 42.9L252.65 20.58L252.65 42.9L264.58 42.9L264.58 3.71L252.65 3.71Z"/> </svg></a>
     <form class="searchbox" onsubmit="return false">
       <input type="search" placeholder="Szukaj produktu..." aria-label="Szukaj produktu">
       <button type="submit">Szukaj</button>

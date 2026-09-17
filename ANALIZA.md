@@ -138,24 +138,197 @@ Znikają jako osobne pozycje w menu: „Dlaczego my" (wchodzi w pas dowodów i s
 
 ### 4.3 Decyzje projektowe
 
-- **Kolorystyka z księgi znaku**: granat `#156082` jako kolor marki i akcji,
-  granat ciemny `#0E4258` dla nagłówków, błękit `#F2F6F8` / `#D9E5EC` jako tła
-  sekcji, grafit `#12202B` dla tekstu. Zieleń / bursztyn / czerwień **wyłącznie**
-  jako status (dostępność, termin, ostrzeżenie) — zgodnie z zasadą kolorów
-  funkcyjnych z księgi.
-- **Typografia**: Arial zgodnie z księgą znaku dla całej treści. Propozycja
-  rozszerzenia księgi o **jeden krój szeryfowy bezszeryfowy o stałej szerokości
-  (JetBrains Mono)** stosowany wyłącznie do danych technicznych: wymiary, gatunki,
-  indeksy, ceny. Cyfry w kolumnach mają się wyrównywać — to warunek czytelności
-  tabel wyrobów, a nie ozdobnik.
-- **Język wizualny**: rysunek techniczny. Przekroje profili jako grafiki wektorowe,
-  linie wymiarowe jako separatory sekcji, delikatna siatka milimetrowa w tle
-  pierwszego ekranu. Zamiast zdjęć stockowych — geometria wyrobu, którą klient
-  rozpoznaje zawodowo.
-- **Dostępność**: kontrast tekstu ≥ 4,5:1, widoczny stan focus, `prefers-reduced-motion`,
-  tabele przewijane poziomo we własnym kontenerze.
+System wizualny pochodzi z księgi znaku (`brand/moris-logo-manual.pdf`).
+Pełne przepisanie: `brand/BRANDBOOK.md`, wartości wykonawcze: `brand/tokens.css`.
 
-### 4.4 Co zmienia się poza stroną główną (rekomendacje dalszych kroków)
+- **Znak.** Symbol i oba logotypy wyciągnięte z księgi jako krzywe i zapisane
+  w SVG (`brand/moris-symbol.svg`, `moris-logo-poziomy.svg`, `moris-logo-pionowy.svg`).
+  To geometria z księgi, nie przerysowanie. Wypełnienie ustawione na
+  `currentColor`, więc znak działa granatowy i w kontrze na białą bez drugiego pliku.
+- **Kolorystyka.** Steel blue `#1A2B3C` (RAL 5011) niesie tekst i ciemne
+  powierzchnie. Sapphire blue `#1F3855` (RAL 5003) jest kolorem działania:
+  przyciski, odnośniki, ramki pól aktywnych. Pastel blue `#73B7E5` (RAL 5024)
+  i jego 30% rozbicie są tłem sekcji i znaczników. Luminous Orange `#FF7517`
+  (RAL 2007) zostaje akcentem wyróżniającym jeden element — nigdy kilkanaście.
+- **Kolory informacyjne (UI)** z księgi: `#47C98B` potwierdzenie, `#F95050` błąd,
+  `#FFE97D` ostrzeżenie — użyte tak, jak księga je pokazuje, czyli w rozbiciach
+  30% jako tło znacznika. Tekst w znaczniku zostaje w kolorze Steel blue: same
+  kolory UI mają na bieli kontrast poniżej progu czytelności.
+- **Typografia.** Display — Paralucent Extra Light (nagłówek pierwszego ekranu,
+  duże liczby w pasie dowodów, dokładnie ta rola, w której księga pokazuje „02”).
+  Nagłówki sekcji — Paralucent Medium. Tekst — Poppins Regular. Paralucent jest
+  krojem komercyjnym i nie jest hostowany na Google Fonts; w prototypach stoi
+  pierwszy w stosie, zapasem jest Poppins w wagach 200 i 500. Po wykupieniu
+  licencji webfont wystarczy dograć pliki, bez zmian w kodzie.
+- **Dane liczbowe.** Księga wskazuje na cyfry Paralucent Stencil Extra Light.
+  To krój ekspozycyjny — świetny w liczbie wyróżnikowej, nieczytelny w tabeli
+  cen. Tabele i wyceny składamy Poppinsem z `font-variant-numeric: tabular-nums`,
+  żeby cyfry wyrównywały się w kolumnach.
+- **Trzy tokeny pochodne**, których księga nie definiuje, bo dotyczą tylko
+  interfejsu: `--muted #5F6E75` (Telegrey 2 przyciemniony — oryginał daje na
+  bieli 3,3:1, poniżej WCAG AA dla tekstu ciągłego), `--line-soft #DCE6EA`
+  (delikatne linie wewnętrzne) oraz warianty kolorów UI do tekstu przy polach
+  formularza. Wszystkie opisane w `brand/BRANDBOOK.md` i wymagają akceptacji.
+- **Język wizualny**: rysunek techniczny. Przekroje profili jako grafiki
+  wektorowe, linie wymiarowe jako separatory sekcji, delikatna siatka
+  milimetrowa w tle pierwszego ekranu. Zamiast zdjęć stockowych — geometria
+  wyrobu, którą klient rozpoznaje zawodowo.
+- **Dostępność**: kontrast tekstu ≥ 4,5:1, widoczny stan focus,
+  `prefers-reduced-motion`, tabele przewijane poziomo we własnym kontenerze.
+
+### 4.4 Rejestracja konta B2B — przebudowa formularza
+
+Prototyp: `redesign/rejestracja.html`.
+
+Obecny formularz prosi o NIP, po czym pokazuje pobrany adres rejestracyjny firmy,
+dane użytkownika i blok zgód. Trzy rzeczy w nim brakują lub działają wbrew
+sposobowi, w jaki kupuje firma.
+
+**A. Dane firmy pobierane z rejestru — dopowiedzenie tego, co już jest**
+
+Adres rejestracyjny już się zaciąga. Warto pokazać wprost, skąd: **CEIDG** dla
+jednoosobowej działalności, **KRS** dla spółek, **GUS/REGON** jako uzupełnienie
+oraz **biała lista VAT** jako status podatnika. To nie jest kosmetyka — status na
+białej liście przesądza o sposobie rozliczenia płatności, a klient powinien go
+zobaczyć przed założeniem konta, nie przy pierwszej fakturze.
+
+Trzy poprawki wykonawcze:
+
+- **Walidacja sumy kontrolnej NIP przed odpytaniem rejestru.** Dziesięć cyfr
+  i algorytm wagowy — koszt zerowy, a odsiewa literówki, zanim klient zobaczy
+  komunikat „nie znaleziono firmy" i uzna, że platforma nie działa.
+- **Karta danych z rejestru zamiast surowego adresu**: nazwa, NIP i REGON, adres,
+  forma prawna, znacznik źródła, znacznik VAT, data i godzina pobrania.
+- **Ścieżka korekty ręcznej.** Rejestry bywają nieaktualne. Poprawione dane
+  kierują konto do weryfikacji BOK zamiast blokować rejestrację.
+
+**B. Kontakt do firmy — sekcja, której nie ma**
+
+Obecny formularz zbiera wyłącznie dane osoby zakładającej konto. To błąd
+strukturalny: **faktura, dokument WZ i potwierdzenie dostawy adresowane są do
+firmy, nie do osoby**. Kiedy pracownik zaopatrzenia zmienia stanowisko lub
+firmę, dokumenty przestają docierać, a odzyskanie konta staje się sprawą dla BOK.
+
+Nowe pola:
+
+| Pole | Status | Do czego służy |
+|---|---|---|
+| E-mail firmowy do dokumentów | wymagane | faktury, WZ, potwierdzenia terminów |
+| Telefon firmowy | wymagane | kontakt kierowcy przy dostawie i rozładunku HDS |
+| Dodatkowy e-mail | opcjonalne | kopia dla księgowości lub zaopatrzenia |
+| Strona www | opcjonalne | skraca weryfikację nowego kontrahenta |
+
+**C. „Czy inne dane do faktury?" — pole wyboru rozwijające sekcję**
+
+Domyślnie fakturujemy na dane z rejestru. Jedno pole wyboru rozwija dane nabywcy:
+NIP (walidowany tak samo jak główny, z podpowiedzią nazwy z rejestru), nazwa,
+adres, e-mail do e-faktur. Wewnątrz — drugie pole wyboru: **odbiorca towaru inny
+niż nabywca**, czyli dostawa na budowę albo do oddziału przy fakturze na centralę.
+
+To najczęstszy powód, dla którego zamówienie B2B kończy się telefonem do
+handlowca zamiast w koszyku. Rozwiązanie kosztuje jedno pole wyboru.
+
+**D. Dwie odsłony jednego ekranu**
+
+Ekran rejestracji ma dwa zadania, które stoją ze sobą w sprzeczności: **przekonać**
+firmę, która trafiła tu pierwszy raz, i **nie przeszkadzać** tej, która już
+zdecydowała. Obecny formularz robi tylko to drugie — otwiera się pytaniem o NIP,
+bez słowa o tym, dla kogo jest Moris i co klient z tego ma.
+
+Rozwiązanie: jeden adres, dwie odsłony przełączane momentem podania NIP.
+
+| | Przed podaniem NIP | Po weryfikacji NIP |
+|---|---|---|
+| Zadanie ekranu | przekonać i wytłumaczyć | doprowadzić do końca |
+| Formularz | kompaktowa karta, tylko kraj i NIP | pełny, na całą szerokość |
+| Treść wokół | trzy kroki, dla kogo, dlaczego warto | pasek postępu, co zostało, kontakt do BOK |
+| Nagłówek | „Stal zamawiasz sam, kiedy jej potrzebujesz." | „Zostały dwa kroki." |
+
+**Zasada porządkująca: jeden ekran, jedno zadanie, jedno główne działanie.**
+Ekran, który ma przekonać, kusi, żeby dołożyć jeszcze jeden argument. Po kilku
+takich dołożeniach przestaje prowadzić do formularza i staje się drugą stroną
+główną. Odsłona przed podaniem NIP ma dlatego trzy bloki, nie siedem:
+
+- **Trzy kroki, około 3 minut** — co się wydarzy i ile to potrwa.
+- **Dla kogo** — cztery sytuacje zakupowe (produkcja, budownictwo, utrzymanie
+  ruchu, kolej), każda w jednym zdaniu, plus jawna informacja, że konto zakłada
+  się na NIP, więc klient indywidualny dowiaduje się tego od razu.
+- **Dlaczego warto** — cztery konkrety z liczbą: wycena w 0 minut, zamówienia
+  24/7, sprzedaż od 1 sztuki, termin 3 dni znany przed zapłatą. Pod spodem
+  jedna linia wiarygodności: 1994, ISO 9001:2015, ~4 000 indeksów oraz zdanie
+  zdejmujące najczęstszą obawę — limit kredytowy nie jest wymagany.
+
+Trzy najmocniejsze argumenty stoją tam, gdzie pracują najciężej — **w karcie
+NIP, obok pola do wypełnienia**: około 3 minut, bez skanów dokumentów, bez umowy
+ramowej.
+
+**Czego świadomie tu nie ma.** Sekcji „co przygotować, a czego nie potrzebujesz"
+(powtarzała te trzy zapewnienia z karty), listy pytań przed rejestracją (to praca
+dla strony pomocy — najważniejsza odpowiedź, o limit kredytowy, weszła do paska
+wiarygodności), pigułek z parametrami w nagłówku ani spisu treści prowadzącego do
+sekcji niżej. Po weryfikacji NIP zniknął też pas przypominający wartości: na tym
+etapie klient jest już przekonany, a każdy element poza formularzem opóźnia
+jego wypełnienie.
+
+**D. Dwie poprawki przy okazji**
+
+- **Wymagania hasła jako lista warunków zapalających się na zielono**, zamiast
+  zdania „min. 6 znaków, w tym 1 wielka litera, 1 cyfra i 1 symbol". Przy okazji
+  minimum warto podnieść z 6 do 8 znaków — sześć znaków to dziś próg poniżej
+  przyjętej praktyki.
+- **Rozdzielenie zgód wymaganych od marketingowych.** Obecne pole „Zaznacz
+  wszystkie zgody" zaznacza jednym kliknięciem także zgody marketingowe. Zgoda
+  marketingowa musi być dobrowolna i odrębna — zbiorcze zaznaczenie osłabia jej
+  ważność. W prototypie przycisk zaznacza wyłącznie zgody konieczne do założenia
+  konta, a zgody dobrowolne stoją w osobnej grupie z wyraźnym oznaczeniem.
+
+### 4.5 Po rejestracji — ekran, którego dziś nie ma
+
+Prototyp: `redesign/po-rejestracji.html`.
+
+Klient kończy rejestrację i trafia w puste konto. Zna już cenę i termin, ale nie
+wie, gdzie zacząć — a to moment, w którym najłatwiej go stracić: zainwestował
+trzy minuty, nic z tego jeszcze nie ma i nikt mu nie powiedział, co dalej.
+
+**Zasada: jeden ekran, jedno zadanie, jedno główne działanie.** Ekran powitalny
+kusi, żeby wrzucić na niego wszystko — samouczek, listę funkcji, checklistę
+ustawień, FAQ. Wtedy przestaje prowadzić do zamówienia i staje się drugą stroną
+główną. Wszystko, co nie prowadzi do działania, zostało wycięte albo sprowadzone
+do jednej linijki.
+
+| | Zadanie | Główne działanie |
+|---|---|---|
+| Po wysłaniu formularza | potwierdzić adres e-mail | kliknięcie linku w wiadomości |
+| Po aktywacji konta | złożyć pierwsze zamówienie | „Przejdź do katalogu" |
+
+**A. Potwierdź adres e-mail.** Adres, na który poszła wiadomość (tu wychodzi
+literówka), termin ważności linku, dwie linijki „nie dotarła?" i przycisk
+ponownego wysłania z blokadą 30 sekund. Nic więcej — jedyny sensowny krok to
+kliknięcie linku, więc ekran nie udaje, że da się zrobić coś innego.
+
+**B. Zamów pierwszy raz.** Jeden ciemny przycisk do katalogu i jeden cichy
+odnośnik dla klienta z gotową listą indeksów. Pod spodem trzy rzeczy, każda
+w jednej linijce myśli:
+
+- **jedna rzecz do zrobienia** — adres dostawy, bo to jedyne, co realnie blokuje
+  koszyk. Pasek jest celowo cichszy od głównego przycisku;
+- **jak zamówić w trzech krokach** — wybierz wyrób, ustaw długość, dostawa
+  i płatność;
+- **cztery fakty** — 3 dni robocze, 5 dni dla ciętych, rabat od 500 kg, płatność
+  online albo proforma. To odpowiedzi na pytania, które i tak trafiłyby do BOK.
+
+Na dole opiekun handlowy z imienia i nazwiska oraz kontakt do Biura Obsługi
+Klienta — jeden cichy blok.
+
+**Czego świadomie tu nie ma.** Sześciu kroków ścieżki zamówienia (trzy wystarczą,
+resztę klient zobaczy w koszyku), skrótów na kolejne zamówienia (dotyczą drugiego
+zakupu, nie pierwszego), pięciopozycyjnej checklisty ustawień (tylko adres
+dostawy cokolwiek blokuje), tabeli terminów (cztery znaczniki mówią to samo) ani
+sekcji „co jeśli" (to jest praca dla strony pomocy, nie dla ekranu powitalnego).
+Każda z nich była w pierwszej wersji prototypu i każda odciągała od jedynego
+celu tego ekranu.
+
+### 4.6 Co zmienia się poza stroną główną (rekomendacje dalszych kroków)
 
 1. **Karta produktu**: cena orientacyjna bez logowania, dostępność w sztukach,
    deklarowany termin, kalkulator cięcia na miejscu, plik z atestem/deklaracją.
@@ -187,6 +360,9 @@ Znikają jako osobne pozycje w menu: „Dlaczego my" (wchodzi w pas dowodów i s
 |---|---|
 | `ANALIZA.md` | ten dokument |
 | `odwzorowanie/index.html` | model strukturalny obecnej strony + nakładka z uwagami UX |
-| `redesign/index.html` | propozycja nowego układu, działający prototyp |
+| `redesign/index.html` | propozycja nowego układu strony głównej, działający prototyp |
+| `redesign/rejestracja.html` | przebudowany formularz rejestracji konta B2B |
+| `redesign/po-rejestracji.html` | ekran po rejestracji: potwierdzenie e-maila i „jak zamówić” |
+| `brand/` | księga znaku (PDF), jej przepisanie, tokeny CSS i znak w SVG |
 
 Prototypy są samodzielnymi plikami HTML — wystarczy otworzyć je w przeglądarce.
