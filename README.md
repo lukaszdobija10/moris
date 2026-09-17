@@ -9,10 +9,29 @@ Repozytorium robocze Działu Sprzedaży E-Commerce Moris sp. z o.o.
 | [`redesign/index.html`](redesign/index.html) | Prototyp nowego układu. Działające: wyszukiwarka parametryczna, konfigurator cięcia z podglądem odpadu, kalkulator masy i ceny z rabatem progowym, szybkie zamówienie z listy. |
 | [`redesign/rejestracja.html`](redesign/rejestracja.html) | Ekran rejestracji w dwóch odsłonach: przed podaniem NIP (trzy kroki, dla kogo, dlaczego warto) i po weryfikacji (formularz z danymi z rejestru, kontakt firmowy, przełącznik „inne dane do faktury”, rozdzielone zgody). |
 | [`redesign/po-rejestracji.html`](redesign/po-rejestracji.html) | Ekran po rejestracji w dwóch momentach: „potwierdź adres e-mail” i „zamów pierwszy raz”. Zbudowany na zasadzie jeden ekran — jedno działanie: główny przycisk do katalogu, jedna rzecz do dokończenia (adres dostawy), trzy kroki zamówienia i cztery fakty. |
-| [`brand/`](brand/) | Księga znaku Moris (PDF), jej przepisanie do `BRANDBOOK.md`, tokeny `tokens.css` oraz znak wyciągnięty z księgi jako SVG. Wszystkie prototypy korzystają z tego systemu. |
+| [`ANALIZA-REJESTRACJA.md`](ANALIZA-REJESTRACJA.md) | Analiza UX ekranu rejestracji na podstawie zrzutów produkcji: 7 usterek krytycznych, 6 wysokiego wpływu, 12 średnich, kolejność wdrożenia, niespójności kontaktowe w serwisie. |
+| [`rejestracja/index.html`](rejestracja/index.html) | Drugi prototyp rejestracji, z przełącznikiem „Pokaż uwagi UX”. Działające: weryfikacja sumy kontrolnej NIP, lista krajów sortowana po polsku z filtrowaniem, trzy kroki, żywa walidacja hasła, rozdzielone zgody. **Pokrywa się zakresem z `redesign/rejestracja.html` — do scalenia, patrz „Do rozstrzygnięcia”.** |
+| [`ANALIZA-MAILINGI.md`](ANALIZA-MAILINGI.md) | Analiza kodu przekazanych mailingów ExpertSender: 23 usterki z numerami linii, opis czterech nowych kompilacji, lista kontrolna przed wysyłką. |
+| [`mailingi/`](mailingi/) | Cztery szablony mailingowe — obsługa platformy, budowanie zaufania, baza produktowa, usługi dodatkowe i transport. Plus `podglad.html` (wszystkie obok siebie) i `build.py` (generator wspólnej ramy). |
+| [`brand/`](brand/) | Księga znaku Moris (PDF), jej przepisanie do `BRANDBOOK.md`, tokeny `tokens.css` oraz znak wyciągnięty z księgi jako SVG. Wszystkie prototypy i mailingi korzystają z tego systemu. |
 
-Wszystkie trzy prototypy to samodzielne pliki HTML — wystarczy otworzyć w przeglądarce,
-bez budowania i bez zależności.
+Prototypy i mailingi to samodzielne pliki HTML — wystarczy otworzyć
+w przeglądarce, bez budowania i bez zależności. `mailingi/build.py` służy
+wyłącznie do regeneracji wspólnej ramy szablonów; jego uruchomienie nie jest
+potrzebne, żeby z nich korzystać.
+
+Mailingi przed wysyłką wymagają podmiany dwóch znaczników
+(`{{LINK_WYPISU_Z_EXPERTSENDER}}`, `{{ID_KAMPANII}}`) — pełna lista kontrolna
+w rozdziale 5 dokumentu `ANALIZA-MAILINGI.md`.
+
+## Do rozstrzygnięcia
+
+W repozytorium stoją **dwa prototypy rejestracji**, zbudowane niezależnie
+w dwóch sesjach: `redesign/rejestracja.html` (dwie odsłony, pełny system
+wizualny z księgi) oraz `rejestracja/index.html` (trzy kroki, weryfikacja sumy
+kontrolnej NIP, przełącznik uwag UX). Zakresy się pokrywają. Decyzja, który
+zostaje — albo które elementy przenieść z jednego do drugiego — należy do
+właściciela repozytorium; oba działają i oba są opisane wyżej.
 
 ## Zastrzeżenie
 

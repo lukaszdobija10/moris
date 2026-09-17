@@ -1,0 +1,304 @@
+# Mailingi Moris — analiza kodu źródłowego i trzy nowe kompilacje
+
+Dokument roboczy Działu Sprzedaży E-Commerce. Zawiera: (1) co realnie jest
+w przekazanych plikach, (2) listę usterek kodu z odwołaniem do numerów linii,
+(3) rozbieżność z księgą znaku, (4) opis czterech nowych kompilacji,
+(5) listę rzeczy do potwierdzenia przed wysyłką.
+
+---
+
+## 1. Co jest w przekazanych plikach
+
+Przekazano trzy pliki. Realnie są to **dwa szablony**:
+
+| Plik | Kampania | Uwaga |
+|---|---|---|
+| `campaign_source.html` | Powitanie na Platformie MORIS.EU | ID kampanii `154331` |
+| `campaign_source_2.html` | **duplikat powyższego** | ID `154332` |
+| `campaign_source_1.html` | Obniżka ceny transportu HDS | ID `418601` |
+
+Pierwsze dwa pliki są identyczne **bajt w bajt** — różnią się wyłącznie
+podpisanym hashem w linku wypisu i numerem kampanii w pixelu zliczającym.
+Sprawdzenie:
+
+```
+diff <(sed 's/15433[12]/ID/g' campaign_source.html) \
+     <(sed 's/15433[12]/ID/g' campaign_source_2.html)
+# jedyna różnica: hash _esuh w linku wypisu
+```
+
+Wniosek operacyjny: to nie są dwa warianty do porównania, tylko ten sam
+kreatyw wysłany dwukrotnie na dwie listy. Jeżeli intencją był test A/B —
+nie odbył się.
+
+### Platforma wysyłkowa
+
+Kod pochodzi z **ExpertSender**: namespace `ems:` (`ems:preheader`,
+`ems:deeplink`), atrybuty edycyjne `e-editable` i `e-block-id`, znaczniki
+scalania `$uid$`, `$llid$`, `$sid$`, `$launchId$`, domena śledząca
+`link.moris.eu`. Nowe kompilacje zachowują wszystkie te konwencje, żeby
+dały się wkleić bez przeróbek.
+
+### Warstwa graficzna
+
+Obrazy leżą w dwóch miejscach: `link.moris.eu/custloads/1060954645/`
+(wgrane przez ExpertSender) i `bevisible.pl/mailingi/moris-*` (serwer agencji).
+Druga lokalizacja jest zależnością zewnętrzną poza kontrolą Moris — jeżeli
+agencja wyłączy katalog, logo i ikony znikną we wszystkich wysłanych
+mailingach wstecz. **Do przeniesienia na `link.moris.eu`.**
+
+---
+
+## 2. Usterki kodu
+
+Numery linii odnoszą się do plików źródłowych w postaci przekazanej.
+
+### 2.1 Struktura — łamie się w Outlooku
+
+| # | Plik : linia | Problem | Skutek |
+|---|---|---|---|
+| 1 | `campaign_source` : 156–159 | `<table>` otwarta, zaraz po niej `<td>` **bez `<tr>`** | Outlook (silnik Word) porzuca komórkę albo cały blok; sekcja „Zobacz, co daje Ci korzystanie z Platformy” może nie renderować się w ogóle |
+| 2 | `campaign_source` : 186–191 | ta sama konstrukcja — `<td>` bez `<tr>` | jw., blok o warunkach współpracy |
+| 3 | `campaign_source` : 151–152 | pusty `<tr>` zamknięty razem z `</table>` | parser to toleruje, ale przy edycji w ESP taki martwy znacznik potrafi „zjeść” kolejny wiersz |
+| 4 | `campaign_source` : 194 | `</table></td></tr>` — domknięcia w kolejności odwrotnej do otwarcia | przeglądarka naprawia, Word niekoniecznie |
+| 5 | `campaign_source` : 239–243 | **`<a>` zagnieżdżony w `<a>`** oraz `<strong>` w `<strong>` z odwróconym domknięciem | HTML zabroniony; klienty pocztowe rozstrzygają to różnie — link „Hurtownia Stali Online” może być nieklikalny lub odziedziczyć zły kolor |
+
+Walidacja parserem drzewa znaczników (usterki 1, 2 i 5 — pozostałe dwie parser
+toleruje, ale silnik Worda nie musi): `campaign_source` — **3 błędy**,
+`campaign_source_1` — **0 błędów**. Nowe kompilacje: **0 błędów**
+(zestaw testowy w rozdziale 5).
+
+### 2.2 CSS i renderowanie
+
+| # | Plik : linia | Problem | Skutek |
+|---|---|---|---|
+| 6 | `campaign_source` : 166 | `color: 1a2b3c` — **brak `#`** | deklaracja nieważna, tekst dziedziczy kolor; punkt 1. listy może mieć inny kolor niż punkty 2–4 |
+| 7 | `campaign_source` : 278, 280, 281 | `text-wrap: nowrap` | własność nieobsługiwana w klientach pocztowych; poprawnie `white-space:nowrap` (w linii 280 jest obok — czyli autor to wiedział, ale zostawił obie) |
+| 8 | `campaign_source` : 280 | `<section>` wewnątrz komórki tabeli | Outlook ignoruje style HTML5-owych bloków; zbędna warstwa |
+| 9 | `campaign_source_1` : 177–193 | lista punktowana na `<ul>` | Outlook nadaje `<ul>` własne marginesy; wcięcia rozjadą się względem reszty maila |
+| 10 | `campaign_source_1` : 274 | obraz `width="700"` w kontenerze **600 px** | obraz wystaje poza szerokość maila; w Gmailu przeskalowany, w Outlooku przycięty |
+| 11 | oba : 137, 274 | `<a>` z atrybutami `src`, `alt`, `altsrc` | atrybuty nie należą do `<a>`; ślad po wklejce z edytora, ignorowane, ale mylą przy edycji |
+| 12 | `campaign_source` : 86 | „Jeśli ten e-mail nie wyświetla się poprawnie” z **`href=""`** | link do wersji przeglądarkowej prowadzi donikąd |
+| 13 | oba : 1 | brak `<meta name="viewport">` | telefony renderują w trybie desktopowym i skalują — tekst 14 px robi się nieczytelny |
+| 14 | oba : 1 | `<html e-locale="en-US">`, brak `lang="pl"` | czytniki ekranu czytają polski tekst angielską fonetyką |
+| 15 | oba | brak bloku warunkowego MSO (`PixelsPerInch`) | Outlook na ekranach HiDPI powiększa cały mail o ~1/3 |
+| 16 | oba | brak `role="presentation"` na tabelach układu | czytnik ekranu ogłasza „tabela, 12 wierszy” dla każdej ramki layoutu |
+| 17 | oba | `alt="Moris"` na wszystkich obrazach, także treściowych | przy zablokowanych obrazach (domyślnie w Outlooku) odbiorca widzi pięć razy słowo „Moris” zamiast treści |
+| 18 | oba | brak atrybutów `bgcolor` obok `background-color` w CSS | Outlook potrafi pominąć tła sekcji granatowych |
+| 19 | `campaign_source_1` : 138 | `<img width="550">` bez `height` | skok układu w trakcie ładowania |
+
+### 2.3 Treść
+
+| # | Miejsce | Problem |
+|---|---|---|
+| 20 | `campaign_source` : 85 (preheader) | „na **ternie** całego kraju” → *terenie* |
+| 21 | `campaign_source` : 148 | „warunków **wspólpracy**” → *współpracy* |
+| 22 | `campaign_source` | mailing powitalny nie ma **żadnego przycisku CTA** — jedyna droga do platformy to link tekstowy w nagłówku i miniatura wideo. Mailing o HDS przycisk ma (linia 286). To najpoważniejszy problem konwersyjny w tym zestawie. |
+| 23 | `campaign_source` | brak numeru telefonu w bloku kontaktowym — jest tylko e-mail, mimo że drugi mailing podaje oba |
+
+---
+
+## 3. Paleta — sprostowanie
+
+**Wcześniejsza wersja tego rozdziału twierdziła, że mailingi odbiegają od księgi
+znaku, bo używają `#1A2B3C` i `#1F3855` zamiast granatu `#156082`. Było odwrotnie.**
+
+Do repozytorium trafiła w międzyczasie sama księga znaku
+([`brand/moris-logo-manual.pdf`](brand/moris-logo-manual.pdf), przepisana do
+[`brand/BRANDBOOK.md`](brand/BRANDBOOK.md) i [`brand/tokens.css`](brand/tokens.css)).
+Wynika z niej, że system marki to:
+
+| Rola | Wartość |
+|---|---|
+| Steel blue · RAL 5011 | `#1A2B3C` — tekst i ciemne powierzchnie |
+| Sapphire blue · RAL 5003 | `#1F3855` — kolor działania |
+| Pastel blue · RAL 5024 | `#73B7E5` — tła sekcji i znaczników |
+| Luminous Orange · RAL 2007 | `#FF7517` — akcent |
+| Typografia | Paralucent (Extra Light / Medium), tekst: Poppins Regular |
+
+Czyli **przekazane mailingi stały na właściwej palecie**: `#1A2B3C`, `#1F3855`,
+`#73B7E5` i pomarańcz `#FF7517` to wartości wprost z księgi. Granat `#156082`
+i Arial pochodzą ze skilla `moris-docs`, odtworzonego z wewnętrznego dokumentu
+Word (ZSZ-POL-FIN-01), a nie z księgi — rozbieżność opisana w
+`brand/BRANDBOOK.md`, rozdział 7.
+
+**Konsekwencja dla tych szablonów:** cztery nowe kompilacje zostały przestawione
+na tokeny z księgi. Znika też wcześniejsza propozycja kroju o stałej szerokości
+do danych technicznych — księga jej nie przewiduje (Paralucent Stencil jest
+krojem ekspozycyjnym, nie tabelarycznym), więc liczby składamy Poppinsem
+z `font-variant-numeric: tabular-nums`. Cyfry i tak wyrównują się w kolumnach,
+a system wizualny zostaje jeden.
+
+W poczcie webfonty działają tylko w części klientów, dlatego stos brzmi
+`'Poppins', Arial, Helvetica, sans-serif` — Poppins tam, gdzie się załaduje,
+Arial wszędzie indziej. To jedyne odstępstwo od księgi w tych szablonach i wynika
+z ograniczeń medium, nie z decyzji projektowej.
+
+**Jedna rzecz z księgi wymaga korekty w kodzie.** Biel na Luminous Orange
+`#FF7517` daje kontrast **2,69:1** — poniżej progu czytelności (WCAG AA wymaga
+4,5:1 dla tekstu, 3:1 dla dużego). Pomarańczowy przycisk z białym napisem,
+jaki stoi w przekazanych mailingach, jest więc nieczytelny dla części odbiorców.
+Księga rozwiązuje to sama: kolorem działania jest **Sapphire blue `#1F3855`**,
+a pomarańcz to **akcent**. W nowych szablonach:
+
+| Zastosowanie | Rozwiązanie | Kontrast |
+|---|---|---|
+| Przycisk na jasnym tle | Sapphire `#1F3855`, tekst biały | 11,97:1 |
+| Przycisk na ciemnym tle | biały, tekst Steel `#1A2B3C` | 14,44:1 |
+| Pomarańcz jako tekst lub link | `#8A5A08` (token pochodny `--warn-ink`) | 5,28:1 |
+| Pomarańcz jako tło, linia, punktor | `#FF7517` bez zmian | — |
+
+**Nierozstrzygnięte:** w przekazanych mailingach współistnieją dwa odcienie
+pomarańczu (`#F35E07` i `#FF7517`) oraz dwa tła sekcji (`#E8F1F4` i `#f1f3f5`).
+Księga zna tylko `#FF7517` i `#E8F1F4` — pozostałe dwa to prawdopodobnie ślad po
+wcześniejszej wersji szablonu. Do ujednolicenia przy najbliższej edycji
+istniejących kreacji.
+
+---
+
+## 4. Cztery nowe kompilacje
+
+Pliki w katalogu [`mailingi/`](mailingi/). Każdy plik `.html` jest samodzielny —
+do wklejenia w ExpertSender bez budowania. Skrypt `build.py` istnieje tylko po to,
+żeby wspólna rama (nagłówek, menu, blok kontaktowy, stopka, przycisk) była
+w jednym miejscu; jego uruchomienie nie jest potrzebne do użycia szablonów.
+
+### 4.1 `01-obsluga-platformy.html` — obsługa platformy
+
+**Cel:** doprowadzić klienta do pierwszego samodzielnego zamówienia online.
+
+**Co zmienia się względem mailingu powitalnego:**
+
+- ciąg przyczynowo-skutkowy zamiast listy zalet — cztery ponumerowane kroki
+  (*znajdź produkt → ustaw długość i ilość → wybierz dostawę → potwierdź*)
+  zamiast czterech zdań zaczynających się od „Szybko sprawdzisz”, „Automatycznie
+  wyliczysz”. Odbiorca po przeczytaniu wie, co zobaczy na ekranie;
+- **przycisk CTA**, którego w oryginale nie było — odporny na Outlooka
+  (VML `v:roundrect` + wariant HTML), więc działa także przy zablokowanych obrazkach;
+- panel klienta opisany jako cztery karty korzyści, nie jako spis funkcji;
+- obietnica ciągłości warunków handlowych (ceny, płatności, transport, opiekun)
+  rozbita na cztery punkty zamiast jednego zdania na 24 px — bo to jest zdanie,
+  które zdejmuje główny opór przed platformą.
+
+### 4.2 `02-zaufanie.html` — budowanie zaufania
+
+**Cel:** zdjąć ryzyko przed pierwszym zamówieniem — u klienta, który firmy
+jeszcze nie zna albo zna ją wyłącznie z kontaktu telefonicznego.
+
+**Konstrukcja:** dowód, nie deklaracja. Kolejno:
+
+1. pas czterech liczb — `1994`, `~4 000`, `>50%`, `20 m`;
+2. cztery dowody z uzasadnieniem: ISO 9001:2015, licencjonowany spedytor,
+   magazyn automatyczny, udział klientów stałych;
+3. **tabela zobowiązań z parametrami** — 3 dni robocze / 5 dni roboczych /
+   1 sztuka / cała Polska / 11 m / 7 m i 14 t. Liczba jest sprawdzalna,
+   przymiotnik nie;
+4. miejsce na opinię klienta — **puste, oznaczone znacznikiem**. Świadomie
+   nie wpisano tam nic: cytat referencyjny wolno publikować wyłącznie
+   za pisemną zgodą klienta.
+
+### 4.3 `03-baza-produktowa.html` — baza produktowa
+
+**Cel:** pokazać zasięg oferty i wprowadzić do katalogu.
+
+**Konstrukcja:**
+
+1. dwa światy produktowe jako osobne wejścia — wyroby hutnicze i kolej,
+   każdy z własnym linkiem do kategorii;
+2. tabela gatunków na stanie z przypisanym zastosowaniem — S235JR, S235JRH,
+   S355J2, S355J2+N, S355J2H. Kupujący szuka gatunku, nie nazwy kategorii;
+3. dwie przykładowe pozycje z realnym zapisem indeksu
+   (`fi 90 S355J2+N L=6 m`, `49E1 R260 L=12 m`) — pokazują, jak wygląda opis
+   produktu, zanim ktokolwiek kliknie;
+4. sekcja cięcia na wymiar na granatowym tle, na końcu — odpowiedź na
+   najczęstszy powód rezygnacji: „nie ma mojego wymiaru”.
+
+### 4.4 `04-uslugi-i-transport.html` — usługi dodatkowe i transport
+
+**Cel:** zdjąć dwie najczęstsze obiekcje przed zamówieniem — „nie ma mojego
+wymiaru” i „nie mam czym rozładować”.
+
+**Konstrukcja:**
+
+1. **Cięcie** — dwie usługi rozdzielone, bo to dwie różne potrzeby: cięcie
+   na wymiar 90° (długość pod produkcję) i cięcie transportowe (podział na
+   2–6 części, żeby wjechało). W opisie cięcia na wymiar wprost powiedziane,
+   że rozliczamy **rzeczywistą masę po cięciu**, nie masę pręta katalogowego —
+   to pytanie, które i tak padnie w telefonie;
+2. **Trzy sposoby odbioru** jako równorzędne karty — odbiór własny, dostawa
+   standardowa, ciężarówka HDS. Przy dostawie standardowej powiedziane wprost,
+   że rozładunek jest po stronie odbiorcy. Ukrycie tego kosztuje reklamację,
+   nie zamówienie;
+3. **Parametry HDS w tabeli na granacie** — 11 m zasięgu ramienia, 7 m
+   długości, 14 t masy, cała Polska, 1 sztuka. Pod tabelą wyjście awaryjne:
+   co zrobić, gdy zamówienie nie mieści się w granicach usługi (transport
+   ponadgabarytowy, również koleją);
+4. **Trzy kroki zamówienia** — koszyk → cięcie przy pozycji → wybór dostawy,
+   z zaznaczeniem, że koszt transportu wylicza się automatycznie;
+5. **Terminy** — 3 dni robocze / 5 dni roboczych, z adnotacją, że termin
+   w koszyku dotyczy konkretnego zamówienia i adresu, a nie jest wartością
+   orientacyjną.
+
+**Czego świadomie nie ma:** ogłoszenia o obniżce ceny transportu HDS.
+W `campaign_source_1.html` było ono osią całego mailingu, ale to komunikat
+z konkretnego momentu (2024 r.). Szablon ma być wysyłalny wielokrotnie, więc
+informacja o obniżce należy do osobnej wysyłki, nie do wzoru stałego.
+
+### 4.5 Wspólna warstwa techniczna
+
+Wszystkie cztery pliki:
+
+- 600 px, tabele z `role="presentation"`, komórki z `bgcolor` obok CSS;
+- `lang="pl"`, `viewport`, `x-apple-disable-message-reformatting`,
+  blok warunkowy MSO z `PixelsPerInch` (usuwa powiększanie w Outlooku HiDPI);
+- responsywność przez `td.stack` — dwie kolumny składają się do jednej poniżej
+  600 px; menu rozkłada się na cztery wiersze;
+- **zero obrazów treściowych** — nagłówki, liczby, karty i tabele są
+  tekstem. Mail czyta się w całości przy domyślnie zablokowanych obrazkach
+  w Outlooku. Obrazy pozostają tylko na logo i dwóch ikonach kontaktu,
+  z opisowym `alt`;
+- przyciski bulletproof (VML dla Outlooka, HTML dla reszty) — bez plików PNG,
+  więc zmiana treści przycisku nie wymaga grafika;
+- preheader + blok znaków wypełniających, żeby skrzynka nie doklejała
+  do podglądu początku stopki;
+- `e-editable` na każdym bloku tekstowym i `e-block-id` na każdej sekcji —
+  redakcja w ExpertSender bez wchodzenia w kod.
+
+---
+
+## 5. Zanim wyślesz — lista kontrolna
+
+**Musi być podmienione:**
+
+1. `{{LINK_WYPISU_Z_EXPERTSENDER}}` w stopce — ExpertSender generuje podpisany
+   link per kampania; nie da się go wygenerować poza systemem. Wstaw przez
+   funkcję wypisu w edytorze albo skopiuj z bieżącej kampanii.
+2. `{{ID_KAMPANII}}` w adresie pixela zliczającego (ostatnia linia pliku).
+3. W `02-zaufanie.html` — blok `moris-opinia`: uzupełnić cytatem za pisemną
+   zgodą klienta **albo usunąć cały blok**. Nie wysyłać ze znacznikiem.
+
+**Do potwierdzenia w danych źródłowych:**
+
+| Element | Gdzie | Status |
+|---|---|---|
+| `/pl/login`, `/pl/about-us`, `/pl/why-we`, `/pl/cutting-service`, `/pl/delivery`, `/pl/blog/HDS` | wszystkie cztery mailingi | adresy odtworzone z indeksu wyszukiwarki (patrz `ANALIZA.md`, rozdz. 1); `/pl/blog/HDS` pochodzi z `campaign_source_1.html` — **sprawdzić, czy odpowiadają na 200** |
+| „ISO 9001:2015”, „licencjonowany spedytor”, „>50% obrotu z klientami stałymi”, „magazyn 20 m”, „~4 000 indeksów” | `02-zaufanie.html` | dane z publikacji branżowych i profili firmowych, nie z dokumentów spółki — **potwierdzić przed użyciem jako obietnica handlowa** |
+| „dokumenty jakościowe wyrobu do każdej dostawy” | `02-zaufanie.html`, karta ISO | sformułowanie ogólne — **doprecyzować, jaki dokument faktycznie towarzyszy dostawie** |
+| Terminy 3 / 5 dni roboczych, HDS 11 m / 7 m / 14 t | `02`, `03`, `04` | pochodzą z `campaign_source_1.html` i z `ANALIZA.md` — sprawdzić aktualność |
+| „rozliczamy rzeczywistą masę pozycji po cięciu” | `04`, karta cięcia na wymiar | **potwierdzić w regulaminie** — jeśli rozliczenie idzie od masy materiału wsadowego, zdanie trzeba usunąć |
+| „cięcie transportowe: podział na 2–6 części” | `04` | z `campaign_source_1.html`; sprawdzić, czy limit nadal obowiązuje |
+| Odbiór własny jako dostępna opcja w koszyku | `04`, karta odbioru | **potwierdzić, że platforma faktycznie ją oferuje** — nie wynika to z przekazanych mailingów |
+| „transport ponadgabarytowy, również koleją” | `04`, adnotacja pod tabelą HDS | wynika z licencji spedycyjnej opisanej w `ANALIZA.md`; potwierdzić, czy obsługujemy takie zlecenia na wniosek klienta |
+| Rok założenia 1994 → „trzydzieści lat” | `02-zaufanie.html`, lead | przy wysyłce w 2026 r. poprawić na „ponad trzydzieści lat” |
+
+**Testy techniczne przed wysyłką:**
+
+- test renderowania: Outlook 2016/2019 (Windows), Outlook.com, Gmail web,
+  Gmail Android, Apple Mail iOS, Thunderbird;
+- test z **zablokowanymi obrazkami** — mail ma być w całości czytelny;
+- kontrola drzewa znaczników (zestaw z rozdz. 2.1). Wynik oczekiwany: 0 błędów;
+- test szerokości: żaden element nie może przekraczać 600 px (usterka nr 10).
+
+**Naprawy do wykonania w istniejących szablonach**, jeżeli będą wysyłane dalej:
+usterki 1, 2, 5, 6, 10, 12, 13 z rozdziału 2 — pozostałe są kosmetyczne,
+te siedem albo psuje układ, albo prowadzi donikąd.
