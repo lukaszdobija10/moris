@@ -14,19 +14,36 @@ wymagaja niczego do dzialania.
 import io
 import os
 
-# --- Paleta wg ksiegi znaku Moris -----------------------------------------
-NAVY     = "#156082"   # granat podstawowy
-NAVY_D   = "#0E4258"   # granat ciemny
-GRAPHITE = "#12202B"   # grafit — tekst
-BLUE_L   = "#F2F6F8"   # blekit jasny — tlo sekcji
-BLUE     = "#D9E5EC"   # blekit — obramowania, linie
-ORANGE   = "#F35E07"   # kolor funkcyjny CTA (do akceptacji — patrz README)
-GREY     = "#5A6B76"   # tekst pomocniczy
+# --- Paleta wg ksiegi znaku Moris (brand/tokens.css) ----------------------
+# Zrodlem jest brand/moris-logo-manual.pdf. Wartosci odpowiadaja tokenom
+# z brand/tokens.css — mail i prototypy stoja na tym samym systemie.
+NAVY     = "#1F3855"   # Sapphire blue · RAL 5003 — kolor dzialania
+NAVY_D   = "#1A2B3C"   # Steel blue    · RAL 5011 — tekst, ciemne powierzchnie
+GRAPHITE = "#1A2B3C"   # Steel blue — tekst ciagly
+BLUE_L   = "#E8F1F4"   # tint z ksiegi — tlo sekcji
+BLUE     = "#D5E9F7"   # Pastel blue 30% — tekst i linie na ciemnym tle
+ORANGE   = "#FF7517"   # Luminous Orange · RAL 2007 — akcent, WYLACZNIE jako
+                       # tlo i element dekoracyjny: biel na nim daje 2,69:1
+ORANGE_INK = "#8A5A08" # POCHODNY (brand/tokens.css --warn-ink): pomarancz
+                       # przyciemniony do 5,9:1 — pomarancz uzyty jako TEKST
+GREY     = "#5F6E75"   # POCHODNY: Telegrey przyciemniony do WCAG AA
 WHITE    = "#FFFFFF"
 PAGE_BG  = "#ECECEC"
 
-FONT = "Arial, Helvetica, sans-serif"
-MONO = "Consolas, 'Courier New', Courier, monospace"
+# Typografia: ksiega wskazuje Paralucent (komercyjny, bez hostingu webfont)
+# i Poppins jako kroj tekstowy. W poczcie webfonty dzialaja tylko w czesci
+# klientow, wiec Poppins stoi pierwszy, a Arial jest zapasem systemowym.
+FONT = "'Poppins', Arial, Helvetica, sans-serif"
+
+# Dane liczbowe: ksiega nie przewiduje kroju o stalej szerokosci do tabel
+# (Paralucent Stencil jest krojem ekspozycyjnym). Zgodnie z brand/tokens.css
+# liczby skladamy Poppinsem z tabular-nums — cyfry i tak wyrownuja sie
+# w kolumnach, a system wizualny zostaje jeden.
+MONO = FONT
+NUM  = "font-variant-numeric:tabular-nums;"
+
+FONT_LINK = ("https://fonts.googleapis.com/css2?"
+             "family=Poppins:wght@400;500;700&display=swap")
 
 W       = 600   # szerokosc maila
 INNER   = 536   # szerokosc kolumny tresci
@@ -163,7 +180,7 @@ def hero(kicker, h1, lead):
     inner = """<tr><td e-editable="kicker" style="font-family:%(font)s;font-size:11px;line-height:16px;font-weight:700;letter-spacing:1.6px;text-transform:uppercase;color:%(orange)s;padding-bottom:12px;">%(kicker)s</td></tr>
 <tr><td class="h1" e-editable="naglowek" style="font-family:%(font)s;font-size:31px;line-height:38px;font-weight:700;color:%(navy)s;padding-bottom:16px;mso-line-height-rule:exactly;">%(h1)s</td></tr>
 <tr><td e-editable="lead" style="font-family:%(font)s;font-size:16px;line-height:25px;font-weight:400;color:%(graph)s;">%(lead)s</td></tr>""" % {
-        "font": FONT, "orange": ORANGE, "navy": NAVY, "graph": GRAPHITE,
+        "font": FONT, "orange": ORANGE_INK, "navy": NAVY, "graph": GRAPHITE,
         "kicker": kicker, "h1": h1, "lead": lead}
     return wrap(inner, WHITE, 34, 32, "moris-hero")
 
@@ -184,7 +201,7 @@ def steps_rows(items):
 <table role="presentation" width="100%%" border="0" cellpadding="0" cellspacing="0" class="container"><tr>
 <td width="44" style="width:44px;vertical-align:top;padding-right:16px;">
 <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="44" style="width:44px;"><tr>
-<td align="center" bgcolor="%(navy)s" style="width:44px;height:44px;background-color:%(navy)s;font-family:%(mono)s;font-size:18px;line-height:44px;font-weight:700;color:%(white)s;text-align:center;mso-line-height-rule:exactly;">%(n)s</td>
+<td align="center" bgcolor="%(navy)s" style="width:44px;height:44px;background-color:%(navy)s;font-family:%(mono)s;%(num)sfont-size:18px;line-height:44px;font-weight:700;color:%(white)s;text-align:center;mso-line-height-rule:exactly;">%(n)s</td>
 </tr></table>
 </td>
 <td style="vertical-align:top;">
@@ -195,11 +212,11 @@ def steps_rows(items):
 </td></tr></table>
 </td></tr>""" % {"pb": 0 if last else 20, "navy": NAVY, "navy_d": NAVY_D,
                  "mono": MONO, "font": FONT, "white": WHITE, "graph": GRAPHITE,
-                 "n": n, "title": title, "desc": desc})
+                 "n": n, "title": title, "desc": desc, "num": NUM})
     return "".join(out)
 
 
-def bullets_rows(items, marker=ORANGE, color=None):
+def bullets_rows(items, marker=ORANGE_INK, color=None):
     """Punktowana lista zbudowana na tabeli — bez <ul>, ktore rozjezdza Outlook."""
     out = []
     for i, item in enumerate(items):
@@ -223,10 +240,10 @@ def stats_rows(items):
             pad = "padding-right:12px;" if j == 0 else "padding-left:12px;"
             cells.append("""<td class="stack gap-mobile" style="width:256px;%(pad)svertical-align:top;">
 <table role="presentation" width="100%%" border="0" cellpadding="0" cellspacing="0"><tr>
-<td e-editable="liczba" style="font-family:%(mono)s;font-size:29px;line-height:36px;font-weight:700;color:%(navy)s;padding-bottom:4px;mso-line-height-rule:exactly;">%(value)s</td></tr>
+<td e-editable="liczba" style="font-family:%(mono)s;%(num)s font-size:29px;line-height:36px;font-weight:700;color:%(navy)s;padding-bottom:4px;mso-line-height-rule:exactly;">%(value)s</td></tr>
 <tr><td e-editable="opis" style="font-family:%(font)s;font-size:14px;line-height:20px;color:%(grey)s;">%(label)s</td></tr>
 </table></td>""" % {"pad": pad, "mono": MONO, "navy": NAVY, "font": FONT,
-                    "grey": GREY, "value": value, "label": label})
+                    "grey": GREY, "value": value, "label": label, "num": NUM})
         if len(pair) == 1:
             cells.append('<td class="stack" style="width:256px;">&nbsp;</td>')
         pb = 0 if i + 2 >= len(items) else 24
@@ -247,7 +264,7 @@ def cards_rows(items):
             link = ('<tr><td style="padding-top:9px;"><a href="%s" target="_blank" '
                     'style="font-family:%s;font-size:14px;line-height:20px;'
                     'font-weight:700;color:%s;text-decoration:none!important;">'
-                    '%s &rarr;</a></td></tr>' % (href, FONT, ORANGE, link_label))
+                    '%s &rarr;</a></td></tr>' % (href, FONT, ORANGE_INK, link_label))
         out.append("""<tr><td style="padding-bottom:%(pb)spx;">
 <table role="presentation" width="100%%" border="0" cellpadding="0" cellspacing="0" class="container"><tr>
 <td width="4" bgcolor="%(navy)s" style="width:4px;background-color:%(navy)s;font-size:0;line-height:0;">&nbsp;</td>
@@ -284,10 +301,10 @@ def table_rows(headers, rows, dark=False):
             fam = FONT if k == 0 else MONO
             col = col_a if k == 0 else col_b
             wgt = "400" if k == 0 else "700"
-            tds.append('<td style="font-family:%s;font-size:14px;line-height:21px;'
+            tds.append('<td style="font-family:%s;%sfont-size:14px;line-height:21px;'
                        'font-weight:%s;color:%s;padding:9px 10px 9px 0;'
                        'border-bottom:1px solid %s;">%s</td>'
-                       % (fam, wgt, col, line_row, cell))
+                       % (fam, NUM if k else "", wgt, col, line_row, cell))
         body.append("<tr>%s</tr>" % "".join(tds))
     return ('<tr><td><table role="presentation" width="100%%" border="0" cellpadding="0" '
             'cellspacing="0" class="container"><tr>%s</tr>%s</table></td></tr>'
@@ -299,19 +316,26 @@ def table_rows_dark(headers, rows):
     return table_rows(headers, rows, dark=True)
 
 
-def cta_rows(label, href, width=280, align="left"):
-    """Przycisk odporny na Outlooka (VML) — bez obrazka."""
+def cta_rows(label, href, width=280, align="left", dark=False):
+    """Przycisk odporny na Outlooka (VML) — bez obrazka.
+
+    Kolorem dzialania jest wg ksiegi Sapphire blue, nie pomarancz: biel na
+    Luminous Orange daje 2,69:1, czyli ponizej progu czytelnosci. Na ciemnym
+    tle przycisk odwraca sie na bialy z tekstem Steel blue (14,4:1).
+    """
+    bg  = WHITE if dark else NAVY
+    fg  = NAVY_D if dark else WHITE
     return """<tr><td align="%(align)s" style="padding-top:26px;">
 <!--[if mso]>
-<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="%(href)s" style="height:52px;v-text-anchor:middle;width:%(w)spx;" arcsize="6%%" stroke="f" fillcolor="%(orange)s">
+<v:roundrect xmlns:v="urn:schemas-microsoft-com:vml" xmlns:w="urn:schemas-microsoft-com:office:word" href="%(href)s" style="height:52px;v-text-anchor:middle;width:%(w)spx;" arcsize="6%%" stroke="f" fillcolor="%(bg)s">
 <w:anchorlock/>
-<center style="color:#ffffff;font-family:%(font)s;font-size:16px;font-weight:bold;">%(label)s</center>
+<center style="color:%(fg)s;font-family:%(font)s;font-size:16px;font-weight:bold;">%(label)s</center>
 </v:roundrect>
 <![endif]-->
 <!--[if !mso]><!-- -->
-<a e-editable="cta" href="%(href)s" target="_blank" style="background-color:%(orange)s;border-radius:3px;color:#ffffff;display:inline-block;font-family:%(font)s;font-size:16px;font-weight:700;line-height:52px;text-align:center;text-decoration:none!important;width:%(w)spx;-webkit-text-size-adjust:none;">%(label)s</a>
+<a e-editable="cta" href="%(href)s" target="_blank" style="background-color:%(bg)s;border-radius:3px;color:%(fg)s;display:inline-block;font-family:%(font)s;font-size:16px;font-weight:700;line-height:52px;text-align:center;text-decoration:none!important;width:%(w)spx;-webkit-text-size-adjust:none;">%(label)s</a>
 <!--<![endif]-->
-</td></tr>""" % {"align": align, "href": href, "w": width, "orange": ORANGE,
+</td></tr>""" % {"align": align, "href": href, "w": width, "bg": bg, "fg": fg,
                  "font": FONT, "label": label}
 
 
@@ -380,6 +404,11 @@ def document(title, preheader, blocks):
 <meta name="color-scheme" content="light">
 <meta name="supported-color-schemes" content="light">
 <title>%(title)s</title>
+<!--[if !mso]><!-- -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="%(fontlink)s">
+<!--<![endif]-->
 <!--[if mso]>
 <xml><o:OfficeDocumentSettings><o:AllowPNG/><o:PixelsPerInch>96</o:PixelsPerInch></o:OfficeDocumentSettings></xml>
 <![endif]-->
@@ -401,7 +430,7 @@ def document(title, preheader, blocks):
 </html>
 """ % {"title": title, "css": CSS, "page": PAGE_BG, "font": FONT,
        "pre": preheader, "w": W, "white": WHITE, "blocks": "".join(blocks),
-       "pixel": PIXEL_PLACEHOLDER}
+       "pixel": PIXEL_PLACEHOLDER, "fontlink": FONT_LINK}
 
 
 # ===========================================================================
@@ -621,7 +650,7 @@ def mailing_baza_produktowa():
             "<strong style=\"color:#FFFFFF;\">Termin</strong> — 5 dni roboczych "
             "dla wyrobów ciętych, 3 dni dla standardowych",
         ], marker=ORANGE, color=BLUE) +
-        cta_rows("Sprawdź usługę cięcia", URL_CUT, 250),
+        cta_rows("Sprawdź usługę cięcia", URL_CUT, 250, dark=True),
         NAVY, 40, 40, "moris-ciecie"))
 
     blocks.append(contact_block("Szukasz pozycji, której nie ma w katalogu?"))
@@ -669,7 +698,7 @@ def mailing_uslugi_i_transport():
         '<tr><td style="padding-top:16px;font-family:%s;font-size:14px;line-height:21px;'
         'color:%s;"><a href="%s" target="_blank" style="color:%s;'
         'text-decoration:none!important;font-weight:700;">Szczegóły usługi cięcia '
-        '&rarr;</a></td></tr>' % (FONT, GREY, URL_CUT, ORANGE),
+        '&rarr;</a></td></tr>' % (FONT, GREY, URL_CUT, ORANGE_INK),
         BLUE_L, 40, 40, "moris-ciecie"))
 
     # --- transport: trzy drogi --------------------------------------------

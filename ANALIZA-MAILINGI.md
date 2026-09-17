@@ -98,32 +98,61 @@ toleruje, ale silnik Worda nie musi): `campaign_source` — **3 błędy**,
 
 ---
 
-## 3. Rozbieżność z księgą znaku
+## 3. Paleta — sprostowanie
 
-Mailingi używają palety, której nie ma w księdze znaku Moris:
+**Wcześniejsza wersja tego rozdziału twierdziła, że mailingi odbiegają od księgi
+znaku, bo używają `#1A2B3C` i `#1F3855` zamiast granatu `#156082`. Było odwrotnie.**
 
-| Rola | W mailingach | Księga znaku |
+Do repozytorium trafiła w międzyczasie sama księga znaku
+([`brand/moris-logo-manual.pdf`](brand/moris-logo-manual.pdf), przepisana do
+[`brand/BRANDBOOK.md`](brand/BRANDBOOK.md) i [`brand/tokens.css`](brand/tokens.css)).
+Wynika z niej, że system marki to:
+
+| Rola | Wartość |
+|---|---|
+| Steel blue · RAL 5011 | `#1A2B3C` — tekst i ciemne powierzchnie |
+| Sapphire blue · RAL 5003 | `#1F3855` — kolor działania |
+| Pastel blue · RAL 5024 | `#73B7E5` — tła sekcji i znaczników |
+| Luminous Orange · RAL 2007 | `#FF7517` — akcent |
+| Typografia | Paralucent (Extra Light / Medium), tekst: Poppins Regular |
+
+Czyli **przekazane mailingi stały na właściwej palecie**: `#1A2B3C`, `#1F3855`,
+`#73B7E5` i pomarańcz `#FF7517` to wartości wprost z księgi. Granat `#156082`
+i Arial pochodzą ze skilla `moris-docs`, odtworzonego z wewnętrznego dokumentu
+Word (ZSZ-POL-FIN-01), a nie z księgi — rozbieżność opisana w
+`brand/BRANDBOOK.md`, rozdział 7.
+
+**Konsekwencja dla tych szablonów:** cztery nowe kompilacje zostały przestawione
+na tokeny z księgi. Znika też wcześniejsza propozycja kroju o stałej szerokości
+do danych technicznych — księga jej nie przewiduje (Paralucent Stencil jest
+krojem ekspozycyjnym, nie tabelarycznym), więc liczby składamy Poppinsem
+z `font-variant-numeric: tabular-nums`. Cyfry i tak wyrównują się w kolumnach,
+a system wizualny zostaje jeden.
+
+W poczcie webfonty działają tylko w części klientów, dlatego stos brzmi
+`'Poppins', Arial, Helvetica, sans-serif` — Poppins tam, gdzie się załaduje,
+Arial wszędzie indziej. To jedyne odstępstwo od księgi w tych szablonach i wynika
+z ograniczeń medium, nie z decyzji projektowej.
+
+**Jedna rzecz z księgi wymaga korekty w kodzie.** Biel na Luminous Orange
+`#FF7517` daje kontrast **2,69:1** — poniżej progu czytelności (WCAG AA wymaga
+4,5:1 dla tekstu, 3:1 dla dużego). Pomarańczowy przycisk z białym napisem,
+jaki stoi w przekazanych mailingach, jest więc nieczytelny dla części odbiorców.
+Księga rozwiązuje to sama: kolorem działania jest **Sapphire blue `#1F3855`**,
+a pomarańcz to **akcent**. W nowych szablonach:
+
+| Zastosowanie | Rozwiązanie | Kontrast |
 |---|---|---|
-| Granat | `#1A2B3C` oraz `#1F3855` (dwie różne wartości w dwóch mailingach) | `#156082` / `#0E4258` |
-| Tło sekcji | `#E8F1F4`, `#f1f3f5` (dwie wartości) | `#F2F6F8` / `#D9E5EC` |
-| Akcent | `#F35E07` i `#FF7517` (dwie wartości) | kolor spoza księgi |
-| Link | `#73b7e5` | brak odpowiednika |
+| Przycisk na jasnym tle | Sapphire `#1F3855`, tekst biały | 11,97:1 |
+| Przycisk na ciemnym tle | biały, tekst Steel `#1A2B3C` | 14,44:1 |
+| Pomarańcz jako tekst lub link | `#8A5A08` (token pochodny `--warn-ink`) | 5,28:1 |
+| Pomarańcz jako tło, linia, punktor | `#FF7517` bez zmian | — |
 
-Nowe kompilacje przechodzą na paletę z księgi: `#156082`, `#0E4258`, `#12202B`,
-`#F2F6F8`, `#D9E5EC`.
-
-Dwie decyzje wymagają akceptacji:
-
-1. **Pomarańcz `#F35E07` zostaje** — wyłącznie jako kolor przycisku i akcentu
-   nawigacyjnego, nigdy jako tło bloku ani kolor tekstu ciągłego. Uzasadnienie:
-   jest jedynym kolorem w całym systemie, który kontrastuje z granatem na tyle,
-   żeby przycisk był widoczny bez obrazków. Alternatywa — przycisk granatowy —
-   zlewa się z blokami sekcji.
-2. **Krój o stałej szerokości dla danych technicznych** (`Consolas`,
-   `Courier New`) — cyfry w tabelach wymiarów i gatunków muszą się wyrównywać
-   w kolumnach. To to samo rozszerzenie, które prototyp strony proponuje jako
-   JetBrains Mono; w mailu font webowy jest zawodny, więc stosujemy kroje
-   systemowe.
+**Nierozstrzygnięte:** w przekazanych mailingach współistnieją dwa odcienie
+pomarańczu (`#F35E07` i `#FF7517`) oraz dwa tła sekcji (`#E8F1F4` i `#f1f3f5`).
+Księga zna tylko `#FF7517` i `#E8F1F4` — pozostałe dwa to prawdopodobnie ślad po
+wcześniejszej wersji szablonu. Do ujednolicenia przy najbliższej edycji
+istniejących kreacji.
 
 ---
 
