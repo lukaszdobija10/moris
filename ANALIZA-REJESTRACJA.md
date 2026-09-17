@@ -234,9 +234,16 @@ w zależności od tego, gdzie spojrzy.
 ## 6. Prototyp
 
 [`rejestracja/index.html`](rejestracja/index.html) — samodzielny plik, bez
-budowania i bez zależności poza krojem JetBrains Mono z Google Fonts (przy braku
-sieci działa krój zapasowy). Przycisk **„Pokaż uwagi UX”** w górnym pasku
+budowania i bez zależności poza krojem Poppins z Google Fonts (przy braku sieci
+działa krój zapasowy). Paleta i typografia wg [`brand/tokens.css`](brand/tokens.css) —
+Steel blue, Sapphire blue i Luminous Orange z księgi znaku. Przycisk **„Pokaż uwagi UX”** w górnym pasku
 przypina ponumerowane uwagi do elementów, których dotyczą.
+
+**Uwaga — dwa prototypy tego samego ekranu.** Gałąź bazowa zawiera niezależnie
+zbudowany [`redesign/rejestracja.html`](redesign/rejestracja.html), który pokrywa
+ten sam zakres. Diagnoza w tym dokumencie odnosi się do zrzutów produkcji
+i obowiązuje niezależnie od tego, który prototyp zostanie wybrany — wybór należy
+do właściciela repozytorium.
 
 Co w nim faktycznie działa:
 
