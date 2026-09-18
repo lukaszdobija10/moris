@@ -9,7 +9,6 @@ Repozytorium robocze Działu Sprzedaży E-Commerce Moris sp. z o.o.
 | [`redesign/index.html`](redesign/index.html) | Prototyp nowego układu. Działające: wyszukiwarka parametryczna, konfigurator cięcia z podglądem odpadu, kalkulator masy i ceny z rabatem progowym, szybkie zamówienie z listy. |
 | [`redesign/rejestracja.html`](redesign/rejestracja.html) | Ekran rejestracji w dwóch odsłonach: przed podaniem NIP (trzy kroki, dla kogo, dlaczego warto) i po weryfikacji (formularz z danymi z rejestru, kontakt firmowy, przełącznik „inne dane do faktury”, rozdzielone zgody). |
 | [`redesign/po-rejestracji.html`](redesign/po-rejestracji.html) | Ekran po rejestracji w dwóch momentach: „potwierdź adres e-mail” i „zamów pierwszy raz”. Zbudowany na zasadzie jeden ekran — jedno działanie: główny przycisk do katalogu, jedna rzecz do dokończenia (adres dostawy), trzy kroki zamówienia i cztery fakty. |
-| [`winter-arc/`](winter-arc/) | Panel rozwoju osobistego „Winter Arc” dla lukaszdobija.pl (nie Moris): aplikacja PHP + SQLite na 90 dni, cztery filary, seria dni, przegląd tygodniowy, punkty kontrolne, PWA na telefon. Instalacja i logika w [`winter-arc/README.md`](winter-arc/README.md). |
 | [`brand/`](brand/) | Księga znaku Moris (PDF), jej przepisanie do `BRANDBOOK.md`, tokeny `tokens.css` oraz znak wyciągnięty z księgi jako SVG. Wszystkie prototypy korzystają z tego systemu. |
 
 Wszystkie trzy prototypy to samodzielne pliki HTML — wystarczy otworzyć w przeglądarce,
