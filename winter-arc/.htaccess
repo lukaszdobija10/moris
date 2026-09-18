@@ -1,0 +1,20 @@
+# Winter Arc — zabezpieczenia katalogu.
+
+# Blokada dostępu do bazy danych i plików wewnętrznych przez HTTP.
+<FilesMatch "\.(sqlite|sqlite-wal|sqlite-shm|db|json|md)$">
+  Require all denied
+</FilesMatch>
+
+# Apache 2.2 (starsze hostingi):
+# <FilesMatch "\.(sqlite|sqlite-wal|sqlite-shm|db|json|md)$">
+#   Order allow,deny
+#   Deny from all
+# </FilesMatch>
+
+# Panel jest prywatny — nie ma trafić do wyszukiwarek.
+<IfModule mod_headers.c>
+  Header set X-Robots-Tag "noindex, nofollow"
+</IfModule>
+
+Options -Indexes
+DirectoryIndex index.php

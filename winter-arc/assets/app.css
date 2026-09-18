@@ -1,0 +1,253 @@
+/* Winter Arc — system wizualny lukaszdobija.pl v2.0 */
+
+:root {
+  --petrol: #0F4C5C;
+  --petrol-dark: #0B3A46;
+  --apricot: #F4A261;
+  --paper: #F5F0E8;
+  --ink: #2A2520;
+  --muted: #6F6E69;
+  --line: #E2DACE;
+  --white: #FFFFFF;
+  --good: #2E7D5B;
+  --bad: #B3402F;
+  --radius: 10px;
+}
+
+* { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Calibri, sans-serif;
+  font-size: 16px;
+  line-height: 1.5;
+  -webkit-font-smoothing: antialiased;
+}
+
+a { color: var(--petrol); }
+
+.wrap { max-width: 720px; margin: 0 auto; padding: 0 16px; }
+
+.brandline { height: 3px; background: var(--apricot); }
+
+/* --- Nagłówek --- */
+
+.top { background: var(--petrol); color: var(--white); }
+.top .brandline { margin: 0 -16px; }
+.topbar { display: flex; align-items: baseline; justify-content: space-between; padding: 14px 0 10px; }
+.logo { font-weight: 500; letter-spacing: .01em; }
+.out { color: rgba(255,255,255,.75); font-size: 13px; text-decoration: none; }
+.out:hover { color: #fff; }
+
+nav { display: flex; gap: 2px; overflow-x: auto; }
+nav a {
+  color: rgba(255,255,255,.72);
+  text-decoration: none;
+  font-size: 14px;
+  padding: 9px 12px;
+  border-radius: 6px 6px 0 0;
+  white-space: nowrap;
+}
+nav a.on { background: var(--paper); color: var(--petrol); font-weight: 500; }
+
+main { padding: 18px 16px 8px; }
+
+footer { padding: 24px 16px 40px; }
+
+/* --- Typografia --- */
+
+h1 { font-size: 24px; font-weight: 500; margin: 0 0 8px; color: var(--petrol); }
+h2 { font-size: 17px; font-weight: 500; margin: 0 0 14px; color: var(--petrol); }
+h3 { font-size: 15px; font-weight: 500; margin: 18px 0 8px; color: var(--ink); }
+p { margin: 0 0 12px; }
+.muted { color: var(--muted); }
+.small { font-size: 13px; }
+.big { font-size: 18px; line-height: 1.45; }
+.good { color: var(--good); }
+
+/* --- Karty --- */
+
+.card {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 18px;
+  margin: 0 0 16px;
+}
+
+.phase-note { margin: -4px 0 14px; font-size: 14px; }
+
+/* --- Komunikaty --- */
+
+.ok, .warn, .alarm, .err {
+  border-radius: var(--radius);
+  padding: 12px 14px;
+  margin: 0 0 16px;
+  font-size: 14px;
+}
+.ok    { background: #E8F1EC; border-left: 3px solid var(--good); }
+.warn  { background: #FDF0E0; border-left: 3px solid var(--apricot); }
+.alarm { background: #F8E7E3; border-left: 3px solid var(--bad); }
+.err   { background: #F8E7E3; color: var(--bad); }
+
+/* --- Pasek statystyk --- */
+
+.stats { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 0 0 16px; }
+.stat {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 10px 8px;
+  text-align: center;
+}
+.stat .k { display: block; font-size: 11px; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+.stat .v { display: block; font-size: 24px; font-weight: 500; color: var(--petrol); line-height: 1.2; margin-top: 2px; }
+.stat .v.small-v { font-size: 14px; padding-top: 6px; }
+.stat .sub { font-size: 12px; color: var(--muted); font-weight: 400; margin-left: 2px; }
+
+/* --- Filary i formularze --- */
+
+.pillar { border-top: 1px solid var(--line); padding: 14px 0 4px; }
+.pillar:first-of-type { border-top: 0; padding-top: 0; }
+.pillar-h { font-size: 14px; font-weight: 500; color: var(--ink); margin-bottom: 10px; }
+.badge {
+  display: inline-block;
+  background: var(--apricot);
+  color: #3A2A15;
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .04em;
+  padding: 2px 7px;
+  border-radius: 4px;
+  margin-right: 6px;
+  vertical-align: 1px;
+}
+
+label.check {
+  display: flex;
+  gap: 12px;
+  align-items: flex-start;
+  padding: 11px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  cursor: pointer;
+  background: #FCFAF7;
+}
+label.check:has(input:checked) { border-color: var(--petrol); background: #F0F6F7; }
+label.check.optional { background: var(--white); }
+label.check input { width: 22px; height: 22px; margin: 1px 0 0; accent-color: var(--petrol); flex: none; }
+label.check span { font-size: 14px; }
+label.check strong { font-weight: 500; display: block; }
+label.check em { font-style: normal; font-size: 13px; display: block; margin-top: 1px; }
+
+.field { display: block; margin-bottom: 12px; }
+.field > span { display: block; font-size: 13px; color: var(--muted); margin-bottom: 5px; }
+input[type=text], input[type=password], input[type=number], textarea, select {
+  width: 100%;
+  font: inherit;
+  font-size: 15px;
+  color: var(--ink);
+  padding: 10px 12px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--white);
+}
+textarea { resize: vertical; line-height: 1.45; }
+input:focus, textarea:focus, select:focus { outline: 2px solid var(--petrol); outline-offset: -1px; border-color: var(--petrol); }
+
+.row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+button, .btn {
+  display: inline-block;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 500;
+  background: var(--petrol);
+  color: var(--white);
+  border: 1px solid var(--petrol);
+  border-radius: 8px;
+  padding: 11px 20px;
+  cursor: pointer;
+  text-decoration: none;
+}
+button:hover { background: var(--petrol-dark); }
+button.ghost, .btn.ghost { background: transparent; color: var(--petrol); }
+button.ghost:hover, .btn.ghost:hover { background: #EDF3F4; }
+
+/* --- Tydzień --- */
+
+.weekbar { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.wb { border: 1px solid var(--line); border-radius: 8px; padding: 9px 11px; }
+.wb span { display: block; font-size: 12px; color: var(--muted); }
+.wb strong { font-size: 17px; font-weight: 500; color: var(--petrol); }
+
+.weeknav { display: flex; justify-content: space-between; align-items: center; gap: 10px; font-size: 14px; margin-bottom: 14px; }
+.weeknav strong { font-weight: 500; text-align: center; }
+
+/* --- Kalendarz --- */
+
+.legend { display: flex; flex-wrap: wrap; gap: 14px; font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+.legend i.sw { display: inline-block; width: 11px; height: 11px; border-radius: 3px; margin-right: 4px; vertical-align: -1px; }
+
+.month { margin-bottom: 18px; }
+.grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 5px; }
+.cell {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 6px;
+  font-size: 13px;
+  text-decoration: none;
+  border: 1px solid var(--line);
+}
+.cell.blank { border: 0; }
+.cell.done    { background: var(--petrol); color: #fff; border-color: var(--petrol); }
+.cell.partial { background: var(--apricot); color: #3A2A15; border-color: var(--apricot); }
+.cell.missed  { background: #F0E6E3; color: var(--bad); border-color: #E4D2CD; }
+.cell.open    { background: #fff; color: var(--petrol); border: 2px solid var(--petrol); font-weight: 500; }
+.cell.future  { background: #fff; color: var(--muted); }
+
+.sw.done { background: var(--petrol); }
+.sw.partial { background: var(--apricot); }
+.sw.missed { background: #F0E6E3; border: 1px solid #E4D2CD; }
+.sw.future { background: #fff; border: 1px solid var(--line); }
+
+.journal { list-style: none; padding: 0; margin: 0; }
+.journal li { border-top: 1px solid var(--line); padding: 10px 0; font-size: 14px; }
+.journal li:first-child { border-top: 0; }
+
+.identity .big { color: var(--petrol); }
+
+/* --- Bramka logowania --- */
+
+body.gate { display: flex; align-items: center; justify-content: center; min-height: 100vh; padding: 16px; }
+.gate-box {
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  padding: 0 24px 24px;
+  width: 100%;
+  max-width: 360px;
+  overflow: hidden;
+}
+.gate-box .brandline { margin: 0 -24px 22px; }
+.gate-box label { display: block; font-size: 13px; color: var(--muted); margin-bottom: 12px; }
+.gate-box input { margin-top: 5px; }
+.gate-box button { width: 100%; margin-top: 6px; }
+
+/* --- Mobile --- */
+
+@media (max-width: 480px) {
+  .stats { grid-template-columns: repeat(2, 1fr); }
+  .row2 { grid-template-columns: 1fr; }
+  .card { padding: 15px; }
+}
+
+.wb .delta { display: block; font-style: normal; font-size: 12px; font-weight: 400; color: var(--muted); margin-top: 1px; }
+.wb .delta.good { color: var(--good); }
